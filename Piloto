@@ -1,16 +1,25 @@
-public class Piloto{
+public class Piloto extends Persona {
     private int numeroCompetencia;
     private int victorias;
     private int polePosition;
     private int vueltasRapidas;
     private int podios;
 
-    public Piloto(int numeroCompetencia, int victorias, int polePosition, int vueltasRapidas, int podios) {
+    public Piloto(String nombre, int edad, String direccion, int numeroCompetencia, int victorias, int polePosition, int vueltasRapidas, int podios) {
+        super(nombre, edad, direccion);
         this.numeroCompetencia = numeroCompetencia;
         this.victorias = victorias;
         this.polePosition = polePosition;
         this.vueltasRapidas = vueltasRapidas;
         this.podios = podios;
+    }
+    public Piloto() {
+        super();
+        this.numeroCompetencia = 0;
+        this.victorias = 0;
+        this.polePosition = 0;
+        this.vueltasRapidas = 0;
+        this.podios = 0;
     }
     public int getNumeroCompetencia() {
         return numeroCompetencia;
@@ -26,5 +35,20 @@ public class Piloto{
     }
     public int getPodios() {
         return podios;
+    }
+    public void setNumeroCompetencia(int numeroCompetencia) {
+        this.numeroCompetencia = numeroCompetencia;
+    }
+    public void setVictorias(int victorias) {
+        this.victorias = victorias;
+    }
+    public void setPolePosition(int polePosition) {
+        this.polePosition = polePosition;
+    }
+    public void setVueltasRapidas(int vueltasRapidas) {
+        this.vueltasRapidas = vueltasRapidas;
+    }
+    public void setPodios(int podios) {
+        this.podios = podios;
     }
 }

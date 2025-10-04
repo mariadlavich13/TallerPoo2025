@@ -1,15 +1,27 @@
-public class Mecanico{
+public class Mecanico extends Persona {
     private Especialidad especialidad;
     private int aniosExperiencia;
 
-    public Mecanico(Especialidad especialidad, int aniosExperiencia) {
+    public Mecanico(String nombre, int edad, String direccion, Especialidad especialidad, int aniosExperiencia) {
+        super(nombre, edad, direccion);
         this.especialidad = especialidad;
         this.aniosExperiencia = aniosExperiencia;
+    }
+    public Mecanico() {
+        super();
+        this.especialidad = Especialidad.GENERAL;
+        this.aniosExperiencia = 0;
     }
     public Especialidad getEspecialidad() {
         return especialidad;
     }
     public int getAniosExperiencia() {
         return aniosExperiencia;
+    }
+    public void setEspecialidad(Especialidad especialidad) {
+        this.especialidad = especialidad;
+    }
+    public void setAniosExperiencia(int aniosExperiencia) {
+        this.aniosExperiencia = aniosExperiencia;
     }
 }
