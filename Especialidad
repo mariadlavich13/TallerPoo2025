@@ -1,0 +1,3 @@
+public enum Especialidad {
+    MOTOR, NEUMÁTICOS, CHASIS, ELECTRÓNICA
+}
