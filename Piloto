@@ -1,0 +1,30 @@
+public class Piloto{
+    private int numeroCompetencia;
+    private int victorias;
+    private int polePosition;
+    private int vueltasRapidas;
+    private int podios;
+
+    public Piloto(int numeroCompetencia, int victorias, int polePosition, int vueltasRapidas, int podios) {
+        this.numeroCompetencia = numeroCompetencia;
+        this.victorias = victorias;
+        this.polePosition = polePosition;
+        this.vueltasRapidas = vueltasRapidas;
+        this.podios = podios;
+    }
+    public int getNumeroCompetencia() {
+        return numeroCompetencia;
+    }
+    public int getVictorias() {
+        return victorias;
+    }
+    public int getPolePosition() {
+        return polePosition;
+    }
+    public int getVueltasRapidas() {
+        return vueltasRapidas;
+    }
+    public int getPodios() {
+        return podios;
+    }
+}

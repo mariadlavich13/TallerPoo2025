@@ -1,0 +1,15 @@
+public class Mecanico{
+    private Especialidad especialidad;
+    private int aniosExperiencia;
+
+    public Mecanico(Especialidad especialidad, int aniosExperiencia) {
+        this.especialidad = especialidad;
+        this.aniosExperiencia = aniosExperiencia;
+    }
+    public Especialidad getEspecialidad() {
+        return especialidad;
+    }
+    public int getAniosExperiencia() {
+        return aniosExperiencia;
+    }
+}

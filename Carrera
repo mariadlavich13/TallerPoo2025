@@ -1,0 +1,23 @@
+public class Carrera{
+    private String fechaRealizacion;
+    private int nroVueltas; 
+    private String horaRealizacion;
+
+    public Carrera(String fechaRealizacion, int nroVueltas, String horaRealizacion) {
+        this.fechaRealizacion = fechaRealizacion;
+        this.nroVueltas= nroVueltas;
+        this.horaRealizacion = horaRealizacion;
+
+    }
+
+    public String getfechaRealizacion() {
+        return fechaRealizacion;
+    }
+
+    public int getnroVueltas() {
+        return nroVueltas;
+    }
+    public String gethoraRealizacion() {
+        return horaRealizacion;
+    }
+}
