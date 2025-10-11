@@ -1,0 +1,42 @@
+import java.util.List;
+public class PilotoEscuderia {
+    private String desdeFecha;
+    private String hastaFecha;
+    private Piloto piloto;
+    private Escuderia escuderia;
+
+    public PilotoEscuderia() {
+        this.desdeFecha="";
+        this.hastaFecha="";
+    }
+    public PilotoEscuderia(String desdeFecha, String hastaFecha, Piloto piloto, Escuderia escuderia) {
+        this.desdeFecha=desdeFecha;
+        this.hastaFecha=hastaFecha;
+        this.pilotos = pilotos;
+        this.escuderias = escuderias;
+    }
+    public String getDesdeFecha() {
+        return desdeFecha;
+    }
+    public void setDesdeFecha(String desdeFecha) {
+        this.desdeFecha=desdeFecha;
+    }
+    public String getHastaFecha() {
+        return hastaFecha;
+    }
+    public void setHastaFecha(String hastaFecha) {
+        this.hastaFecha=hastaFecha;
+    }
+    public Piloto getPiloto() {
+        return piloto;
+    }
+    public void setPiloto(Piloto piloto) {
+        this.piloto = piloto;
+    }
+    public Escuderia getEscuderia() {
+        return escuderia;
+    }
+    public void setEscuderia(Escuderia escuderia) {
+        this.escuderia = escuderia;
+    }
+}

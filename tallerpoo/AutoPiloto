@@ -1,0 +1,33 @@
+public class AutoPiloto {
+    private String fechaAsignacion;
+    private Piloto piloto; // Relación con Piloto
+    private Auto auto; // Relación con Auto
+
+    public AutoPiloto() {
+        this.desdeFecha="";
+        this.hastaFecha="";
+    }
+    public AutoPiloto(String fechaAsignacion, Piloto piloto, Auto auto) {
+        this.fechaAsignacion=fechaAsignacion;
+        this.piloto = piloto;
+        this.auto = auto;
+    }
+    public String getFechaAsignacion() {
+        return fechaAsignacion;
+    }
+    public void setFechaAsignacion(String fechaAsignacion) {
+        this.fechaAsignacion=fechaAsignacion;
+    }
+    public Piloto getPiloto() {
+        return piloto;
+    }
+    public void setPiloto(Piloto piloto) {
+        this.piloto = piloto;
+    }
+    public Auto getAuto() {
+        return auto;
+    }
+    public void setAuto(Auto auto) {
+        this.auto = auto;
+    }
+}

@@ -3,17 +3,17 @@ import java.util.List;
 Public class Escuderia{
     private String nombre;
     private List<Mecanico> mecanicos; // Relación con Mecanico
-    private List<Piloto> pilotos; // Relación con Piloto
+    private List<PilotoEscuderia> pilotosEscuderias = new ArrayList<>();
     
     public Escuderia() {
         this.nombre = "Desconocida";
         this.mecanicos = new ArrayList<>();
-        this.pilotos = new ArrayList<>();
+        this.pilotosEscuderias = new ArrayList<>();
     }
-    public Escuderia(String nombre, List<Mecanico> mecanicos, List<Piloto> pilotos) {
+    public Escuderia(String nombre, List<Mecanico> mecanicos, List<PilotoEscuderia> pilotosEscuderias) {
         this.nombre = nombre;
         this.mecanicos = mecanicos;
-        this.pilotos = pilotos;
+        this.pilotosEscuderias = pilotosEscuderias;
     }
 
     public String getNombre() {
@@ -31,13 +31,13 @@ Public class Escuderia{
     public void agregarMecanico(Mecanico mecanico) {
         this.mecanicos.add(mecanico);
     }
-    public List<Piloto> getPilotos() {
-        return pilotos;
+    public List<PilotoEscuderia> getPilotosEscuderias() {
+        return pilotosEscuderias;
     }
-    public void setPilotos(List<Piloto> pilotos) {
-        this.pilotos = pilotos;
+    public void setPilotosEscuderias(List<PilotoEscuderia> pilotosEscuderias) {
+        this.pilotosEscuderias = pilotosEscuderias;
     }
-    public void agregarPiloto(Piloto piloto) {
-        this.pilotos.add(piloto);
+    public void agregarPilotoEscuderia(PilotoEscuderia pilotoEscuderia) {
+        this.pilotosEscuderias.add(pilotoEscuderia);
     }
 }

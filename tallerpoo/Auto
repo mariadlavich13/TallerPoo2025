@@ -1,15 +1,22 @@
+import java.util.ArrayList;
+import java.util.List;
 public class Auto {
     private String modelo;
     private String motor;
+    private List<AutoPiloto> autosPiloto;
+
+
 
     public Auto() {
         this.modelo="";
         this.motor="";
+        this.autosPiloto = new ArrayList<>();
     }
 
-    public Auto(String modelo, String motor) {
+    public Auto(String modelo, String motor, List<AutoPiloto> autosPiloto) {
         this.modelo=modelo;
         this.motor=motor;
+        this.autosPiloto = autosPiloto;
     }
 
     public String getModelo() {
@@ -26,5 +33,14 @@ public class Auto {
 
     public void setMotor(String motor) {
         this.motor=motor;
+    }
+    public List<AutoPiloto> getAutosPiloto() {
+        return autosPiloto;
+    }
+    public void setAutosPiloto(List<AutoPiloto> autosPiloto) {
+        this.autosPiloto = autosPiloto;
+    }
+    public void agregarAutoPiloto(AutoPiloto autoPiloto) {
+        this.autosPiloto.add(autoPiloto);
     }
 }
