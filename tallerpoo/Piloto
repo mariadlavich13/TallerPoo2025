@@ -1,3 +1,5 @@
+import java.util.List;
+
 public class Piloto extends Persona {
     private int numeroCompetencia;
     private int victorias;
