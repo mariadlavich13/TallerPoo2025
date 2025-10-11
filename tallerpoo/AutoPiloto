@@ -6,6 +6,8 @@ public class AutoPiloto {
     public AutoPiloto() {
         this.desdeFecha="";
         this.hastaFecha="";
+        this.piloto = null;
+        this.auto = null;
     }
     public AutoPiloto(String fechaAsignacion, Piloto piloto, Auto auto) {
         this.fechaAsignacion=fechaAsignacion;
