@@ -1,14 +1,17 @@
+import java.util.List;
+import java.util.ArrayList;
 public class Persona {
     private String nombre;
     private int edad;
     private String direccion;
-    
+    private Pais pais;
     public Persona() {
     }
-    public Persona(String nombre, int edad, String direccion) {
+    public Persona(String nombre, int edad, String direccion, Pais pais) {
         this.nombre = nombre;
         this.edad = edad;
         this.direccion = direccion;
+        this.pais = pais;
     }
 
     public String getNombre() {
@@ -34,6 +37,20 @@ public class Persona {
     public void setDireccion(String direccion) {
         this.direccion = direccion;
     }
+    public Pais getPais() {
+        return pais;
+    }
+    public void setPais(Pais pais) {
+        this.pais = pais;
+    }
+    
 
-
+    @Override
+    public String toString() {
+        return "Persona: " +
+                "nombre: " + nombre + '\'' +
+                ", edad: " + edad +
+                ", direccion: " + direccion + '\'' +
+                ", pais: " + (pais != null ? pais.getIdPais() : "Sin país");
+    }
 }

@@ -1,11 +1,16 @@
+import java.util.List;
+import java.util.ArrayList;
 public class Pais{
     private int idPais;
     private String descripcion;
+    private List<Persona> personas;
     public Pais() {
+        this.personas= new ArrayList<Persona>();
     }
-    public Pais(int idPais, String descripcion) {
+    public Pais(int idPais, String descripcion, List<Persona> personas) {
         this.idPais = idPais;
         this.descripcion = descripcion;
+        this.personas = personas;
     }
     public int getIdPais() {
         return idPais;
@@ -18,5 +23,15 @@ public class Pais{
     }
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
+    }
+    public void agregarPersona(Persona persona){
+        this.personas.add(persona);
+    }
+    @Override
+    public String toString(){
+        return "Pais: " +
+                "idPais: " + idPais +
+                ", descripcion: " + descripcion +
+                ", personas: " + personas;
     }
 }
