@@ -4,7 +4,7 @@ public class Persona {
     private String nombre;
     private int edad;
     private String direccion;
-    private Pais pais;
+    private Pais pais;          // Relación con Pais
     public Persona() {
     }
     public Persona(String nombre, int edad, String direccion, Pais pais) {
@@ -44,7 +44,6 @@ public class Persona {
         this.pais = pais;
     }
     
-
     @Override
     public String toString() {
         return "Persona: " +
