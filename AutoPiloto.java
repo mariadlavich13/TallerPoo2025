@@ -1,5 +1,3 @@
-package TallerPoo2025;
-
 import java.util.List;
 
 public class AutoPiloto {

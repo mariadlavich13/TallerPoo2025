@@ -1,5 +1,3 @@
-package TallerPoo2025;
-
 public class Carrera{
     private String fechaRealizacion;
     private int nroVueltas; 

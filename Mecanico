@@ -1,5 +1,3 @@
-package TallerPoo2025;
-
 public class Mecanico extends Persona {
     private Especialidad especialidad;
     private int aniosExperiencia;

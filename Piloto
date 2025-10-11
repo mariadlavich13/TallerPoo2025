@@ -1,5 +1,3 @@
-package TallerPoo2025;
-
 public class Piloto extends Persona {
     private int numeroCompetencia;
     private int victorias;

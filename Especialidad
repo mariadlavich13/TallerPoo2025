@@ -1,5 +1,3 @@
-package TallerPoo2025;
-
 public enum Especialidad {
     MOTOR, NEUMATICOS, CHASIS, ELECTRONICA
 }

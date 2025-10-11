@@ -1,5 +1,3 @@
-package TallerPoo2025;
-
 public class Auto {
     private String modelo;
     private String motor;
