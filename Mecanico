@@ -1,16 +1,23 @@
+package TallerPoo2025;
+
 public class Mecanico extends Persona {
     private Especialidad especialidad;
     private int aniosExperiencia;
+    private List<Escuderia> escuderias; // Relación con Escuderia
 
-    public Mecanico(String nombre, int edad, String direccion, Especialidad especialidad, int aniosExperiencia) {
+
+    public Mecanico(String nombre, int edad, String direccion, Especialidad especialidad, int aniosExperiencia, List<Escuderia> escuderias) {
         super(nombre, edad, direccion);
         this.especialidad = especialidad;
         this.aniosExperiencia = aniosExperiencia;
+        this.escuderias = escuderias;
     }
     public Mecanico() {
         super();
         this.especialidad = Especialidad.GENERAL;
         this.aniosExperiencia = 0;
+        this.escuderias = new ArrayList<>();
+        this.pilotos = new ArrayList<>();
     }
     public Especialidad getEspecialidad() {
         return especialidad;
@@ -23,5 +30,14 @@ public class Mecanico extends Persona {
     }
     public void setAniosExperiencia(int aniosExperiencia) {
         this.aniosExperiencia = aniosExperiencia;
+    }
+    public List<Escuderia> getEscuderias() {
+        return escuderias;
+    }
+    public void setEscuderias(List<Escuderia> escuderias) {
+        this.escuderias = escuderias;
+    }
+    public void agregarEscuderia(Escuderia escuderia) {
+        this.escuderias.add(escuderia);
     }
 }

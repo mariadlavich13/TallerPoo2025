@@ -1,12 +1,21 @@
-Package java.util.ArrayList;
-Package java.util.List;
+package TallerPoo2025;
+
+import java.util.ArrayList;
+import java.util.List;
 Public class Escuderia{
     private String nombre;
+    private List<Mecanico> mecanicos; // Relación con Mecanico
+    private List<Piloto> pilotos; // Relación con Piloto
     
     public Escuderia() {
+        this.nombre = "Desconocida";
+        this.mecanicos = new ArrayList<>();
+        this.pilotos = new ArrayList<>();
     }
-    public Escuderia(String nombre) {
+    public Escuderia(String nombre, List<Mecanico> mecanicos, List<Piloto> pilotos) {
         this.nombre = nombre;
+        this.mecanicos = mecanicos;
+        this.pilotos = pilotos;
     }
 
     public String getNombre() {
@@ -14,5 +23,23 @@ Public class Escuderia{
     }
     public void setNombre(String nombre) {
         this.nombre = nombre;
+    }
+    public List<Mecanico> getMecanicos() {
+        return mecanicos;
+    }
+    public void setMecanicos(List<Mecanico> mecanicos) {
+        this.mecanicos = mecanicos;
+    }
+    public void agregarMecanico(Mecanico mecanico) {
+        this.mecanicos.add(mecanico);
+    }
+    public List<Piloto> getPilotos() {
+        return pilotos;
+    }
+    public void setPilotos(List<Piloto> pilotos) {
+        this.pilotos = pilotos;
+    }
+    public void agregarPiloto(Piloto piloto) {
+        this.pilotos.add(piloto);
     }
 }
