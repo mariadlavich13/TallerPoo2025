@@ -1,13 +1,14 @@
 public class Carrera{
     private String fechaRealizacion;
-    private int nroVueltas; 
+    private int nroVueltas;
     private String horaRealizacion;
+    private Pais pais; // Relación con Pais
 
-    public Carrera(String fechaRealizacion, int nroVueltas, String horaRealizacion) {
+    public Carrera(String fechaRealizacion, int nroVueltas, String horaRealizacion, Pais pais) {
         this.fechaRealizacion = fechaRealizacion;
         this.nroVueltas= nroVueltas;
         this.horaRealizacion = horaRealizacion;
-
+        this.pais = pais;
     }
 
     public String getfechaRealizacion() {
@@ -19,5 +20,8 @@ public class Carrera{
     }
     public String gethoraRealizacion() {
         return horaRealizacion;
+    }
+    public Pais getPais() {
+        return pais;
     }
 }

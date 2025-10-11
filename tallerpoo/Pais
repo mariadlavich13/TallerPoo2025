@@ -3,14 +3,24 @@ import java.util.ArrayList;
 public class Pais{
     private int idPais;
     private String descripcion;
-    private List<Persona> personas;
+    private List<Persona> personas;   // Relación con Persona
+    private List<Escuderia> escuderias; // Relación con Escuderia
+    private List<Circuito> circuitos; // Relación con Circuito
+    private List<Carrera> carreras; // Relación con Carrera
+
     public Pais() {
-        this.personas= new ArrayList<Persona>();
+        this.personas = new ArrayList<Persona>();
+        this.escuderias = new ArrayList<Escuderia>();
+        this.circuitos = new ArrayList<Circuito>();
+        this.carreras = new Arraylist<Carrera>();
     }
-    public Pais(int idPais, String descripcion, List<Persona> personas) {
+    public Pais(int idPais, String descripcion, List<Persona> personas, List<Escuderia> escuderias, List<Circuito> circuitos, List<Carrera> carreras) {
         this.idPais = idPais;
         this.descripcion = descripcion;
         this.personas = personas;
+        this.escuderias = escuderias;
+        this.circuitos = circuitos;
+        this.carreras = carreras;
     }
     public int getIdPais() {
         return idPais;
@@ -27,11 +37,13 @@ public class Pais{
     public void agregarPersona(Persona persona){
         this.personas.add(persona);
     }
-    @Override
-    public String toString(){
-        return "Pais: " +
-                "idPais: " + idPais +
-                ", descripcion: " + descripcion +
-                ", personas: " + personas;
+    public void agregarEscuderia(Escuderia escuderia){
+        this.escuderias.add(escuderia);
+    }
+    public void agregarCircuito(Circuito circuito){
+        this.circuitos.add(circuito);
+    }
+    public void agregarCarrera(Carrera carrera){
+        this.carreras.add(carrera);
     }
 }

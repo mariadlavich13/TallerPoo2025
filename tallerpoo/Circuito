@@ -1,15 +1,17 @@
 public class Circuito {
   private String nombre;
   private int longitud;
-  
+  private Pais pais; // Relación con Pais
+
   public Circuito () {
     this.nombre="";
     this.longitud="";
   }
 
-  public Circuito(String nombre, int longitud) {
+  public Circuito(String nombre, int longitud, Pais pais) {
     this.nombre=nombre;
     this.longitud=longitud;
+    this.pais=pais;
   }
 
   public String getNombre() {
@@ -26,5 +28,8 @@ public class Circuito {
 
   public void setLongitud(int longitud) {
     this.longitud=longitud;
+  }
+  public Pais getPais() {
+    return pais;
   }
 }
