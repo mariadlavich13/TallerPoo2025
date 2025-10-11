@@ -8,12 +8,14 @@ public class PilotoEscuderia {
     public PilotoEscuderia() {
         this.desdeFecha="";
         this.hastaFecha="";
+        this.piloto = null;
+        this.escuderia = null;
     }
     public PilotoEscuderia(String desdeFecha, String hastaFecha, Piloto piloto, Escuderia escuderia) {
         this.desdeFecha=desdeFecha;
         this.hastaFecha=hastaFecha;
-        this.pilotos = pilotos;
-        this.escuderias = escuderias;
+        this.piloto = piloto;
+        this.escuderia = escuderia;
     }
     public String getDesdeFecha() {
         return desdeFecha;
