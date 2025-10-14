@@ -2,7 +2,7 @@ public class Circuito {
   private String nombre;
   private int longitud;
   private Pais pais; // Relación con Pais
-
+  //constructores
   public Circuito () {
     this.nombre="";
     this.longitud="";
@@ -13,7 +13,7 @@ public class Circuito {
     this.longitud=longitud;
     this.pais=pais;
   }
-
+  //Gets y Sets
   public String getNombre() {
     return nombre;
   }
@@ -31,5 +31,8 @@ public class Circuito {
   }
   public Pais getPais() {
     return pais;
+  }
+  public setPais (Pais pais){
+    this.pais = pais;
   }
 }

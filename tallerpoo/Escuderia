@@ -5,7 +5,8 @@ Public class Escuderia{
     private List<Mecanico> mecanicos; // Relación con Mecanico
     private List<PilotoEscuderia> pilotosEscuderias = new ArrayList<>();
     private Pais pais; // Relación con Pais
-
+    private List <Auto> autos;//Asociación entre Escuderia (1) - (0...*) Auto
+    //constructores
     public Escuderia() {
         this.nombre = "Desconocida";
         this.mecanicos = new ArrayList<>();
@@ -17,13 +18,14 @@ Public class Escuderia{
         this.pilotosEscuderias = pilotosEscuderias;
         this.pais = pais;
     }
-
+    //Gets y Sets
     public String getNombre() {
         return nombre;
     }
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
+    //mecanicos
     public List<Mecanico> getMecanicos() {
         return mecanicos;
     }
@@ -33,6 +35,7 @@ Public class Escuderia{
     public void agregarMecanico(Mecanico mecanico) {
         this.mecanicos.add(mecanico);
     }
+    //piloto-escuderia
     public List<PilotoEscuderia> getPilotosEscuderias() {
         return pilotosEscuderias;
     }
@@ -42,7 +45,24 @@ Public class Escuderia{
     public void agregarPilotoEscuderia(PilotoEscuderia pilotoEscuderia) {
         this.pilotosEscuderias.add(pilotoEscuderia);
     }
+    //Pais
     public Pais getPais() {
         return pais;
+    }
+    public void setPais(Pais pais) {
+        this.pais = pais;
+    }
+    //Escuderia-Auto
+    public List <Auto> getAutos () {
+        return autos;
+    }
+    public void setAutos(List<Auto> autos){
+        this.autos = autos;
+    }
+    public void agregarAuto (Auto a){
+        //El método agregarAuto(Auto a) mete el auto en la lista y setea la inversa a.setEscuderia(this) para mantener la relación coherente.
+        if (a == nul) return;
+        this.autos.add(a);
+        a.setEscuderia(this); 
     }
 }

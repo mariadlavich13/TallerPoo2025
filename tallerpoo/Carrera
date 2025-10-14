@@ -1,16 +1,24 @@
+import java.util.ArrayList;
+import java.util.List;
+
 public class Carrera{
     private String fechaRealizacion;
     private int nroVueltas;
     private String horaRealizacion;
     private Pais pais; // Relación con Pais
+    private Circuito circuito; //asociación carrera (0..*)-(1) Circuito
+    private List<AutoPiloto> participantes;//asociación carrea (1) - (1..*)Autopiloto
 
-    public Carrera(String fechaRealizacion, int nroVueltas, String horaRealizacion, Pais pais) {
+    //constructor
+    public Carrera(String fechaRealizacion, int nroVueltas, String horaRealizacion, Pais pais, Circuito circuito) {
         this.fechaRealizacion = fechaRealizacion;
         this.nroVueltas= nroVueltas;
         this.horaRealizacion = horaRealizacion;
         this.pais = pais;
+        this.circuito = circuito;
+        this.participantes = new ArrayList<>();
     }
-
+    //Gets y Sets
     public String getfechaRealizacion() {
         return fechaRealizacion;
     }
@@ -23,5 +31,25 @@ public class Carrera{
     }
     public Pais getPais() {
         return pais;
+    }
+    //circuito
+    public Circuito getCircuito() {
+        return circuito;
+    }
+    public void setCircuito(Circuito circuito) {
+        this.circuito = circuito;
+    }
+    //participantes
+    public List<AutoPiloto> getParticipantes (){
+        return participantes;
+    }
+    public void setParticipantes (List<AutoPiloto>participantes){
+        this.participantes = participantes;
+    }
+    public void agregarParticipante (AutoPiloto ap) {
+        if (ap == null) return;
+        //Registra al participante en la colección interna de la carrera. Así cumplís la multiplicidad “Carrera 1 — 1..* AutoPiloto”
+        this.participantes.add(ap);
+        ap.setCarrera(this);
     }
 }

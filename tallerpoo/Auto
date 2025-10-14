@@ -3,10 +3,12 @@ import java.util.List;
 public class Auto {
     private String modelo;
     private String motor;
+    //Asociación con autoPiloto
     private List<AutoPiloto> autosPiloto;
+    //Asociación bidireccional: cada auto pertenece (0...1) a una escuderia 
+    private Escuderia escuderia;
 
-
-
+    //constructores
     public Auto() {
         this.modelo="";
         this.motor="";
@@ -18,7 +20,7 @@ public class Auto {
         this.motor=motor;
         this.autosPiloto = autosPiloto;
     }
-
+    //Gets y Sets
     public String getModelo() {
         return modelo;
     }
@@ -34,6 +36,7 @@ public class Auto {
     public void setMotor(String motor) {
         this.motor=motor;
     }
+    //Auto-Piloto
     public List<AutoPiloto> getAutosPiloto() {
         return autosPiloto;
     }
@@ -43,4 +46,12 @@ public class Auto {
     public void agregarAutoPiloto(AutoPiloto autoPiloto) {
         this.autosPiloto.add(autoPiloto);
     }
+    //Escuderia
+    public Escuderia getEscuderia (){ 
+        return escuderia;
+    }
+    public void setEscuderia (Escuderia escuderia){
+        this.escuderia = escuderia;
+    }
+    
 }
