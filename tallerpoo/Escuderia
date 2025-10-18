@@ -18,6 +18,9 @@ Public class Escuderia{
         this.pilotosEscuderias = pilotosEscuderias;
         this.pais = pais;
     }
+    public Escuderia(String nombre, Pais pais) {
+        this.nombre = nombre;
+    }
     //Gets y Sets
     public String getNombre() {
         return nombre;

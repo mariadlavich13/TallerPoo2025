@@ -17,6 +17,11 @@ public class Mecanico extends Persona {
         this.escuderias = new ArrayList<>();
         this.pilotos = new ArrayList<>();
     }
+    public Mecanico(Especialidad especialidad, int aniosExperiencia) {
+        super();
+        this.especialidad = especialidad;
+        this.aniosExperiencia = aniosExperiencia;
+    }
     public Especialidad getEspecialidad() {
         return especialidad;
     }

@@ -20,6 +20,10 @@ public class Auto {
         this.motor=motor;
         this.autosPiloto = autosPiloto;
     }
+    public Auto(String modelo, String motor) {
+        this.modelo=modelo;
+        this.motor=motor;
+    }
     //Gets y Sets
     public String getModelo() {
         return modelo;
