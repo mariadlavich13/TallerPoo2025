@@ -1,0 +1,24 @@
+import juva.util.List;
+//Clase para almacenar el resultado del piloto en una carrera
+// Asocia un piloto con su posicion final.
+
+public class ResultadoCarrera{
+    private Piloto piloto;
+    private int posicion;
+    private Carrera carrera;
+
+    public ResultadoCarrera(Piloto piloto, int posicion, Carrera carrera){
+        this.piloto = piloto;
+        this.posicion = posicion;
+        this.carrera = carrera;
+    }
+    public Piloto getPiloto(){
+        return piloto;
+    }
+    public int getPosicion(){
+        return posicion;
+    }
+    public Carrera getCarrera(){
+        return carrera;
+    }
+}

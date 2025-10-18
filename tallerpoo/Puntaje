@@ -1,0 +1,33 @@
+public enum Puntaje {
+    PRIMERO(25),
+    SEGUNDO(18),
+    TERCERO(15),
+    CUARTO(12),
+    QUINTO(10),
+    SEXTO(8),
+    SEPTIMO(6),
+    OCTAVO(4),
+    NOVENO(2),
+    DECIMO(1);
+
+    private final int puntos;
+    
+    Puntaje(int puntos) {
+        this.puntos = puntos;
+    }
+    
+    public int getPuntos() {
+        return puntos;
+    }
+    
+    //Método stático para obtener el puntaje según la posición
+    // Devuelve 0 si la posición es mayor a 10
+    public static int obtenerPuntaje(int posicion) {
+        for(Puntaje p : values()) {
+            if(p.ordinal() + 1 == posicion) {
+                return p.getPuntos();
+            }
+        }
+        return 0;
+    }
+}
