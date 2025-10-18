@@ -2,17 +2,19 @@ public class AutoPiloto {
     private String fechaAsignacion;
     private Piloto piloto; // Relación con Piloto
     private Auto auto; // Relación con Auto
+    private Carrera carrera; // Relación con Carrera
 
     public AutoPiloto() {
-        this.desdeFecha="";
-        this.hastaFecha="";
+        this.fechaAsignacion="";
         this.piloto = null;
         this.auto = null;
+        this.carrera = null;
     }
-    public AutoPiloto(String fechaAsignacion, Piloto piloto, Auto auto) {
+    public AutoPiloto(String fechaAsignacion, Piloto piloto, Auto auto, Carrera carrera) {
         this.fechaAsignacion=fechaAsignacion;
         this.piloto = piloto;
         this.auto = auto;
+        this.carrera = carrera;
     }
     public String getFechaAsignacion() {
         return fechaAsignacion;
@@ -31,5 +33,11 @@ public class AutoPiloto {
     }
     public void setAuto(Auto auto) {
         this.auto = auto;
+    }
+    public Carrera getCarrera() {
+        return carrera;
+    }
+    public void setCarrera(Carrera carrera) {
+        this.carrera = carrera;
     }
 }

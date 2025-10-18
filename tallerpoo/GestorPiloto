@@ -13,16 +13,16 @@ public class GestorPiloto {
             while ((linea = br.readLine()) != null) {
                 String[] valores = linea.split(",");
 
-                String nombre = valores[0];
-                int edad = Integer.parseInt(valores[1]);
-                String direccion = valores[2];
+                int dni = Integer.parseInt(valores[0]);
+                String nombre = valores[1];
+                String apellido = valores[2];
                 int numeroCompetencia = Integer.parseInt(valores[3]);
                 int victorias = Integer.parseInt(valores[4]);
                 int polePosition = Integer.parseInt(valores[5]);
                 int vueltasRapidas = Integer.parseInt(valores[6]);
                 int podios = Integer.parseInt(valores[7]);
 
-                Piloto p = new Piloto(nombre, edad, direccion, numeroCompetencia, victorias, polePosition, vueltasRapidas, podios);
+                Piloto p = new Piloto(dni, nombre, apellido, numeroCompetencia, victorias, polePosition, vueltasRapidas, podios);
                 pilotos.add(p);
             }
         } catch (IOException e) {

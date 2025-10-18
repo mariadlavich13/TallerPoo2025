@@ -5,7 +5,7 @@ public class Circuito {
   //constructores
   public Circuito () {
     this.nombre="";
-    this.longitud="";
+    this.longitud=0;
   }
 
   public Circuito(String nombre, int longitud, Pais pais) {
@@ -32,7 +32,7 @@ public class Circuito {
   public Pais getPais() {
     return pais;
   }
-  public setPais (Pais pais){
+  public void setPais (Pais pais){
     this.pais = pais;
   }
 }

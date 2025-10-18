@@ -22,3 +22,6 @@ public class GestorAutos {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return autos;
+    }
+}

@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
-Public class Escuderia{
+public class Escuderia{
     private String nombre;
     private List<Mecanico> mecanicos; // Relación con Mecanico
     private List<PilotoEscuderia> pilotosEscuderias = new ArrayList<>();
@@ -64,7 +64,7 @@ Public class Escuderia{
     }
     public void agregarAuto (Auto a){
         //El método agregarAuto(Auto a) mete el auto en la lista y setea la inversa a.setEscuderia(this) para mantener la relación coherente.
-        if (a == nul) return;
+        if (a == null) return;
         this.autos.add(a);
         a.setEscuderia(this); 
     }

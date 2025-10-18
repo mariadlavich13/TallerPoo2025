@@ -12,7 +12,7 @@ public class Pais{
         this.personas = new ArrayList<Persona>();
         this.escuderias = new ArrayList<Escuderia>();
         this.circuitos = new ArrayList<Circuito>();
-        this.carreras = new Arraylist<Carrera>();
+        this.carreras = new ArrayList<Carrera>();
     }
     public Pais(int idPais, String descripcion, List<Persona> personas, List<Escuderia> escuderias, List<Circuito> circuitos, List<Carrera> carreras) {
         this.idPais = idPais;
