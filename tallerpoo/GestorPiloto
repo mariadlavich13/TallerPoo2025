@@ -1,0 +1,34 @@
+import java.io.*;
+import java.util.*;
+
+public class GestorPiloto {
+
+    public static List<Piloto> leerPilotosDesdeCSV(String path) {
+        List<Piloto> pilotos = new ArrayList<>();
+
+        try (BufferedReader br = new BufferedReader(new FileReader(path))) {
+            String linea;
+            br.readLine(); // Saltear encabezado
+
+            while ((linea = br.readLine()) != null) {
+                String[] valores = linea.split(",");
+
+                String nombre = valores[0];
+                int edad = Integer.parseInt(valores[1]);
+                String direccion = valores[2];
+                int numeroCompetencia = Integer.parseInt(valores[3]);
+                int victorias = Integer.parseInt(valores[4]);
+                int polePosition = Integer.parseInt(valores[5]);
+                int vueltasRapidas = Integer.parseInt(valores[6]);
+                int podios = Integer.parseInt(valores[7]);
+
+                Piloto p = new Piloto(nombre, edad, direccion, numeroCompetencia, victorias, polePosition, vueltasRapidas, podios);
+                pilotos.add(p);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return pilotos;
+    }
+}
