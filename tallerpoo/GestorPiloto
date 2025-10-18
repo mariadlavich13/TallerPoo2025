@@ -13,14 +13,14 @@ public class GestorPiloto {
             while ((linea = br.readLine()) != null) {
                 String[] valores = linea.split(",");
 
-                int dni = Integer.parseInt(valores[0]);
+                int dni = valores[0];
                 String nombre = valores[1];
                 String apellido = valores[2];
-                int numeroCompetencia = Integer.parseInt(valores[3]);
-                int victorias = Integer.parseInt(valores[4]);
-                int polePosition = Integer.parseInt(valores[5]);
-                int vueltasRapidas = Integer.parseInt(valores[6]);
-                int podios = Integer.parseInt(valores[7]);
+                int numeroCompetencia = Integer.parseInt(valores[3].trim());
+                int victorias = Integer.parseInt(valores[4].trim());
+                int polePosition = Integer.parseInt(valores[5].trim());
+                int vueltasRapidas = Integer.parseInt(valores[6].trim());
+                int podios = Integer.parseInt(valores[7].trim());
 
                 Piloto p = new Piloto(dni, nombre, apellido, numeroCompetencia, victorias, polePosition, vueltasRapidas, podios);
                 pilotos.add(p);
