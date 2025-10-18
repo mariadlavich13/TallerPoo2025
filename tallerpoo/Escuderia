@@ -11,6 +11,7 @@ public class Escuderia{
         this.nombre = "Desconocida";
         this.mecanicos = new ArrayList<>();
         this.pilotosEscuderias = new ArrayList<>();
+        this.autos = new ArrayList<>();
     }
     public Escuderia(String nombre, List<Mecanico> mecanicos, List<PilotoEscuderia> pilotosEscuderias, Pais pais) {
         this.nombre = nombre;
