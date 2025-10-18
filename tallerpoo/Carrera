@@ -53,4 +53,43 @@ public class Carrera{
         ap.setCarrera(this);
     }
     
+/**
+     * Clase interna para representar el resultado de un piloto en una carrera.
+     */
+/**    public static class ResultadoCarrera {
+        private Piloto piloto;
+        private int posicion;
+
+        public ResultadoCarrera(Piloto piloto, int posicion) {
+            this.piloto = piloto;
+            this.posicion = posicion;
+        }
+
+        public Piloto getPiloto() {
+            return piloto;
+        }
+
+        public int getPosicion() {
+            return posicion;
+        }
+    }
+
+    /**
+     * Metodo estatico para calcular el puntaje total de un piloto a partir
+     * de una lista de todos los resultados de las carreras.
+     * @param piloto El piloto para el cual se calculara el puntaje.
+     * @param resultados La lista completa de resultados de todas las carreras.
+     * @return El puntaje total acumulado por el piloto.
+    
+    public static int calcularPuntajeTotal(Piloto piloto, List<ResultadoCarrera> resultados) {
+        int puntajeTotal = 0;
+        for (ResultadoCarrera resultado : resultados) {
+            if (resultado.getPiloto().equals(piloto)) {
+                puntajeTotal += Puntaje.obtenerPuntaje(resultado.getPosicion());
+            }
+        }
+        return puntajeTotal;
+    }
+*//
+
 }
