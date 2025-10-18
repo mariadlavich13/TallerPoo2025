@@ -1,0 +1,27 @@
+import java.io.*;
+import java.util.*;
+
+public class GestorMecanico {
+    public static List<Mecanico> leerMecanicosDesdeCSV(String path) {
+        List<Mecanico> mecanicos = new ArrayList<>();
+
+        try (BufferedReader br = new BufferedReader(new FileReader(path))) {
+            String linea;
+            br.readLine(); // Saltear encabezado
+
+            while ((linea = br.readLine()) != null) {
+                String[] valores = linea.split(",");
+
+                Mecanico.Especialidad esp = Mecanico.Especialidad.valueOf(datos[0]);
+                int aniosExperiencia = Integer.parseInt(valores[1]);
+
+                Mecanico m = new Mecanico(especialidad, aniosExperiencia);
+                mecanicos.add(m);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return mecanicos;
+    }
+}
