@@ -15,7 +15,7 @@ public class GestorMecanico {
                 Mecanico.Especialidad esp = Mecanico.Especialidad.valueOf(valores[0]);
                 int aniosExperiencia = Integer.parseInt(valores[1]);
 
-                Mecanico m = new Mecanico(especialidad, aniosExperiencia);
+                Mecanico m = new Mecanico(esp, aniosExperiencia);
                 mecanicos.add(m);
             }
         } catch (IOException e) {
