@@ -1,0 +1,28 @@
+import java.io.*;
+import java.util.*;
+
+public class GestorCircuito {
+
+    public static List<Circuito> leerCircuitosDesdeCSV(String path) {
+        List<Circuito> circuitos = new ArrayList<>();
+
+        try (BufferedReader br = new BufferedReader(new FileReader(path))) {
+            String linea;
+            br.readLine(); // Saltear encabezado
+
+            while ((linea = br.readLine()) != null) {
+                String[] valores = linea.split(",");
+
+                String nombre = valores[0];
+                int longitud = valores[1];
+
+                Circuito c = new Piloto(nombre, longitud);
+                circuitos.add(c);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return circuitos;
+    }
+}
