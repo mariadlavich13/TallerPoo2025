@@ -18,7 +18,7 @@ public class Circuito {
     return nombre;
   }
 
-  public int getLongitud() {
+  public double getLongitud() {
     return longitud;
   }
 
@@ -26,7 +26,7 @@ public class Circuito {
     this.nombre=nombre;
   }
 
-  public void setLongitud(int longitud) {
+  public void setLongitud(double longitud) {
     this.longitud=longitud;
   }
   public Pais getPais() {

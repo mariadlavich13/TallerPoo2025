@@ -12,10 +12,11 @@ public class GestorMecanico {
             while ((linea = br.readLine()) != null) {
                 String[] valores = linea.split(",");
 
-                Mecanico.Especialidad esp = Mecanico.Especialidad.valueOf(valores[0]);
-                int aniosExperiencia = Integer.parseInt(valores[1]).trim();
+                Especialidad esp = Especialidad.valueOf(valores[0].trim());
+                int aniosExperiencia = Integer.parseInt(valores[1].trim());
+                Pais pais = Pais.valueOf(valores[2].trim());
 
-                Mecanico m = new Mecanico(esp, aniosExperiencia);
+                Mecanico m = new Mecanico(esp, aniosExperiencia, pais);
                 mecanicos.add(m);
             }
         } catch (IOException e) {

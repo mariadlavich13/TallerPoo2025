@@ -9,10 +9,10 @@ public class Pais{
     private List<Carrera> carreras; // Relación con Carrera
 
     public Pais() {
-        this.personas = new ArrayList<Persona>();
-        this.escuderias = new ArrayList<Escuderia>();
-        this.circuitos = new ArrayList<Circuito>();
-        this.carreras = new ArrayList<Carrera>();
+        this.personas = new ArrayList<>();
+        this.escuderias = new ArrayList<>();
+        this.circuitos = new ArrayList<>();
+        this.carreras = new ArrayList<>();
     }
     public Pais(int idPais, String descripcion, List<Persona> personas, List<Escuderia> escuderias, List<Circuito> circuitos, List<Carrera> carreras) {
         this.idPais = idPais;
