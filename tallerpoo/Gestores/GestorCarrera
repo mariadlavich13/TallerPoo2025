@@ -14,11 +14,11 @@ public class GestorCarrera {
                 String[] valores = linea.split(",");
 
                 String fechaRealizacion = valores[0];
-                int nroVueltas = valores[1];
+                int nroVueltas = Integer.parseInt(valores[1].trim());
                 String horaRealizacion = valores[2];
 
-                Carrera c = new Carrera(fechaRealizacion, nroVueltas, horaRealizacion);
-                pilotos.add(c);
+                Carrera c = new Carrera(fechaRealizacion, nroVueltas, horaRealizacion, null, null);
+                carreras.add(c);
             }
         } catch (IOException e) {
             e.printStackTrace();

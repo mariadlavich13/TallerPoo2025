@@ -13,7 +13,7 @@ public class GestorPiloto {
             while ((linea = br.readLine()) != null) {
                 String[] valores = linea.split(",");
 
-                int dni = valores[0];
+                String dni = valores[0].trim();
                 String nombre = valores[1];
                 String apellido = valores[2];
                 int numeroCompetencia = Integer.parseInt(valores[3].trim());

@@ -15,7 +15,7 @@ public class GestorEscuderia {
 
                 String nombre = valores[0];
 
-                Escuderia e = new Escuderia(nombre);
+                Escuderia e = new Escuderia(nombre, null);
                 escuderias.add(e);
             }
         } catch (IOException e) {

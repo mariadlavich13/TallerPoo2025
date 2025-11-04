@@ -13,7 +13,7 @@ public class GestorMecanico {
                 String[] valores = linea.split(",");
 
                 Mecanico.Especialidad esp = Mecanico.Especialidad.valueOf(valores[0]);
-                int aniosExperiencia = Integer.parseInt(valores[1]);
+                int aniosExperiencia = Integer.parseInt(valores[1]).trim();
 
                 Mecanico m = new Mecanico(esp, aniosExperiencia);
                 mecanicos.add(m);

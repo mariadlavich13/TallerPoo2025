@@ -13,10 +13,15 @@ public class Escuderia{
         this.pilotosEscuderias = new ArrayList<>();
         this.autos = new ArrayList<>();
     }
-    public Escuderia(String nombre, List<Mecanico> mecanicos, List<PilotoEscuderia> pilotosEscuderias, Pais pais) {
+    public Escuderia(String nombre, List<Mecanico> mecanicos, List<PilotoEscuderia> pilotosEscuderias, Pais pais, List<Auto> autos) {
         this.nombre = nombre;
         this.mecanicos = mecanicos;
         this.pilotosEscuderias = pilotosEscuderias;
+        this.pais = pais;
+        this.autos = autos;
+    }
+    public Escuderia(String nombre, Pais pais) {
+        this.nombre = nombre;
         this.pais = pais;
     }
     public Escuderia(String nombre, Pais pais) {

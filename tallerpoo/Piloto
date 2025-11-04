@@ -8,10 +8,10 @@ public class Piloto extends Persona {
     private int vueltasRapidas;
     private int podios;
     private List<AutoPiloto> autosPiloto;
-    private List<PilotoEscuderia> pilotosEscuderias = new ArrayList<>();
+    private List<PilotoEscuderia> pilotosEscuderias;
 
     public Piloto(String dni, String nombre, String apellido, int numeroCompetencia, int victorias, int polePosition, int vueltasRapidas, int podios, List<AutoPiloto> autosPiloto, List<PilotoEscuderia> pilotosEscuderias) {
-        super(dni, nombre, apellido);
+        super(dni, nombre, apellido, null);
         this.numeroCompetencia = numeroCompetencia;
         this.victorias = victorias;
         this.polePosition = polePosition;
@@ -20,13 +20,15 @@ public class Piloto extends Persona {
         this.autosPiloto = autosPiloto;
         this.pilotosEscuderias = pilotosEscuderias;
     }
-    public Piloto(String nombre, int edad, String direccion, int numeroCompetencia, int victorias, int polePosition, int vueltasRapidas, int podios) {
-        super(nombre, edad, direccion);
-        this.numeroCompetencia = numeroCompetencia;
-        this.victorias = victorias;
-        this.polePosition = polePosition;
-        this.vueltasRapidas = vueltasRapidas;
-        this.podios = podios;
+    public Piloto(String dni, String nombre, String apellido, int numeroCompetencia, int victorias, int polePosition, int vueltasRapidas, int podios) {
+    super(dni, nombre, apellido, null); // Llama al constructor de Persona (asumiendo Pais null)
+    this.numeroCompetencia = numeroCompetencia;
+    this.victorias = victorias;
+    this.polePosition = polePosition;
+    this.vueltasRapidas = vueltasRapidas;
+    this.podios = podios;
+    this.autosPiloto = new ArrayList<>();
+    this.pilotosEscuderias = new ArrayList<>();
     }
     public Piloto() {
         super();
