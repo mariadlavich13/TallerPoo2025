@@ -143,4 +143,111 @@ public class LogicaGestion {
 
         return puntajesFinales;
     }
+
+
+
+    /**Asocia un piloto a una escudería en un período de tiempo.
+     * Verifica que el piloto no tenga ya un contrato activo (sin 'hastaFecha') con otra escudería.
+     *
+     * @param piloto El piloto a asociar.
+     * @param escuderia La escudería a la que se une.
+     * @param desdeFecha La fecha de inicio del contrato (ej. "01/01/2025").
+     * @return El objeto de asociación PilotoEscuderia creado.
+     * @throws LogicaException Si el piloto ya tiene un contrato activo.
+     */
+    public PilotoEscuderia asociarPilotoAEscuderia(Piloto piloto, Escuderia escuderia, String desdeFecha) throws LogicaException {
+        
+        // Control: Que cada piloto esté vinculado a una única escudería en un período de tiempo dado.
+        // Verificamos si el piloto ya tiene una asociación activa (sin hastaFecha).
+        for (PilotoEscuderia pe : piloto.getPilotosEscuderias()) {
+            String hastaFecha = pe.getHastaFecha();
+            if (hastaFecha == null || hastaFecha.trim().isEmpty()) {
+                // Si encontramos un contrato activo, lanza error
+                throw new LogicaException("El piloto " + piloto.getNombre() + " " + piloto.getApellido()
+                        + " ya tiene un contrato activo con la escudería " + pe.getEscuderia().getNombre() + ".");
+            }
+        }
+
+        // Si pasa el control, creamos la nueva asociación
+        // Se deja hastaFecha "" (vacío) para indicar que es el contrato activo.
+        PilotoEscuderia nuevaAsociacion = new PilotoEscuderia(desdeFecha, "", piloto, escuderia);
+
+        // Agregamos la asociación a ambas entidades (relación bidireccional)
+        // usando los métodos 'agregar' de las clases base.
+        piloto.agregarPilotoEscuderia(nuevaAsociacion);
+        escuderia.agregarPilotoEscuderia(nuevaAsociacion);
+
+        return nuevaAsociacion;
+    }
+
+    /**
+     * Termina el contrato de un piloto con una escudería, asignando "hastaFecha".
+     *
+     * @param piloto El piloto a desvincular.
+     * @param escuderia La escudería de la que se desvincula.
+     * @param hastaFecha La fecha de fin de contrato (ej. "31/12/2025").
+     * @throws LogicaException Si no se encuentra un contrato activo entre ambos.
+     */
+    public void desvincularPilotoDeEscuderia(Piloto piloto, Escuderia escuderia, String hastaFecha) throws LogicaException {
+        PilotoEscuderia asociacionActiva = null;
+
+        // Buscamos la asociación activa (sin hastaFecha) entre ese piloto y esa¿¿ escudería
+        for (PilotoEscuderia pe : piloto.getPilotosEscuderias()) {
+            String hf = pe.getHastaFecha();
+            if (pe.getEscuderia().equals(escuderia) && (hf == null || hf.trim().isEmpty())) {
+                asociacionActiva = pe;
+                break;
+            }
+        }
+
+        if (asociacionActiva != null) {
+            // Si la encontramos, simplemente establecemos la fecha de fin
+            asociacionActiva.setHastaFecha(hastaFecha);
+        } else {
+            throw new LogicaException("El piloto " + piloto.getNombre()
+                    + " no tiene un contrato activo con " + escuderia.getNombre() + ".");
+        }
+    }
+
+    /**
+     * Asocia un auto a una escudería.
+     * CONTROL: Verifica que el auto no pertenezca ya a otra escudería.
+     *
+     * @param auto El auto a asignar.
+     * @param escuderia La escudería propietaria.
+     * @throws LogicaException Si el auto ya tiene dueña.
+     */
+    public void asociarAutoAEscuderia(Auto auto, Escuderia escuderia) throws LogicaException {
+        
+        // Control: Un auto solo puede pertenecer a una escudería a la vez
+        if (auto.getEscuderia() != null) {
+            throw new LogicaException("El auto " + auto.getModelo()
+                    + " ya pertenece a la escudería " + auto.getEscuderia().getNombre() + ".");
+        }
+
+        // El método agregarAuto de Escuderia ya maneja la relación bidireccional
+        escuderia.agregarAuto(auto);
+    }
+
+    /**
+     * Asocia un mecánico a una escudería
+     * Control: Verifica que el mecánico no esté ya asignado a esa escudería.
+     *
+     * @param mecanico El mecánico a contratar.
+     * @param escuderia La escudería que contrata.
+     * @throws LogicaException Si el mecánico ya trabaja en esa escudería.
+     */
+    public void asociarMecanicoAEscuderia(Mecanico mecanico, Escuderia escuderia) throws LogicaException {
+        
+        // Control: Evitar duplicados en la relación muchos a muchos
+        if (escuderia.getMecanicos().contains(mecanico)) {
+            throw new LogicaException("El mecánico " + mecanico.getNombre()
+                    + " ya está asignado a " + escuderia.getNombre());
+        }
+
+        // Establecemos la relación bidireccional usando los métodos "agregar"
+        escuderia.agregarMecanico(mecanico);
+        mecanico.agregarEscuderia(escuderia);
+    }
+
 }
