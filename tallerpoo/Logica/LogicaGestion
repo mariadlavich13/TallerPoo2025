@@ -4,9 +4,12 @@ import tallerpoo.Piloto;
 import tallerpoo.Auto;
 import tallerpoo.Carrera;
 import tallerpoo.AutoPiloto;
-import tallerpoo.ResultadoCarrera; 
+import tallerpoo.ResultadoCarrera;
 import tallerpoo.archivos.GestorArchivos;
 import tallerpoo.Puntaje;
+import tallerpoo.Escuderia;
+import tallerpoo.Mecanico;
+import tallerpoo.PilotoEscuderia;
 
 public class LogicaGestion {
     /**
