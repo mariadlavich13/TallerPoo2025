@@ -137,10 +137,6 @@ public class LogicaGestion {
             puntajesFinales.add(pp);
         }
 
-        // Una vez que tenemos la lista con todos los pilotos y sus puntajes,
-        // la ordenamos usando el método compareTo que definimos en PilotoPuntaje.
-        Collections.sort(puntajesFinales);
-
         return puntajesFinales;
     }
 
