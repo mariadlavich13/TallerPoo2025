@@ -1,0 +1,140 @@
+package tallerpoo.Logica;
+
+import tallerpoo.Piloto;
+import tallerpoo.Mecanico;
+import tallerpoo.Especialidad;
+import tallerpoo.Auto;
+import tallerpoo.Escuderia;
+import tallerpoo.Circuito;
+import tallerpoo.Pais;
+
+public class LogicaRegistro {
+
+
+    /**Registra un nuevo piloto.
+     * Verifica que el DNI no esté duplicado.
+     * @throws LogicaException Si el DNI ya existe.
+     */
+public void registrarPiloto(SistemaGestion datos, String dni, String nombre, String apellido, int nroComp, int victorias, int polePosition, int vueltasRapidas, int podios)
+    throws LogicaException {
+        
+        // 1. Verificar duplicados
+        for (Piloto p : datos.getPilotos()) {
+            if (p.getDni().equals(dni)) {
+                throw new LogicaException("Ya existe un piloto con DNI " + dni);
+            }
+        }
+        
+        // 2. Si pasa el control, crea el objeto
+        Piloto nuevoPiloto = new Piloto(dni, nombre, apellido, nroComp, victorias, polePosition, vueltasRapidas, podios);
+        
+        // 3. Llama a la persistencia
+        datos.agregarPiloto(nuevoPiloto);
+    }
+
+
+    /**Registra un nuevo mecánico.
+     * Verifica que el DNI no esté duplicado.
+     */
+    public void registrarMecanico(SistemaGestion datos, String dni, String nombre, String apellido, Pais pais, Especialidad especialidad, int aniosExperiencia)
+            throws LogicaException {
+        // Verificación de duplicados
+        for (Mecanico m : datos.getMecanicos()) {
+            if (m.getDni().equals(dni)) {
+                throw new LogicaException("Ya existe un mecanico con DNI " + dni);
+            }
+        }
+        
+        // El constructor de Mecanico espera una lista de escuderías, la iniciamos vacía y luego se puede gestionar en LogicaGestion
+        Mecanico nuevoMecanico = new Mecanico(dni, nombre, apellido, pais, especialidad, aniosExperiencia, new java.util.ArrayList<>());
+        //Llama a la persistencia
+        datos.agregarMecanico(nuevoMecanico);
+    }
+
+
+    /**Registra un nuevo auto.
+     * Verifica que el modelo no esté duplicado.
+     */
+    public void registrarAuto(SistemaGestion datos, String modelo, String motor) {
+        Auto nuevoAuto = new Auto(modelo, motor);
+        //Llama a la persistencia
+        datos.agregarAuto(nuevoAuto);
+    }
+
+
+    /**Registra una nueva escudería.
+     * Verifica que el nombre no esté duplicado.
+     */
+    public void registrarEscuderia(SistemaGestion datos, String nombre, Pais pais) throws LogicaException {
+        for (Escuderia e : datos.getEscuderias()) {
+            if (e.getNombre().equalsIgnoreCase(nombre)) {
+                throw new LogicaException("Ya existe una escudería con el nombre " + nombre);
+            }
+        }
+        Escuderia nuevaEscuderia = new Escuderia(nombre);
+        //Se utiliza el set para asignar el país, para no completar las listas con null solo para ingresar el país
+        nuevaEscuderia.setPais(pais);
+        //Llama a la persistencia
+        datos.agregarEscuderia(nuevaEscuderia);
+    }
+
+
+    /**Registra un nuevo circuito.
+     * Verifica que el nombre no esté duplicado.
+     */
+    public void registrarCircuito(SistemaGestion datos, String nombre, double longitud, Pais pais) throws LogicaException {
+        for (Circuito c : datos.getCircuitos()) {
+            if (c.getNombre().equalsIgnoreCase(nombre)) {
+                throw new LogicaException("Ya existe un circuito con el nombre " + nombre);
+            }
+        }
+        
+        Circuito nuevoCircuito = new Circuito(nombre, longitud, pais);
+        //Llama a la persistencia
+        datos.agregarCircuito(nuevoCircuito);
+    }
+
+
+    /**Registra un nuevo país.
+     * Verifica que el ID no esté duplicado.
+     */
+    public void registrarPais(SistemaGestion datos, int idPais, String descripcion) throws LogicaException {
+        for (Pais p : datos.getPaises()) {
+            if (p.getIdPais() == idPais) {
+                throw new LogicaException("Ya existe un país con el ID " + idPais);
+            }
+        }
+        
+        Pais nuevoPais = new Pais(idPais, descripcion, new java.util.ArrayList<>(), new java.util.ArrayList<>(), new java.util.ArrayList<>(), new java.util.ArrayList<>());
+        datos.agregarPais(nuevoPais);
+    }
+
+    /**Registrar una nueva carrera.
+     * Verifica que no haya dos carreras en el mismo circuito el mismo día.
+     */
+    public void registrarCarrera(SistemaGestion datos, String fechaRealizacion, int nroVueltas, String horaRealizacion, Pais pais, Circuito circuito)
+            throws LogicaException {
+        
+        // Controla que no haya dos carreras en el mismo circuito el mismo día
+        for (Carrera c : datos.getCarreras()) {
+            if (c.getFechaRealizacion().equals(fechaRealizacion) && c.getCircuito().equals(circuito)) {
+                throw new LogicaException("Ya existe una carrera planificada para el circuito " + circuito.getNombre() + " en la fecha " + fechaRealizacion);
+            }
+        }
+        
+        // (Asegúrate que tu constructor de Carrera inicialice la lista de participantes)
+        Carrera nuevaCarrera = new Carrera(fechaRealizacion, nroVueltas, horaRealizacion, pais, circuito);
+        datos.agregarCarrera(nuevaCarrera);
+    }
+
+
+    //Registrar resultado de una carrera.
+public void registrarResultado(SistemaGestion datos, Carrera carrera, Piloto piloto, int posicion) throws LogicaException{
+        // Verifica que la posición sea válida
+        if (posicion < 1) {
+            throw new LogicaException("La posición debe ser mayor o igual a 1.");
+        }
+        ResultadoCarrera resultado = new ResultadoCarrera(piloto, posicion, carrera);
+        datos.agregarResultado(resultado);
+    }
+}
