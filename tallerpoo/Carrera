@@ -19,14 +19,14 @@ public class Carrera{
         this.participantes = new ArrayList<>();
     }
     //Gets y Sets
-    public String getfechaRealizacion() {
+    public String getFechaRealizacion() {
         return fechaRealizacion;
     }
 
-    public int getnroVueltas() {
+    public int getNroVueltas() {
         return nroVueltas;
     }
-    public String gethoraRealizacion() {
+    public String getHoraRealizacion() {
         return horaRealizacion;
     }
     public Pais getPais() {
@@ -48,7 +48,7 @@ public class Carrera{
     }
     public void agregarParticipante (AutoPiloto ap) {
         if (ap == null) return;
-        //Registra al participante en la colección interna de la carrera. Así cumplís la multiplicidad “Carrera 1 — 1..* AutoPiloto”
+        //Registra al participante en la colección interna de la carrera. Así cumple la multiplicidad “Carrera 1 — 1..* AutoPiloto”
         this.participantes.add(ap);
         ap.setCarrera(this);
     }

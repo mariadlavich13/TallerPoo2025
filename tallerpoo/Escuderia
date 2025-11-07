@@ -3,10 +3,11 @@ import java.util.List;
 public class Escuderia{
     private String nombre;
     private List<Mecanico> mecanicos; // Relación con Mecanico
-    private List<PilotoEscuderia> pilotosEscuderias = new ArrayList<>();
+    private List<PilotoEscuderia> pilotosEscuderias = new ArrayList<>(); // Relación con (0...*) - (0...*) Piloto
     private Pais pais; // Relación con Pais
     private List <Auto> autos;//Asociación entre Escuderia (1) - (0...*) Auto
     //constructores
+
     public Escuderia() {
         this.nombre = "Desconocida";
         this.mecanicos = new ArrayList<>();
@@ -22,6 +23,10 @@ public class Escuderia{
     }
     public Escuderia(String nombre) {
         this.nombre = nombre;
+        // Inicializamos las listas para evitar NullPointerException al usarlas
+        this.mecanicos = new ArrayList<>();
+        this.pilotosEscuderias = new ArrayList<>();
+        this.autos = new ArrayList<>();
     }
     //Gets y Sets
     public String getNombre() {
@@ -37,6 +42,8 @@ public class Escuderia{
     public void setMecanicos(List<Mecanico> mecanicos) {
         this.mecanicos = mecanicos;
     }
+
+    
     public void agregarMecanico(Mecanico mecanico) {
         this.mecanicos.add(mecanico);
     }
@@ -68,6 +75,7 @@ public class Escuderia{
         //El método agregarAuto(Auto a) mete el auto en la lista y setea la inversa a.setEscuderia(this) para mantener la relación coherente.
         if (a == null) return;
         this.autos.add(a);
-        a.setEscuderia(this); 
+        a.setEscuderia(this);
     }
+
 }
