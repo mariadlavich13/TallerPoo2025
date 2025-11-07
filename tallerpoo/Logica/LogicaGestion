@@ -4,6 +4,8 @@ import tallerpoo.Piloto;
 import tallerpoo.Auto;
 import tallerpoo.Carrera;
 import tallerpoo.AutoPiloto;
+import tallerpoo.ResultadoCarrera; 
+import tallerpoo.archivos.GestorArchivos;
 
 public class LogicaGestion {
     /**
@@ -38,15 +40,59 @@ public class LogicaGestion {
         return nuevaAsociacion; // Devolvemos el objeto creado
     }
 
-    //Registrar resultado de una carrera.
-    public void registrarResultado(SistemaGestion datos, Carrera carrera, Piloto piloto, int posicion) throws LogicaException{
-        // Verifica que la posición sea válida
+    /**
+     * Registra el resultado final de un piloto en una carrera.
+     * Esto guarda el resultado y actualiza las estadísticas del piloto.
+     *
+     * @param datos El sistema de gestión con todas las listas.
+     * @param carrera La carrera que finalizó.
+     * @param piloto El piloto que obtuvo el resultado.
+     * @param posicion La posición final (1, 2, 3...).
+     * @param tuvoVueltaRapida true si este piloto hizo la vuelta rápida, false si no.
+     */
+    public void registrarResultado(SistemaGestion datos, Carrera carrera, Piloto piloto, int posicion, boolean tuvoVueltaRapida) throws LogicaException {
+        
+        // --- 1. Validaciones ---
         if (posicion < 1) {
             throw new LogicaException("La posición debe ser mayor o igual a 1.");
+        } 
+        // Validación: ¿El piloto realmente participó en la carrera?
+        boolean participo = false;
+        for (AutoPiloto ap : carrera.getParticipantes()) {
+            if (ap.getPiloto().equals(piloto)) {
+                participo = true;
+                break;
+            }
         }
+        if (!participo) {
+            throw new LogicaException("El piloto " + piloto.getNombre() + " no participó en esta carrera.");
+        }
+        
+        // Validación: ¿Ya existe un resultado para este piloto en esta carrera?
+        for (ResultadoCarrera r : datos.getResultados()) {
+            if (r.getCarrera().equals(carrera) && r.getPiloto().equals(piloto)) {
+                throw new LogicaException("El piloto " + piloto.getNombre() + " ya tiene un resultado registrado para esta carrera.");
+            }
+        }
+
+        // --- 2. Crear y guardar el objeto resultado ---
         ResultadoCarrera resultado = new ResultadoCarrera(piloto, posicion, carrera);
-        datos.agregarResultado(resultado);
+        datos.agregarResultado(resultado); 
+
+        // --- 3. Actualizar estadísticas del Piloto ---
+        if (posicion == 1) {
+            piloto.setVictorias(piloto.getVictorias() + 1);
+        }
+        if (posicion <= 3) {
+            piloto.setPodios(piloto.getPodios() + 1);
+        }  
+        if (tuvoVueltaRapida) {
+            piloto.setVueltasRapidas(piloto.getVueltasRapidas() + 1);
+        }
+
+        // --- 4. Guardar en el archivo CSV ---
+        String pathResultados = "Datos/DatosResultadoCarrera.csv";
+        GestorArchivos.escribirResultadoCSV(pathResultados, resultado);
     }
-    
 
 }

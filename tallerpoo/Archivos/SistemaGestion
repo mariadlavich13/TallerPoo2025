@@ -8,7 +8,20 @@ public class SistemaGestion {
     private List<Escuderia> escuderias;
     private List<Mecanico> mecanicos;
     private List<Piloto> pilotos;
+    private List<ResultadoCarrera> resultadosCarreras;
 
+    public SistemaGestion() {
+        this.paises = new ArrayList<>();
+        this.autos = new ArrayList<>();
+        this.carreras = new ArrayList<>();
+        this.circuitos = new ArrayList<>();
+        this.escuderias = new ArrayList<>();
+        this.mecanicos = new ArrayList<>();
+        this.pilotos = new ArrayList<>();
+        this.resultadosCarreras = new ArrayList<>();
+    }
+    
+    
     public void cargarDatos() {
         // Lógica para cargar datos desde archivos o base de datos
         String pathPaises = "Datos/DatosPaises.csv";
@@ -50,6 +63,9 @@ public class SistemaGestion {
     public List<Piloto> getPilotos() {
         return pilotos;
     }
+    public List<ResultadoCarrera> getResultadosCarreras() {
+        return resultadosCarreras;
+    }
     public void agregarPais(Pais pais) {
         this.paises.add(pais);
     }
@@ -70,5 +86,8 @@ public class SistemaGestion {
     }
     public void agregarCarrera(Carrera carrera) {
         this.carreras.add(carrera);
+    }
+    public void agregarResultadoCarrera(ResultadoCarrera resultado) {
+        this.resultadosCarreras.add(resultado);
     }
 }

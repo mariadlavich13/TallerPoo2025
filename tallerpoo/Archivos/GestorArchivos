@@ -8,6 +8,8 @@ import tallerpoo.Carrera;
 import tallerpoo.Circuito;
 import tallerpoo.Mecanico;
 import tallerpoo.Piloto;
+import tallerpoo.Pais;
+import tallerpoo.ResultadoCarrera;
 
 public class GestorArchivos{
 
@@ -230,5 +232,29 @@ public class GestorArchivos{
         }
 
         return pilotos;
+    }
+    /**
+     * Escribe un nuevo resultado de carrera al final del archivo CSV.
+     * Usa 'true' en FileWriter para modo "append" (añadir).
+     *
+     * @param path La ruta al archivo DatosResultadoCarrera.csv
+     * @param resultado El objeto ResultadoCarrera a guardar.
+     */
+    public static void escribirResultadoCSV(String path, ResultadoCarrera resultado) {
+        // Usamos try-with-resources para asegurarnos de que el writer se cierre
+        try (FileWriter fw = new FileWriter(path, true); // <-- El 'true' es para AÑADIR (append)
+             BufferedWriter bw = new BufferedWriter(fw);
+             PrintWriter out = new PrintWriter(bw)) 
+        {
+            // Formato: dni_piloto, fecha_carrera, posicion
+            String linea = resultado.getPiloto().getDni() + "," +
+                           resultado.getCarrera().getFechaRealizacion() + "," +
+                           resultado.getPosicion();
+            
+            out.println(linea); // Escribe la nueva línea
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
