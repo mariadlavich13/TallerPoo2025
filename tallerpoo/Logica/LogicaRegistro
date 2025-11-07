@@ -124,8 +124,6 @@ public void registrarPiloto(SistemaGestion datos, String dni, String nombre, Str
                 throw new LogicaException("Ya existe una carrera planificada para el circuito " + circuito.getNombre() + " en la fecha " + fechaRealizacion);
             }
         }
-        
-        // (Asegúrate que tu constructor de Carrera inicialice la lista de participantes)
         Carrera nuevaCarrera = new Carrera(fechaRealizacion, nroVueltas, horaRealizacion, pais, circuito);
         datos.agregarCarrera(nuevaCarrera);
     }
