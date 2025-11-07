@@ -86,7 +86,7 @@ public class LogicaInformes{
     }
     
     /**
-     * REQUISITO 2: Devuelve el ranking de pilotos ordenado.
+     * Devuelve el ranking de pilotos ordenado.
      * Llama a LogicaGestion para calcular y luego este método ordena.
      *
      * @param datos El objeto SistemaGestion (para los datos).
@@ -105,10 +105,6 @@ public class LogicaInformes{
         // 3. Devuelve la lista ordenada
         return puntajesSinOrdenar;
     }
-
-
-
-
 
     /**Calcula la cantidad de veces que un piloto específico corrió en un circuito determinado.
      * (Versión alternativa recorriendo todas las carreras del sistema).
