@@ -1,0 +1,45 @@
+public class SistemaGestion {
+    private List<Auto> autos;
+    private List<Carrera> carreras;
+    private List<Circuito> circuitos;
+    private List<Escuderia> escuderias;
+    private List<Mecanico> mecanicos;
+    private List<Piloto> pilotos;
+
+    public void cargarDatos() {
+        // Lógica para cargar datos desde archivos o base de datos
+        String pathAutos = "Datos/DatosAutos.csv";
+        String pathCarreras = "Datos/DatosCarreras.csv";
+        String pathCircuitos = "Datos/DatosCircuitos.csv";
+        String pathEscuderias = "Datos/DatosEscuderias.csv";
+        String pathMecanicos = "Datos/DatosMecanicos.csv";
+        String pathPilotos = "Datos/DatosPilotos.csv";
+
+        this.autos = GestorArchivos.cargarAutos(pathAutos);
+        this.carreras = GestorArchivos.cargarCarreras(pathCarreras);
+        this.circuitos = GestorArchivos.cargarCircuitos(pathCircuitos);
+        this.escuderias = GestorArchivos.cargarEscuderias(pathEscuderias);
+        this.mecanicos = GestorArchivos.cargarMecanicos(pathMecanicos);
+        this.pilotos = GestorArchivos.cargarPilotos(pathPilotos);
+    }
+
+    //GETTERS Y SETTERS
+    public List<Auto> getAutos() {
+        return autos;
+    }
+    public List<Carrera> getCarreras() {
+        return carreras;
+    }
+    public List<Circuito> getCircuitos() {
+        return circuitos;
+    }
+    public List<Escuderia> getEscuderias() {
+        return escuderias;
+    }
+    public List<Mecanico> getMecanicos() {
+        return mecanicos;
+    }
+    public List<Piloto> getPilotos() {
+        return pilotos;
+    }
+}
