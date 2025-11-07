@@ -4,6 +4,8 @@ import tallerpoo.Piloto;
 import tallerpoo.Auto;
 import tallerpoo.Carrera;
 import tallerpoo.AutoPiloto;
+
+public class LogicaGestion {
 /**
     /**
      *Asocia piloto a auto en una carrera.
@@ -45,3 +47,4 @@ public void registrarResultado(SistemaGestion datos, Carrera carrera, Piloto pil
         ResultadoCarrera resultado = new ResultadoCarrera(piloto, posicion, carrera);
         datos.agregarResultado(resultado);
     }
+}
