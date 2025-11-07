@@ -1,4 +1,4 @@
-package tallerpoo.Logica;
+package tallerpoo.logica;
 
 import tallerpoo.SistemaGestion;
 import tallerpoo.Logica.LogicaException;

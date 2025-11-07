@@ -1,3 +1,5 @@
+package tallerpoo.archivos;
+
 public class SistemaGestion {
     private List<Pais> paises;
     private List<Auto> autos;

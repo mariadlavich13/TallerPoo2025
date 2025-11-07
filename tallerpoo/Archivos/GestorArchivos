@@ -1,3 +1,5 @@
+package tallerpoo.archivos;
+
 import java.io.*;
 import java.util.*;
 import tallerpoo.Auto;

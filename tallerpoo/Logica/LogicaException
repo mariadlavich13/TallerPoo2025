@@ -1,4 +1,4 @@
-package tallerpoo.Logica;
+package tallerpoo.logica;
 
 /**
  * Excepción general para todos los controles (ej. DNI duplicado, asignación inválida, etc.).
