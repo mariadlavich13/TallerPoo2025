@@ -226,6 +226,7 @@ public class LogicaGestion {
         }
 
         // El método agregarAuto de Escuderia ya maneja la relación bidireccional
+        // (internamente hace a.setEscuderia(this) para mantener la coherencia y setea la escudería al auto)
         escuderia.agregarAuto(auto);
     }
 
