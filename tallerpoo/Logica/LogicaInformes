@@ -85,7 +85,6 @@ public class LogicaInformes{
         return resultadosEnRango;
     }
     
-<<<<<<< HEAD
     /**
      * REQUISITO 2: Devuelve el ranking de pilotos ordenado.
      * Llama a LogicaGestion para calcular y luego este método ordena.
@@ -108,7 +107,7 @@ public class LogicaInformes{
     }
 
 
-=======
+
 
 
     /**Calcula la cantidad de veces que un piloto específico corrió en un circuito determinado.
@@ -153,5 +152,5 @@ public class LogicaInformes{
         //Devolvemos el total
         return contador;
     }
->>>>>>> 814fcd53a63a4b07384f1f9d43088adb5ec6d747
+
 }
