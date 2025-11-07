@@ -10,8 +10,8 @@ public class Piloto extends Persona {
     private List<AutoPiloto> autosPiloto;
     private List<PilotoEscuderia> pilotosEscuderias;
 
-    public Piloto(String dni, String nombre, String apellido, int numeroCompetencia, int victorias, int polePosition, int vueltasRapidas, int podios, List<AutoPiloto> autosPiloto, List<PilotoEscuderia> pilotosEscuderias) {
-        super(dni, nombre, apellido, null);
+    public Piloto(String dni, String nombre, String apellido, Pais pais, int numeroCompetencia, int victorias, int polePosition, int vueltasRapidas, int podios, List<AutoPiloto> autosPiloto, List<PilotoEscuderia> pilotosEscuderias) {
+        super(dni, nombre, apellido, pais);
         this.numeroCompetencia = numeroCompetencia;
         this.victorias = victorias;
         this.polePosition = polePosition;
@@ -20,8 +20,8 @@ public class Piloto extends Persona {
         this.autosPiloto = autosPiloto;
         this.pilotosEscuderias = pilotosEscuderias;
     }
-    public Piloto(String dni, String nombre, String apellido, int numeroCompetencia, int victorias, int polePosition, int vueltasRapidas, int podios) {
-    super(dni, nombre, apellido, null); // Llama al constructor de Persona (asumiendo Pais null)
+    public Piloto(String dni, String nombre, String apellido, Pais pais, int numeroCompetencia, int victorias, int polePosition, int vueltasRapidas, int podios) {
+    super(dni, nombre, apellido, pais); // Llama al constructor de Persona (asumiendo Pais null)
     this.numeroCompetencia = numeroCompetencia;
     this.victorias = victorias;
     this.polePosition = polePosition;

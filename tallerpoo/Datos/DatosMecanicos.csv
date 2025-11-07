@@ -1,5 +1,5 @@
-dni, nombre, apillido, pais, especialidad, aniosExperiencia
-34567890, Levi, Piper, inglaterra, MOTOR, 5
-32451234, John, Chamber, autralia, NEUMATICOS, 3
-23678905, Sophie, Weber, alemania, CHASIS, 4
-44772890, Emma, Rossi, italia, ELECTRONICA, 2
+dni, nombre, apillido, idPaises, especialidad, aniosExperiencia
+34567890, Levi, Piper, 2, MOTOR, 5
+32451234, John, Chamber, 4, NEUMATICOS, 3
+23678905, Sophie, Weber, 3, CHASIS, 4
+44772890, Emma, Rossi, 1, ELECTRONICA, 2
