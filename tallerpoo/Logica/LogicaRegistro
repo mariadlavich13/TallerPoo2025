@@ -3,13 +3,13 @@ package tallerpoo.logica;
 import tallerpoo.SistemaGestion;
 import tallerpoo.Logica.LogicaException;
 
-import tallerpoo.Piloto;
-import tallerpoo.Mecanico;
-import tallerpoo.Especialidad;
-import tallerpoo.Auto;
-import tallerpoo.Escuderia;
-import tallerpoo.Circuito;
-import tallerpoo.Pais;
+import tallerpoo.clases.Piloto;
+import tallerpoo.clases.Mecanico;
+import tallerpoo.clases.Especialidad;
+import tallerpoo.clases.Auto;
+import tallerpoo.clases.Escuderia;
+import tallerpoo.clases.Circuito;
+import tallerpoo.clases.Pais;
 
 public class LogicaRegistro {
 

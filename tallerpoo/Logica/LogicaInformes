@@ -1,6 +1,8 @@
 import tallerpoo.archivos.SistemaGestion;
 import tallerpoo.clases.Carrera;
 import tallerpoo.clases.ResultadoCarrera;
+import tallerpoo.clases.Piloto;
+import tallerpoo.clases.Puntaje;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -82,4 +84,5 @@ public class LogicaInformes{
 
         return resultadosEnRango;
     }
+    
 }

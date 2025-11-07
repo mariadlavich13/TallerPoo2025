@@ -1,15 +1,15 @@
 package tallerpoo.logica;
 import tallerpoo.SistemaGestion;
-import tallerpoo.Piloto;
-import tallerpoo.Auto;
-import tallerpoo.Carrera;
-import tallerpoo.AutoPiloto;
-import tallerpoo.ResultadoCarrera;
+import tallerpoo.clases.Piloto;
+import tallerpoo.clases.Auto;
+import tallerpoo.clases.Carrera;
+import tallerpoo.clases.AutoPiloto;
+import tallerpoo.clases.ResultadoCarrera;
 import tallerpoo.archivos.GestorArchivos;
-import tallerpoo.Puntaje;
-import tallerpoo.Escuderia;
-import tallerpoo.Mecanico;
-import tallerpoo.PilotoEscuderia;
+import tallerpoo.clases.Puntaje;
+import tallerpoo.clases.Escuderia;
+import tallerpoo.clases.Mecanico;
+import tallerpoo.clases.PilotoEscuderia;
 
 public class LogicaGestion {
     /**
