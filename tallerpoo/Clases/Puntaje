@@ -20,7 +20,7 @@ public enum Puntaje {
         return puntos;
     }
     
-    //Método stático para obtener el puntaje según la posición
+    //Método estático para obtener el puntaje según la posición
     // Devuelve 0 si la posición es mayor a 10
     public static int obtenerPuntaje(int posicion) {
         for(Puntaje p : values()) {
