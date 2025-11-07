@@ -41,7 +41,7 @@ public class SistemaGestion {
         this.escuderias = GestorArchivos.cargarEscuderias(pathEscuderias);
     }
 
-    //GETTERS Y SETTERS
+    //GETTERS
     public List<Pais> getPaises() {
         return paises;
     }

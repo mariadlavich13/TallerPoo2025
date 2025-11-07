@@ -6,6 +6,7 @@ import tallerpoo.Carrera;
 import tallerpoo.AutoPiloto;
 import tallerpoo.ResultadoCarrera; 
 import tallerpoo.archivos.GestorArchivos;
+import tallerpoo.Puntaje;
 
 public class LogicaGestion {
     /**
@@ -93,5 +94,48 @@ public class LogicaGestion {
         // --- 4. Guardar en el archivo CSV ---
         String pathResultados = "Datos/DatosResultadoCarrera.csv";
         GestorArchivos.escribirResultadoCSV(pathResultados, resultado);
+    }
+    /**
+     * Calcula el puntaje total de todos los pilotos basado en los resultados de todas las carreras.
+     *
+     * @param datos El objeto SistemaGestion que contiene todas las listas.
+     * @return Una lista de objetos PilotoPuntaje, ordenada de mayor a menor puntaje.
+     */
+    public List<PilotoPuntaje> calcularPuntajes(SistemaGestion datos) {
+        
+        List<PilotoPuntaje> puntajesFinales = new ArrayList<>();
+        List<Piloto> todosLosPilotos = datos.getPilotos();
+        List<ResultadoCarrera> todosLosResultados = datos.getResultados();
+
+        // Bucle exterior: Itera sobre cada piloto
+        for (Piloto piloto : todosLosPilotos) {
+            
+            int puntajeTotalDelPiloto = 0; // Inicia el contador para este piloto
+
+            // Bucle interior: Itera sobre todos los resultados de todas las carreras
+            for (ResultadoCarrera resultado : todosLosResultados) {
+                
+                // Comprueba si el resultado pertenece al piloto actual
+                // (Comparamos por DNI por seguridad)
+                if (resultado.getPiloto().getDni().equals(piloto.getDni())) {
+                    
+                    // Obtiene los puntos para esa posición
+                    int puntosObtenidos = Puntaje.obtenerPuntaje(resultado.getPosicion());
+                    
+                    // Los suma al total del piloto
+                    puntajeTotalDelPiloto += puntosObtenidos;
+                }
+            }
+
+            // Una vez contados todos los resultados, crea el objeto contenedor
+            PilotoPuntaje pp = new PilotoPuntaje(piloto, puntajeTotalDelPiloto);
+            puntajesFinales.add(pp);
+        }
+
+        // Una vez que tenemos la lista con todos los pilotos y sus puntajes,
+        // la ordenamos usando el método compareTo que definimos en PilotoPuntaje.
+        Collections.sort(puntajesFinales);
+
+        return puntajesFinales;
     }
 }
