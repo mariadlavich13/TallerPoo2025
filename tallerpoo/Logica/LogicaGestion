@@ -1,0 +1,46 @@
+package tallerpoo.Logica;
+import tallerpoo.Piloto;
+import tallerpoo.Auto;
+import tallerpoo.Carrera;
+import tallerpoo.AutoPiloto;
+/**
+    /**
+     *Asocia piloto a auto en una carrera.
+     * Verifica que no haya duplicados.
+     * @return El objeto AutoPiloto creado si la asignación es exitosa.
+     * @throws LogicaException Si el auto o el piloto ya están asignados en esa carrera.
+     */
+public AutoPiloto asociarPilotoAutoACarrera(Carrera carrera, Piloto piloto, Auto auto, String fechaAsignacion) throws LogicaException {
+        
+        // Verifica que un auto no sea asignado a más de un piloto en la misma carrera
+        for (AutoPiloto participante : carrera.getParticipantes()) {
+            if (participante.getAuto().equals(auto)) {
+                throw new LogicaException("El auto " + auto.getModelo() + " ya está asignado a otro piloto en esta carrera.");
+            }
+        }
+        
+        // Verifica que un piloto no esté asignado a más de un auto en la misma carrera
+        for (AutoPiloto participante : carrera.getParticipantes()) {
+            if (participante.getPiloto().equals(piloto)) {
+                throw new LogicaException("El piloto " + piloto.getNombre() + " ya está participando con otro auto en esta carrera.");
+            }
+        }
+
+        // Si pasa la verificación, crea la asociación
+        AutoPiloto nuevaASociacion = new AutoPiloto(fechaAsignacion, piloto, auto, carrera);
+        
+        // Guarda la asignación en Persistencia
+        carrera.agregarParticipante(nuevaAsociacion);
+        
+        return nuevaAsociacion; // Devolvemos el objeto creado, no un String de éxito
+}
+
+    //Registrar resultado de una carrera.
+public void registrarResultado(SistemaGestion datos, Carrera carrera, Piloto piloto, int posicion) throws LogicaException{
+        // Verifica que la posición sea válida
+        if (posicion < 1) {
+            throw new LogicaException("La posición debe ser mayor o igual a 1.");
+        }
+        ResultadoCarrera resultado = new ResultadoCarrera(piloto, posicion, carrera);
+        datos.agregarResultado(resultado);
+    }
