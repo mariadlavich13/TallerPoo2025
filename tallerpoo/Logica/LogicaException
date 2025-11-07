@@ -1,0 +1,12 @@
+package tallerpoo.Logica;
+
+/**
+ * Excepción general para todos los controles (ej. DNI duplicado, asignación inválida, etc.).
+ * La capa de Lógica la "lanza" (throw) y la capa de GUI la "atrapa" (catch).
+ */
+public class LogicaException extends Exception {
+
+    public LogicaException(String mensaje) {
+        super(mensaje);
+    }
+}
