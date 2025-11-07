@@ -5,7 +5,7 @@ public class Auto {
     private String motor;
     //Asociación con autoPiloto
     private List<AutoPiloto> autosPiloto;
-    //Asociación bidireccional: cada auto pertenece (0...1) a una escuderia 
+    //Asociación bidireccional: cada auto pertenece (0...1) a una escuderia
     private Escuderia escuderia;
 
     //constructores
@@ -19,6 +19,7 @@ public class Auto {
         this.modelo=modelo;
         this.motor=motor;
         this.autosPiloto = autosPiloto;
+        this.autosPiloto = new ArrayList<>();
     }
     public Auto(String modelo, String motor) {
         this.modelo=modelo;

@@ -1,5 +1,8 @@
 package tallerpoo.Logica;
 
+import tallerpoo.SistemaGestion;
+import tallerpoo.Logica.LogicaException;
+
 import tallerpoo.Piloto;
 import tallerpoo.Mecanico;
 import tallerpoo.Especialidad;
