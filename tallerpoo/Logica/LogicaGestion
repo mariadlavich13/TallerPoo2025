@@ -94,5 +94,4 @@ public class LogicaGestion {
         String pathResultados = "Datos/DatosResultadoCarrera.csv";
         GestorArchivos.escribirResultadoCSV(pathResultados, resultado);
     }
-
 }
