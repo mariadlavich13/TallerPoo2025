@@ -127,14 +127,3 @@ public void registrarPiloto(SistemaGestion datos, String dni, String nombre, Str
         datos.agregarCarrera(nuevaCarrera);
     }
 
-
-    //Registrar resultado de una carrera.
-public void registrarResultado(SistemaGestion datos, Carrera carrera, Piloto piloto, int posicion) throws LogicaException{
-        // Verifica que la posición sea válida
-        if (posicion < 1) {
-            throw new LogicaException("La posición debe ser mayor o igual a 1.");
-        }
-        ResultadoCarrera resultado = new ResultadoCarrera(piloto, posicion, carrera);
-        datos.agregarResultado(resultado);
-    }
-}
