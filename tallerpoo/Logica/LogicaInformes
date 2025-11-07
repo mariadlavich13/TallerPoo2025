@@ -43,7 +43,7 @@ public class LogicaInformes{
         String fechaDesdeFormateada = formatearFecha(fechaDesde);
         String fechaHastaFormateada = formatearFecha(fechaHasta);
 
-        //Iteramos sobre TODOS los resultados guardados en el sistema
+        //Iteramos sobre todos los resultados guardados en el sistema
         for (ResultadoCarrera resultado : datos.getResultadosCarreras()) {
             
             //Obtenemos la fecha de la carrera de ese resultado
@@ -95,7 +95,7 @@ public class LogicaInformes{
      * @param circuitoBuscado El circuito a consultar.
      * @return El número de carreras (int) que el piloto corrió en ese circuito.
      */
-    public int getContadorPilotoEnCircuito_Alternativo(SistemaGestion datos, Piloto pilotoBuscado, Circuito circuitoBuscado) {
+    public int getContadorPilotoEnCircuito(SistemaGestion datos, Piloto pilotoBuscado, Circuito circuitoBuscado) {
         
         int contador = 0;
 
