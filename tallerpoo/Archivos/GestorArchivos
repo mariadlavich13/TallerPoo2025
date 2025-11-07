@@ -1,0 +1,164 @@
+import java.io.*;
+import java.util.*;
+import tallerpoo.Auto;
+import tallerpoo.Escuderia;
+import tallerpoo.Carrera;
+import tallerpoo.Circuito;
+import tallerpoo.Mecanico;
+import tallerpoo.Piloto;
+
+public class GestorArchivos{
+
+    //LEER AUTOS DESDE CSV
+    public static List<Auto> leerAutosDesdeCSV(String path) {
+        List<Auto> autos = new ArrayList<>();
+
+        try (BufferedReader br = new BufferedReader(new FileReader(path))) {
+            String linea;
+            br.readLine(); // Saltear encabezado
+
+            while ((linea = br.readLine()) != null) {
+                String[] valores = linea.split(",");
+
+                String modelo = valores[0];
+                String motor = valores[1];
+
+                Auto a = new Auto(modelo, motor);
+                autos.add(a);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return autos;
+    }
+
+    //LEER CARRERA DESDE CSV
+    public static List<Carrera> leerCarrerasDesdeCSV(String path) {
+        List<Carrera> carreras = new ArrayList<>();
+
+        try (BufferedReader br = new BufferedReader(new FileReader(path))) {
+            String linea;
+            br.readLine(); // Saltear encabezado
+
+            while ((linea = br.readLine()) != null) {
+                String[] valores = linea.split(",");
+
+                String fechaRealizacion = valores[0];
+                int nroVueltas = Integer.parseInt(valores[1].trim());
+                String horaRealizacion = valores[2];
+
+                Carrera c = new Carrera(fechaRealizacion, nroVueltas, horaRealizacion, null, null);
+                carreras.add(c);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return carreras;
+    }
+
+    //LEER CIRCUITO DESDE CSV
+    public static List<Circuito> leerCircuitosDesdeCSV(String path) {
+        List<Circuito> circuitos = new ArrayList<>();
+
+        try (BufferedReader br = new BufferedReader(new FileReader(path))) {
+            String linea;
+            br.readLine(); // Saltear encabezado
+
+            while ((linea = br.readLine()) != null) {
+                String[] valores = linea.split(",");
+
+                String nombre = valores[0];
+                double longitud = Double.parseDouble(valores[1].trim());
+
+                Circuito c = new Circuito(nombre, longitud, null);
+                circuitos.add(c);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return circuitos;
+    }
+
+    //LEER ESCUDERIAS DESDE CSV
+    public static List<Escuderia> leerEscuderiasDesdeCSV(String path) {
+        List<Escuderia> escuderias = new ArrayList<>();
+
+        try (BufferedReader br = new BufferedReader(new FileReader(path))) {
+            String linea;
+            br.readLine(); // Saltear encabezado
+
+            while ((linea = br.readLine()) != null) {
+                String[] valores = linea.split(",");
+
+                String nombre = valores[0];
+
+                Escuderia e = new Escuderia(nombre);
+                escuderias.add(e);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return escuderias;
+    }
+
+    //LEER MECANICOS DESDE CSV
+    public static List<Mecanico> leerMecanicosDesdeCSV(String path) {
+        List<Mecanico> mecanicos = new ArrayList<>();
+
+        try (BufferedReader br = new BufferedReader(new FileReader(path))) {
+            String linea;
+            br.readLine(); // Saltear encabezado
+
+            while ((linea = br.readLine()) != null) {
+                String[] valores = linea.split(",");
+
+                String dni = valores[0].trim();
+                String nombre = valores[1].trim();
+                String apellido = valores[2].trim();
+                String pais = valores[3].trim(); // Ver punto 4
+                Especialidad esp = Especialidad.valueOf(valores[4].trim());
+                int aniosExperiencia = Integer.parseInt(valores[5].trim());
+
+                Mecanico m = new Mecanico(dni, nombre, apellido, pais, esp, aniosExperiencia, new ArrayList<>());
+                mecanicos.add(m);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return mecanicos;
+    }
+
+
+    //LEER PILOTOS DESDE CSV
+     public static List<Piloto> leerPilotosDesdeCSV(String path) {
+        List<Piloto> pilotos = new ArrayList<>();
+
+        try (BufferedReader br = new BufferedReader(new FileReader(path))) {
+            String linea;
+            br.readLine(); // Saltear encabezado
+
+            while ((linea = br.readLine()) != null) {
+                String[] valores = linea.split(",");
+
+                String dni = valores[0].trim();
+                String nombre = valores[1].trim();
+                String apellido = valores[2].trim();
+                int numeroCompetencia = Integer.parseInt(valores[3].trim());
+                int victorias = Integer.parseInt(valores[4].trim());
+                int polePosition = Integer.parseInt(valores[5].trim());
+                int vueltasRapidas = Integer.parseInt(valores[6].trim());
+                int podios = Integer.parseInt(valores[7].trim());
+
+                Piloto p = new Piloto(dni, nombre, apellido, numeroCompetencia, victorias, polePosition, vueltasRapidas, podios);
+                pilotos.add(p);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return pilotos;
+    }
+}
