@@ -1,5 +1,5 @@
 package tallerpoo.logica;
-import tallerpoo.SistemaGestion;
+import tallerpoo.archivos.SistemaGestion;
 import tallerpoo.clases.Piloto;
 import tallerpoo.clases.Auto;
 import tallerpoo.clases.Carrera;

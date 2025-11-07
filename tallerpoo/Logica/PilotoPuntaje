@@ -1,6 +1,6 @@
 package tallerpoo.logica;
 
-import tallerpoo.Piloto;
+import tallerpoo.clases.Piloto;
 
 /**
  * Clase para almacenar temporalmente

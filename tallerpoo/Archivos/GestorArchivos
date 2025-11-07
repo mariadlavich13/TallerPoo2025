@@ -2,14 +2,14 @@ package tallerpoo.archivos;
 
 import java.io.*;
 import java.util.*;
-import tallerpoo.Auto;
-import tallerpoo.Escuderia;
-import tallerpoo.Carrera;
-import tallerpoo.Circuito;
-import tallerpoo.Mecanico;
-import tallerpoo.Piloto;
-import tallerpoo.Pais;
-import tallerpoo.ResultadoCarrera;
+import tallerpoo.clases.Auto;
+import tallerpoo.clases.Escuderia;
+import tallerpoo.clases.Carrera;
+import tallerpoo.clases.Circuito;
+import tallerpoo.clases.Mecanico;
+import tallerpoo.clases.Piloto;
+import tallerpoo.clases.Pais;
+import tallerpoo.clases.ResultadoCarrera;
 
 public class GestorArchivos{
 
