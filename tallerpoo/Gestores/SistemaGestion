@@ -42,4 +42,22 @@ public class SistemaGestion {
     public List<Piloto> getPilotos() {
         return pilotos;
     }
+    public void agregarMecanico(Mecanico mecanico) {
+        this.mecanicos.add(mecanico);
+    }
+    public void agregarPiloto(Piloto piloto) {
+        this.pilotos.add(piloto);
+    }
+    public void agregarEscuderia(Escuderia escuderia) {
+        this.escuderias.add(escuderia);
+    }
+    public void agregarAuto(Auto auto) {
+        this.autos.add(auto);
+    }
+    public void agregarCircuito(Circuito circuito) {
+        this.circuitos.add(circuito);
+    }
+    public void agregarCarrera(Carrera carrera) {
+        this.carreras.add(carrera);
+    }
 }
