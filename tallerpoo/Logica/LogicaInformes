@@ -149,5 +149,35 @@ public class LogicaInformes{
         //Devolvemos el total
         return contador;
     }
+    /**
+     * "Histórico de un piloto determinado"
+     * Devuelve el objeto Piloto, que ya contiene sus estadísticas.
+     * La clase que llama puede formatear la salida.
+     *
+     * @param datos El SistemaGestion.
+     * @param dni El DNI del piloto a buscar.
+     * @return El objeto Piloto si se encuentra, o null si no.
+     */
+    public Piloto getEstadisticasPiloto(SistemaGestion datos, String dni) {
+        for (Piloto p : datos.getPilotos()) {
+            if (p.getDni().equals(dni)) {
+                return p; // Devuelve el piloto encontrado
+            }
+        }
+        return null; // Si no se encuentra
+    }
+
+    /**
+     * "Histórico de cada piloto"
+     * Devuelve la lista COMPLETA de pilotos.
+     * La clase que llama puede iterar esta lista y mostrar las estadísticas.
+     *
+     * @param datos El SistemaGestion.
+     * @return La lista de todos los pilotos.
+     */
+    public List<Piloto> getEstadisticasTodosLosPilotos(SistemaGestion datos) {
+        // Simplemente devuelve la lista que ya tiene el sistema
+        return datos.getPilotos();
+    }
     
 }
