@@ -1,21 +1,21 @@
-fechaRealizacion, nroVueltas, horaRealizacion
-16-03-2025, 58, 5:00
-23-03-2025, 56, 8:00
-6-04-2025, 53, 6:00
-13-04-2025, 57, 18:00
-20-04-2025, 50, 19:00
-4-05-2025, 57, 22:00
-18-05-2025, 63, 15:00
-25-05-2025, 78, 15:00
-1-06-2025, 66, 15:00
-15-06-2025, 70, 20:00
-29-06-2025, 71, 15:00
-7-09-2025, 53, 15:00
-21-09-2025, 51, 13:00
-5-10-2025, 62, 14:00
-19-10-2025, 56, 21:00
-26-10-2025, 71, 21:00
-9-11-2025, 71, 18:00
-22-11-2025, 50, 07:00
-30-11-2025, 57, 17:00
-7-12-2025, 58, 14:00
+fechaRealizacion, nroVueltas, horaRealizacion, nombre
+16-03-2025, 58, 5:00,Circuito de Monaco
+23-03-2025, 56, 8:00,Circuito de Silverstone
+6-04-2025, 53, 6:00,Circuito de Monza
+13-04-2025, 57, 18:00,Circuito de Spa-Francorchamps
+20-04-2025, 50, 19:00,Circuito de Suzuka
+4-05-2025, 57, 22:00,Circuito de Interlagos
+18-05-2025, 63, 15:00,Circuito de Bahrain
+25-05-2025, 78, 15:00,Circuito de Melbourne
+1-06-2025, 66, 15:00,Circuito de Barcelona-Catalunya
+15-06-2025, 70, 20:00,Circuito de Hungaroring
+29-06-2025, 71, 15:00,Circuito de Yas Marina
+7-09-2025, 53, 15:00,Circuito de Austin
+21-09-2025, 51, 13:00,Circuito de Zandvoort
+5-10-2025, 62, 14:00,Circuito de Imola
+19-10-2025, 56, 21:00,Circuito de Miami
+26-10-2025, 71, 21:00,Circuito de Jeddah
+9-11-2025, 71, 18:00,Circuito de Las Vegas
+22-11-2025, 50, 07:00,Circuito de Shanghai
+30-11-2025, 57, 17:00,Circuito de Barcelona-Catalunya
+7-12-2025, 58, 14:00,Circuito de Monza

@@ -9,6 +9,51 @@ import tallerpoo.Piloto;
 
 public class GestorArchivos{
 
+    //LEER PAISES DESDE CSV
+    public static List<Pais> leerPaisesDesdeCSV(String path) {
+        List<Pais> paises = new ArrayList<>();
+        try (BufferedReader br = new BufferedReader(new FileReader(path))) {
+            String linea;
+            br.readLine(); // Saltear encabezado (ej: "idPais,descripcion")
+
+            while ((linea = br.readLine()) != null) {
+                String[] valores = linea.split(",");
+                
+                int idPais = Integer.parseInt(valores[0].trim());
+                String descripcion = valores[1].trim();
+
+                // Usamos el constructor que inicializa las listas vacías
+                // (Basado en tu clase Pais)
+                Pais p = new Pais(idPais, descripcion, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+                paises.add(p);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return paises;
+    }
+
+    // Helper para buscar un Pais por ID
+    private static Pais buscarPaisPorId(List<Pais> paises, int id) {
+    for (Pais p : paises) {
+        if (p.getIdPais() == id) {
+            return p;
+        }
+    }
+    return null; // O lanzar una excepción si no se encuentra
+    }
+
+    // Helper para buscar un Circuito por Nombre
+    private static Circuito buscarCircuitoPorNombre(List<Circuito> circuitos, String nombre) {
+    for (Circuito c : circuitos) {
+        if (c.getNombre().equalsIgnoreCase(nombre.trim())) {
+            return c;
+        }
+    }
+    return null; // O lanzar una excepción
+    }
+
+
     //LEER AUTOS DESDE CSV
     public static List<Auto> leerAutosDesdeCSV(String path) {
         List<Auto> autos = new ArrayList<>();
@@ -32,53 +77,59 @@ public class GestorArchivos{
         return autos;
     }
 
-    //LEER CARRERA DESDE CSV
-    public static List<Carrera> leerCarrerasDesdeCSV(String path) {
-        List<Carrera> carreras = new ArrayList<>();
-
+    //LEER CIRCUITO DESDE CSV
+    public static List<Circuito> leerCircuitosDesdeCSV(String path, List<Pais> paises) { // <--- Acepta la lista de Países
+        List<Circuito> circuitos = new ArrayList<>();
         try (BufferedReader br = new BufferedReader(new FileReader(path))) {
-            String linea;
             br.readLine(); // Saltear encabezado
 
             while ((linea = br.readLine()) != null) {
                 String[] valores = linea.split(",");
+                String nombre = valores[0];
+                double longitud = Double.parseDouble(valores[1].trim());
+                int idPais = Integer.parseInt(valores[2].trim()); // <-- Lee el nuevo ID
 
+                // Busca el objeto Pais
+                Pais paisAsignado = buscarPaisPorId(paises, idPais);
+
+                // Crea el objeto con el País real, no con null
+                Circuito c = new Circuito(nombre, longitud, paisAsignado);
+                circuitos.add(c);
+            }   
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return circuitos;
+    }
+
+
+    //LEER CARRERA DESDE CSV
+    public static List<Carrera> leerCarrerasDesdeCSV(String path, List<Circuito> todosLosCircuitos) { // <--- Acepta la lista de Circuitos
+        List<Carrera> carreras = new ArrayList<>();
+        try (BufferedReader br = new BufferedReader(new FileReader(path))) {
+            br.readLine(); // Saltear encabezado
+
+            while ((linea = br.readLine()) != null) {
+                String[] valores = linea.split(",");
                 String fechaRealizacion = valores[0];
                 int nroVueltas = Integer.parseInt(valores[1].trim());
                 String horaRealizacion = valores[2];
+                String nombreCircuito = valores[3]; // <-- Lee el nombre del circuito
 
-                Carrera c = new Carrera(fechaRealizacion, nroVueltas, horaRealizacion, null, null);
+                // Busca el objeto Circuito
+                Circuito circuitoAsignado = buscarCircuitoPorNombre(todosLosCircuitos, nombreCircuito);
+
+                // Saca el país desde el circuito
+                Pais paisAsignado = (circuitoAsignado != null) ? circuitoAsignado.getPais() : null;
+
+                // Crea la Carrera con los objetos reales
+                Carrera c = new Carrera(fechaRealizacion, nroVueltas, horaRealizacion, paisAsignado, circuitoAsignado);
                 carreras.add(c);
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         return carreras;
-    }
-
-    //LEER CIRCUITO DESDE CSV
-    public static List<Circuito> leerCircuitosDesdeCSV(String path) {
-        List<Circuito> circuitos = new ArrayList<>();
-
-        try (BufferedReader br = new BufferedReader(new FileReader(path))) {
-            String linea;
-            br.readLine(); // Saltear encabezado
-
-            while ((linea = br.readLine()) != null) {
-                String[] valores = linea.split(",");
-
-                String nombre = valores[0];
-                double longitud = Double.parseDouble(valores[1].trim());
-
-                Circuito c = new Circuito(nombre, longitud, null);
-                circuitos.add(c);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return circuitos;
     }
 
     //LEER ESCUDERIAS DESDE CSV
