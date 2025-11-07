@@ -200,8 +200,7 @@ public class LogicaGestion {
             // Si la encontramos, simplemente establecemos la fecha de fin
             asociacionActiva.setHastaFecha(hastaFecha);
         } else {
-            throw new LogicaException("El piloto " + piloto.getNombre()
-                    + " no tiene un contrato activo con " + escuderia.getNombre() + ".");
+            throw new LogicaException("El piloto " + piloto.getNombre() + " no tiene un contrato activo con " + escuderia.getNombre() + ".");
         }
     }
 

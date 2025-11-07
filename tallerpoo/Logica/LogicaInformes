@@ -39,19 +39,19 @@ public class LogicaInformes{
         
         List<ResultadoCarrera> resultadosEnRango = new ArrayList<>();
         
-        // 1. Convertimos las fechas del rango a un formato comparable (YYYY-MM-DD)
+        //Convertimos las fechas del rango a un formato comparable (YYYY-MM-DD)
         String fechaDesdeFormateada = formatearFecha(fechaDesde);
         String fechaHastaFormateada = formatearFecha(fechaHasta);
 
-        // 2. Iteramos sobre TODOS los resultados guardados en el sistema
+        //Iteramos sobre todos los resultados guardados en el sistema
         for (ResultadoCarrera resultado : datos.getResultadosCarreras()) {
             
-            // 3. Obtenemos la fecha de la carrera de ese resultado
+            //Obtenemos la fecha de la carrera de ese resultado
             Carrera carreraDelResultado = resultado.getCarrera();
             String fechaCarrera = carreraDelResultado.getFechaRealizacion();
             String fechaCarreraFormateada = formatearFecha(fechaCarrera);
 
-            // 4. Comparamos las fechas (como Strings YYYY-MM-DD)
+            //Comparamos las fechas (como Strings YYYY-MM-DD)
             boolean estaDespuesDeInicio = fechaCarreraFormateada.compareTo(fechaDesdeFormateada) >= 0;
             boolean estaAntesDeFin = fechaCarreraFormateada.compareTo(fechaHastaFormateada) <= 0;
 
@@ -61,7 +61,7 @@ public class LogicaInformes{
             }
         }
 
-        // 5. (Opcional pero recomendado) Ordenamos la lista para que sea legible:
+        // Ordenamos la lista para que sea legible:
         // Primero por fecha de carrera, y luego por posición (1°, 2°, 3°...)
         Collections.sort(resultadosEnRango, new Comparator<ResultadoCarrera>() {
             @Override
@@ -85,6 +85,7 @@ public class LogicaInformes{
         return resultadosEnRango;
     }
     
+<<<<<<< HEAD
     /**
      * REQUISITO 2: Devuelve el ranking de pilotos ordenado.
      * Llama a LogicaGestion para calcular y luego este método ordena.
@@ -107,4 +108,50 @@ public class LogicaInformes{
     }
 
 
+=======
+
+
+    /**Calcula la cantidad de veces que un piloto específico corrió en un circuito determinado.
+     * (Versión alternativa recorriendo todas las carreras del sistema).
+     *
+     * @param datos El objeto SistemaGestion que contiene la lista de todas las carreras.
+     * @param pilotoBuscado El piloto a consultar.
+     * @param circuitoBuscado El circuito a consultar.
+     * @return El número de carreras (int) que el piloto corrió en ese circuito.
+     */
+    public int getContadorPilotoEnCircuito(SistemaGestion datos, Piloto pilotoBuscado, Circuito circuitoBuscado) {
+        
+        int contador = 0;
+
+        //Obtenemos la lista de todas las carreras del sistema
+        List<Carrera> todasLasCarreras = datos.getCarreras();
+
+        //Recorremos cada carrera, una por una
+        for (Carrera carrera : todasLasCarreras) {
+            
+            //Verificamos si esta carrera es en el circuito que buscamos
+            if (carrera.getCircuito() != null && carrera.getCircuito().equals(circuitoBuscado)) {
+                
+                //Si es en el circuito correcto, revisamos los participantes
+                List<AutoPiloto> participantesDeLaCarrera = carrera.getParticipantes();
+                
+                for (AutoPiloto participante : participantesDeLaCarrera) {
+                    
+                    //Verificamos si el piloto que buscamos está en esa lista
+                    if (participante.getPiloto() != null && participante.getPiloto().equals(pilotoBuscado)) {
+                        
+                        //Coincide, sumamos 1
+                        contador++;
+                        
+                        // Como un piloto solo corre una vez por carrera, dejamos de buscar en esta carrera y vamos a la siguiente.
+                        break;
+                    }
+                }
+            }
+        }
+        
+        //Devolvemos el total
+        return contador;
+    }
+>>>>>>> 814fcd53a63a4b07384f1f9d43088adb5ec6d747
 }
