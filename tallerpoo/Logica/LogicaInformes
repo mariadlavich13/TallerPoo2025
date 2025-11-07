@@ -85,30 +85,25 @@ public class LogicaInformes{
         return resultadosEnRango;
     }
     
-<<<<<<< HEAD
-    /**
-     * REQUISITO 2: Devuelve el ranking de pilotos ordenado.
+    /**Devuelve el ranking de pilotos ordenado.
      * Llama a LogicaGestion para calcular y luego este método ordena.
      *
      * @param datos El objeto SistemaGestion (para los datos).
      * @param logicaGestion El objeto LogicaGestion (para el cálculo).
-     * @return Una lista de PilotoPuntaje ORDENADA.
+     * @return Una lista de PilotoPuntaje ordenada.
      */
     public List<PilotoPuntaje> getRankingPilotos(SistemaGestion datos, LogicaGestion logicaGestion) {
         
-        // 1. Llama al método de LogicaGestion para "Calcular"
+        //Llama al método de LogicaGestion para "Calcular"
         List<PilotoPuntaje> puntajesSinOrdenar = logicaGestion.calcularPuntajes(datos);
 
-        // 2. Este método se encarga de "Rankear" (Ordenar)
+        //Este método se encarga de "Rankear" (Ordenar)
         // Usa el compareTo que definiste en PilotoPuntaje
         Collections.sort(puntajesSinOrdenar);
 
-        // 3. Devuelve la lista ordenada
+        //Devuelve la lista ordenada
         return puntajesSinOrdenar;
     }
-
-
-=======
 
 
     /**Calcula la cantidad de veces que un piloto específico corrió en un circuito determinado.
@@ -153,5 +148,4 @@ public class LogicaInformes{
         //Devolvemos el total
         return contador;
     }
->>>>>>> 814fcd53a63a4b07384f1f9d43088adb5ec6d747
 }
