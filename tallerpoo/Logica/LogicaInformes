@@ -1,3 +1,5 @@
+package tallerpoo.logica;
+
 import tallerpoo.archivos.SistemaGestion;
 import tallerpoo.clases.Carrera;
 import tallerpoo.clases.ResultadoCarrera;
