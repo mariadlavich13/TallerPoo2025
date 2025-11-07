@@ -37,6 +37,8 @@ public class LogicaGestion {
         
         // Guarda la asignación en Persistencia
         carrera.agregarParticipante(nuevaASociacion);
+        piloto.agregarAutoPiloto(nuevaASociacion);
+        auto.agregarAutoPiloto(nuevaASociacion);
         
         return nuevaAsociacion; // Devolvemos el objeto creado
     }
@@ -78,7 +80,7 @@ public class LogicaGestion {
 
         // --- 2. Crear y guardar el objeto resultado ---
         ResultadoCarrera resultado = new ResultadoCarrera(piloto, posicion, carrera);
-        datos.agregarResultado(resultado); 
+        datos.agregarResultadoCarrera(resultado); 
 
         // --- 3. Actualizar estadísticas del Piloto ---
         if (posicion == 1) {
