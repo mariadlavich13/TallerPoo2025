@@ -8,18 +8,25 @@ public class Auto {
     //Asociación bidireccional: cada auto pertenece (0...1) a una escuderia
     private Escuderia escuderia;
 
-    //constructores
+    //constructores por defecto
     public Auto() {
         this.modelo="";
         this.motor="";
         this.autosPiloto = new ArrayList<>();
     }
+    
+    //Constructor para crear un auto nuevo del cual solo se conoce sus datos básicos
+    public Auto(String modelo, String motor) {
+        this.modelo = modelo;
+        this.motor = motor;
+        this.autosPiloto = new ArrayList<>();
+    }
 
+    //Constructor para cargar un auto que ya existía, y se sabe todas sus relaciones
     public Auto(String modelo, String motor, List<AutoPiloto> autosPiloto) {
         this.modelo=modelo;
         this.motor=motor;
         this.autosPiloto = autosPiloto;
-        this.autosPiloto = new ArrayList<>();
     }
 
     //Gets y Sets
