@@ -1,4 +1,5 @@
 public class SistemaGestion {
+    private List<Pais> paises;
     private List<Auto> autos;
     private List<Carrera> carreras;
     private List<Circuito> circuitos;
@@ -8,6 +9,7 @@ public class SistemaGestion {
 
     public void cargarDatos() {
         // Lógica para cargar datos desde archivos o base de datos
+        String pathPaises = "Datos/DatosPaises.csv";
         String pathAutos = "Datos/DatosAutos.csv";
         String pathCarreras = "Datos/DatosCarreras.csv";
         String pathCircuitos = "Datos/DatosCircuitos.csv";
@@ -15,15 +17,19 @@ public class SistemaGestion {
         String pathMecanicos = "Datos/DatosMecanicos.csv";
         String pathPilotos = "Datos/DatosPilotos.csv";
 
-        this.autos = GestorArchivos.cargarAutos(pathAutos);
-        this.carreras = GestorArchivos.cargarCarreras(pathCarreras);
-        this.circuitos = GestorArchivos.cargarCircuitos(pathCircuitos);
-        this.escuderias = GestorArchivos.cargarEscuderias(pathEscuderias);
-        this.mecanicos = GestorArchivos.cargarMecanicos(pathMecanicos);
+        this.paises = GestorArchivos.cargarPaises(pathPaises);
         this.pilotos = GestorArchivos.cargarPilotos(pathPilotos);
+        this.mecanicos = GestorArchivos.cargarMecanicos(pathMecanicos);
+        this.autos = GestorArchivos.cargarAutos(pathAutos);
+        this.circuitos = GestorArchivos.cargarCircuitos(pathCircuitos);
+        this.carreras = GestorArchivos.cargarCarreras(pathCarreras);
+        this.escuderias = GestorArchivos.cargarEscuderias(pathEscuderias);
     }
 
     //GETTERS Y SETTERS
+    public List<Pais> getPaises() {
+        return paises;
+    }
     public List<Auto> getAutos() {
         return autos;
     }
@@ -41,6 +47,9 @@ public class SistemaGestion {
     }
     public List<Piloto> getPilotos() {
         return pilotos;
+    }
+    public void agregarPais(Pais pais) {
+        this.paises.add(pais);
     }
     public void agregarMecanico(Mecanico mecanico) {
         this.mecanicos.add(mecanico);
