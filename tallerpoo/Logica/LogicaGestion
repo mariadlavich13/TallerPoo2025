@@ -33,9 +33,9 @@ public AutoPiloto asociarPilotoAutoACarrera(Carrera carrera, Piloto piloto, Auto
         AutoPiloto nuevaASociacion = new AutoPiloto(fechaAsignacion, piloto, auto, carrera);
         
         // Guarda la asignación en Persistencia
-        carrera.agregarParticipante(nuevaAsociacion);
+        carrera.agregarParticipante(nuevaASociacion);
         
-        return nuevaAsociacion; // Devolvemos el objeto creado, no un String de éxito
+        return nuevaAsociacion; // Devolvemos el objeto creado
 }
 
     //Registrar resultado de una carrera.
