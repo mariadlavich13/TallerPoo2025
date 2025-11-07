@@ -1,3 +1,5 @@
+package tallerpoo.clases;
+
 public class Mecanico extends Persona {
     private Especialidad especialidad;
     private int aniosExperiencia;

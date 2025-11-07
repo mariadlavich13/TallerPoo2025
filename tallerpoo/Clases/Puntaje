@@ -1,3 +1,5 @@
+package tallerpoo.clases;
+
 public enum Puntaje {
     PRIMERO(25),
     SEGUNDO(18),

@@ -1,3 +1,5 @@
+package tallerpoo.clases;
+
 public class AutoPiloto {
     private String fechaAsignacion;
     private Piloto piloto; // Relación con Piloto

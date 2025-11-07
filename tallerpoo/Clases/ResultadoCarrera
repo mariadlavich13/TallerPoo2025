@@ -1,3 +1,5 @@
+package tallerpoo.clases;
+
 import java.util.List;
 //Clase para almacenar el resultado del piloto en una carrera
 // Asocia un piloto con su posicion final.
