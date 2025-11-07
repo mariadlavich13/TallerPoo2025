@@ -105,10 +105,6 @@ public class LogicaInformes{
         return puntajesSinOrdenar;
     }
 
-<<<<<<< HEAD
-=======
-
->>>>>>> a73571eb472f697fda38c7343ecce56a343c4283
     /**Calcula la cantidad de veces que un piloto específico corrió en un circuito determinado.
      * (Versión alternativa recorriendo todas las carreras del sistema).
      *
@@ -151,8 +147,5 @@ public class LogicaInformes{
         //Devolvemos el total
         return contador;
     }
-<<<<<<< HEAD
-
-=======
->>>>>>> a73571eb472f697fda38c7343ecce56a343c4283
+    
 }
