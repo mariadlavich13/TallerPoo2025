@@ -21,10 +21,7 @@ public class Auto {
         this.autosPiloto = autosPiloto;
         this.autosPiloto = new ArrayList<>();
     }
-    public Auto(String modelo, String motor) {
-        this.modelo=modelo;
-        this.motor=motor;
-    }
+
     //Gets y Sets
     public String getModelo() {
         return modelo;
