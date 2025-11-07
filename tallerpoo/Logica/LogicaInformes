@@ -1,3 +1,85 @@
+import tallerpoo.archivos.SistemaGestion;
+import tallerpoo.clases.Carrera;
+import tallerpoo.clases.ResultadoCarrera;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+
 public class LogicaInformes{
     
+    /**
+     * Método ayudante privado para convertir fechas de "dd-MM-yyyy" a "yyyy-MM-dd".
+     * Esto permite que se puedan comparar alfabéticamente de forma correcta.
+     */
+    private String formatearFecha(String fechaDDMMAAAA) {
+        // Asumiendo formato "dd-MM-yyyy"
+        try {
+            String[] partes = fechaDDMMAAAA.split("-");
+            if (partes.length == 3) {
+                return partes[2] + "-" + partes[1] + "-" + partes[0];
+            }
+            return fechaDDMMAAAA; // Devuelve original si el formato falla
+        } catch (Exception e) {
+            return fechaDDMMAAAA; // Devuelve original en caso de error
+        }
+    }
+
+    /**
+     * Obtiene una lista detallada de resultados de carreras dentro de un rango de fechas.
+     *
+     * @param datos El objeto SistemaGestion que contiene todos los datos.
+     * @param fechaDesde La fecha de inicio del rango (formato "dd-MM-yyyy").
+     * @param fechaHasta La fecha de fin del rango (formato "dd-MM-yyyy").
+     * @return Una lista de ResultadoCarrera, ordenada por fecha y luego por posición.
+     */
+    public List<ResultadoCarrera> getReporteResultadosPorFechas(SistemaGestion datos, String fechaDesde, String fechaHasta) {
+        
+        List<ResultadoCarrera> resultadosEnRango = new ArrayList<>();
+        
+        // 1. Convertimos las fechas del rango a un formato comparable (YYYY-MM-DD)
+        String fechaDesdeFormateada = formatearFecha(fechaDesde);
+        String fechaHastaFormateada = formatearFecha(fechaHasta);
+
+        // 2. Iteramos sobre TODOS los resultados guardados en el sistema
+        for (ResultadoCarrera resultado : datos.getResultadosCarreras()) {
+            
+            // 3. Obtenemos la fecha de la carrera de ese resultado
+            Carrera carreraDelResultado = resultado.getCarrera();
+            String fechaCarrera = carreraDelResultado.getFechaRealizacion();
+            String fechaCarreraFormateada = formatearFecha(fechaCarrera);
+
+            // 4. Comparamos las fechas (como Strings YYYY-MM-DD)
+            boolean estaDespuesDeInicio = fechaCarreraFormateada.compareTo(fechaDesdeFormateada) >= 0;
+            boolean estaAntesDeFin = fechaCarreraFormateada.compareTo(fechaHastaFormateada) <= 0;
+
+            if (estaDespuesDeInicio && estaAntesDeFin) {
+                // Si la carrera está en el rango, añadimos su resultado a la lista
+                resultadosEnRango.add(resultado);
+            }
+        }
+
+        // 5. (Opcional pero recomendado) Ordenamos la lista para que sea legible:
+        // Primero por fecha de carrera, y luego por posición (1°, 2°, 3°...)
+        Collections.sort(resultadosEnRango, new Comparator<ResultadoCarrera>() {
+            @Override
+            public int compare(ResultadoCarrera r1, ResultadoCarrera r2) {
+                // Comparamos por fecha primero
+                String fecha1 = formatearFecha(r1.getCarrera().getFechaRealizacion());
+                String fecha2 = formatearFecha(r2.getCarrera().getFechaRealizacion());
+                
+                int comparacionFecha = fecha1.compareTo(fecha2);
+                
+                if (comparacionFecha != 0) {
+                    // Si las fechas son distintas, ordena por fecha
+                    return comparacionFecha;
+                } else {
+                    // Si las fechas son iguales, ordena por posición
+                    return Integer.compare(r1.getPosicion(), r2.getPosicion());
+                }
+            }
+        });
+
+        return resultadosEnRango;
+    }
 }
