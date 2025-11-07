@@ -155,24 +155,30 @@ public class GestorArchivos{
     }
 
     //LEER MECANICOS DESDE CSV
-    public static List<Mecanico> leerMecanicosDesdeCSV(String path) {
+    // Acepta la lista de países para poder buscar y asignar el objeto correcto
+    public static List<Mecanico> leerMecanicosDesdeCSV(String path, List<Pais> paises) {
         List<Mecanico> mecanicos = new ArrayList<>();
-
         try (BufferedReader br = new BufferedReader(new FileReader(path))) {
             String linea;
             br.readLine(); // Saltear encabezado
 
             while ((linea = br.readLine()) != null) {
                 String[] valores = linea.split(",");
-
                 String dni = valores[0].trim();
                 String nombre = valores[1].trim();
                 String apellido = valores[2].trim();
-                String pais = valores[3].trim(); // Ver punto 4
+                
+                // 1. Lee el ID del país (en lugar de un String)
+                int idPais = Integer.parseInt(valores[3].trim()); 
+                
                 Especialidad esp = Especialidad.valueOf(valores[4].trim());
                 int aniosExperiencia = Integer.parseInt(valores[5].trim());
 
-                Mecanico m = new Mecanico(dni, nombre, apellido, pais, esp, aniosExperiencia, new ArrayList<>());
+                // 2. Busca el objeto Pais usando el helper
+                Pais paisAsignado = buscarPaisPorId(paises, idPais);
+
+                // 3. Pasa el objeto Pais al constructor
+                Mecanico m = new Mecanico(dni, nombre, apellido, paisAsignado, esp, aniosExperiencia, new ArrayList<>());
                 mecanicos.add(m);
             }
         } catch (IOException e) {
@@ -182,28 +188,39 @@ public class GestorArchivos{
         return mecanicos;
     }
 
-
     //LEER PILOTOS DESDE CSV
-     public static List<Piloto> leerPilotosDesdeCSV(String path) {
+    // Acepta la lista de países
+    public static List<Piloto> leerPilotosDesdeCSV(String path, List<Pais> paises) {
         List<Piloto> pilotos = new ArrayList<>();
-
         try (BufferedReader br = new BufferedReader(new FileReader(path))) {
             String linea;
             br.readLine(); // Saltear encabezado
 
             while ((linea = br.readLine()) != null) {
+                // Asegúrate de que tu CSV tenga la columna extra para el idPais
                 String[] valores = linea.split(",");
-
+                
+                // Evita líneas vacías o corruptas
+                if (valores.length < 9) continue; 
+                
                 String dni = valores[0].trim();
                 String nombre = valores[1].trim();
                 String apellido = valores[2].trim();
-                int numeroCompetencia = Integer.parseInt(valores[3].trim());
-                int victorias = Integer.parseInt(valores[4].trim());
-                int polePosition = Integer.parseInt(valores[5].trim());
-                int vueltasRapidas = Integer.parseInt(valores[6].trim());
-                int podios = Integer.parseInt(valores[7].trim());
+                
+                // 1. Lee el ID del país (asumiendo que es la 4ta columna)
+                int idPais = Integer.parseInt(valores[3].trim()); 
+                
+                int numeroCompetencia = Integer.parseInt(valores[4].trim());
+                int victorias = Integer.parseInt(valores[5].trim());
+                int polePosition = Integer.parseInt(valores[6].trim());
+                int vueltasRapidas = Integer.parseInt(valores[7].trim());
+                int podios = Integer.parseInt(valores[8].trim());
 
-                Piloto p = new Piloto(dni, nombre, apellido, numeroCompetencia, victorias, polePosition, vueltasRapidas, podios);
+                // 2. Busca el objeto Pais
+                Pais paisAsignado = buscarPaisPorId(paises, idPais);
+
+                Piloto p = new Piloto(dni, nombre, apellido, paisAsignado, numeroCompetencia, victorias, polePosition, vueltasRapidas, podios);
+
                 pilotos.add(p);
             }
         } catch (IOException e) {
