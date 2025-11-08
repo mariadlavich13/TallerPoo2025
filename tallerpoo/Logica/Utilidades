@@ -1,0 +1,21 @@
+public class Utilidades{
+    /**
+     * Método ESTÁTICO (public static) para que pueda ser llamado
+     * desde cualquier clase sin necesidad de crear un objeto.
+     * Convierte fechas de "dd-MM-yyyy" a "yyyy-MM-dd".
+     */
+    public static String formatearFecha(String fechaDDMMAAAA) {
+        if (fechaDDMMAAAA == null || fechaDDMMAAAA.trim().isEmpty()) {
+            return null;
+        }
+        try {
+            String[] partes = fechaDDMMAAAA.split("-");
+            if (partes.length == 3) {
+                return partes[2] + "-" + partes[1] + "-" + partes[0];
+            }
+            return fechaDDMMAAAA;
+        } catch (Exception e) {
+            return fechaDDMMAAAA;
+        }
+    }
+}

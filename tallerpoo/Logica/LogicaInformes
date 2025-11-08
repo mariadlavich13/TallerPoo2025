@@ -12,25 +12,10 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import tallerpoo.logica.Utilidades;
 
 public class LogicaInformes{
     
-    /**
-     * Método ayudante privado para convertir fechas de "dd-MM-yyyy" a "yyyy-MM-dd".
-     * Esto permite que se puedan comparar alfabéticamente de forma correcta.
-     */
-    private String formatearFecha(String fechaDDMMAAAA) {
-        // Asumiendo formato "dd-MM-yyyy"
-        try {
-            String[] partes = fechaDDMMAAAA.split("-");
-            if (partes.length == 3) {
-                return partes[2] + "-" + partes[1] + "-" + partes[0];
-            }
-            return fechaDDMMAAAA; // Devuelve original si el formato falla
-        } catch (Exception e) {
-            return fechaDDMMAAAA; // Devuelve original en caso de error
-        }
-    }
 
     /**
      * Obtiene una lista detallada de resultados de carreras dentro de un rango de fechas.
@@ -44,49 +29,43 @@ public class LogicaInformes{
         
         List<ResultadoCarrera> resultadosEnRango = new ArrayList<>();
         
-        //Convertimos las fechas del rango a un formato comparable (YYYY-MM-DD)
-        String fechaDesdeFormateada = formatearFecha(fechaDesde);
-        String fechaHastaFormateada = formatearFecha(fechaHasta);
+        // CAMBIO 3: Se llama a la clase de Utilidades
+        String fechaDesdeFormateada = Utilidades.formatearFecha(fechaDesde);
+        String fechaHastaFormateada = Utilidades.formatearFecha(fechaHasta);
 
-        //Iteramos sobre todos los resultados guardados en el sistema
         for (ResultadoCarrera resultado : datos.getResultadosCarreras()) {
             
-            //Obtenemos la fecha de la carrera de ese resultado
             Carrera carreraDelResultado = resultado.getCarrera();
             String fechaCarrera = carreraDelResultado.getFechaRealizacion();
-            String fechaCarreraFormateada = formatearFecha(fechaCarrera);
+            
+            // CAMBIO 4: Se llama a la clase de Utilidades
+            String fechaCarreraFormateada = Utilidades.formatearFecha(fechaCarrera);
 
-            //Comparamos las fechas (como Strings YYYY-MM-DD)
             boolean estaDespuesDeInicio = fechaCarreraFormateada.compareTo(fechaDesdeFormateada) >= 0;
             boolean estaAntesDeFin = fechaCarreraFormateada.compareTo(fechaHastaFormateada) <= 0;
 
             if (estaDespuesDeInicio && estaAntesDeFin) {
-                // Si la carrera está en el rango, añadimos su resultado a la lista
                 resultadosEnRango.add(resultado);
             }
         }
 
-        // Ordenamos la lista para que sea legible:
-        // Primero por fecha de carrera, y luego por posición (1°, 2°, 3°...)
         Collections.sort(resultadosEnRango, new Comparator<ResultadoCarrera>() {
             @Override
             public int compare(ResultadoCarrera r1, ResultadoCarrera r2) {
-                // Comparamos por fecha primero
-                String fecha1 = formatearFecha(r1.getCarrera().getFechaRealizacion());
-                String fecha2 = formatearFecha(r2.getCarrera().getFechaRealizacion());
+                
+                // CAMBIO 5: Se llama a la clase de Utilidades
+                String fecha1 = Utilidades.formatearFecha(r1.getCarrera().getFechaRealizacion());
+                String fecha2 = Utilidades.formatearFecha(r2.getCarrera().getFechaRealizacion());
                 
                 int comparacionFecha = fecha1.compareTo(fecha2);
                 
-                if (comparacionFecha != 0) {
-                    // Si las fechas son distintas, ordena por fecha
+                 if (comparacionFecha != 0) {
                     return comparacionFecha;
                 } else {
-                    // Si las fechas son iguales, ordena por posición
                     return Integer.compare(r1.getPosicion(), r2.getPosicion());
                 }
             }
         });
-
         return resultadosEnRango;
     }
 

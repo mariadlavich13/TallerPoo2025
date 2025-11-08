@@ -10,6 +10,7 @@ import tallerpoo.clases.Puntaje;
 import tallerpoo.clases.Escuderia;
 import tallerpoo.clases.Mecanico;
 import tallerpoo.clases.PilotoEscuderia;
+import tallerpoo.logica.Utilidades;
 
 public class LogicaGestion {
     /**
@@ -151,25 +152,103 @@ public class LogicaGestion {
      * @return El objeto de asociación PilotoEscuderia creado.
      * @throws LogicaException Si el piloto ya tiene un contrato activo.
      */
-    public PilotoEscuderia asociarPilotoAEscuderia(Piloto piloto, Escuderia escuderia, String desdeFecha) throws LogicaException {
+    /**
+     *Asocia piloto a auto en una carrera.
+     */
+    public AutoPiloto asociarPilotoAutoACarrera(Carrera carrera, Piloto piloto, Auto auto, String fechaAsignacion) throws LogicaException {
         
-        // Control: Que cada piloto esté vinculado a una única escudería en un período de tiempo dado.
-        // Verificamos si el piloto ya tiene una asociación activa (sin hastaFecha).
-        for (PilotoEscuderia pe : piloto.getPilotosEscuderias()) {
-            String hastaFecha = pe.getHastaFecha();
-            if (hastaFecha == null || hastaFecha.trim().isEmpty()) {
-                // Si encontramos un contrato activo, lanza error
-                throw new LogicaException("El piloto " + piloto.getNombre() + " " + piloto.getApellido()
-                        + " ya tiene un contrato activo con la escudería " + pe.getEscuderia().getNombre() + ".");
+        for (AutoPiloto participante : carrera.getParticipantes()) {
+            if (participante.getAuto().equals(auto)) {
+                throw new LogicaException("El auto " + auto.getModelo() + " ya está asignado a otro piloto en esta carrera.");
+            }
+        }
+        
+        for (AutoPiloto participante : carrera.getParticipantes()) {
+            if (participante.getPiloto().equals(piloto)) {
+                throw new LogicaException("El piloto " + piloto.getNombre() + " ya está participando con otro auto en esta carrera.");
             }
         }
 
-        // Si pasa el control, creamos la nueva asociación
-        // Se deja hastaFecha "" (vacío) para indicar que es el contrato activo.
-        PilotoEscuderia nuevaAsociacion = new PilotoEscuderia(desdeFecha, "", piloto, escuderia);
+        AutoPiloto nuevaASociacion = new AutoPiloto(fechaAsignacion, piloto, auto, carrera);
+        carrera.agregarParticipante(nuevaASociacion);
+        piloto.agregarAutoPiloto(nuevaASociacion);
+        auto.agregarAutoPiloto(nuevaASociacion);
+        
+        return nuevaASociacion;
+    }
+    /**
+     * Registra el resultado final de un piloto en una carrera.
+     */
+    public void registrarResultado(SistemaGestion datos, Carrera carrera, Piloto piloto, int posicion, boolean tuvoVueltaRapida) throws LogicaException {
+        
+        if (posicion < 1) {
+            throw new LogicaException("La posición debe ser mayor o igual a 1.");
+        } 
+        boolean participo = false;
+        for (AutoPiloto ap : carrera.getParticipantes()) {
+            if (ap.getPiloto().equals(piloto)) {
+                participo = true;
+                break;
+            }
+        }
+        if (!participo) {
+            throw new LogicaException("El piloto " + piloto.getNombre() + " no participó en esta carrera.");
+        }
+        
+        // CAMBIO 2: Corregido a "getResultadosCarreras()"
+        for (ResultadoCarrera r : datos.getResultadosCarreras()) {
+            if (r.getCarrera().equals(carrera) && r.getPiloto().equals(piloto)) {
+                throw new LogicaException("El piloto " + piloto.getNombre() + " ya tiene un resultado registrado para esta carrera.");
+            }
+        }
 
-        // Agregamos la asociación a ambas entidades (relación bidireccional)
-        // usando los métodos 'agregar' de las clases base.
+        ResultadoCarrera resultado = new ResultadoCarrera(piloto, posicion, carrera);
+        datos.agregarResultadoCarrera(resultado);
+
+        if (posicion == 1) {
+            piloto.setVictorias(piloto.getVictorias() + 1);
+        }
+        if (posicion <= 3) {
+            piloto.setPodios(piloto.getPodios() + 1);
+        }  
+        if (tuvoVueltaRapida) {
+            piloto.setVueltasRapidas(piloto.getVueltasRapidas() + 1);
+        }
+
+        String pathResultados = "Datos/DatosResultadoCarrera.csv";
+        GestorArchivos.escribirResultadoCSV(pathResultados, resultado);
+    }
+    /**
+     * Asocia un piloto a una escudería, validando fechas.
+     */
+    public PilotoEscuderia asociarPilotoAEscuderia(Piloto piloto, Escuderia escuderia, String desdeFecha) throws LogicaException {
+        
+        // CAMBIO 4: Usamos la utilidad para formatear
+        String nuevaFechaInicioF = Utilidades.formatearFecha(desdeFecha);
+        String ultimaFechaFinF = "0000-00-00"; 
+
+        for (PilotoEscuderia pe : piloto.getPilotosEscuderias()) {
+            String hastaFecha = pe.getHastaFecha();
+
+            if (hastaFecha == null || hastaFecha.trim().isEmpty()) {
+                throw new LogicaException("El piloto " + piloto.getNombre()
+                        + " ya tiene un contrato activo con la escudería " + pe.getEscuderia().getNombre() + ".");
+            }
+
+            // CAMBIO 5: Comparamos fechas formateadas
+            String finExistenteF = Utilidades.formatearFecha(hastaFecha);
+            if (finExistenteF != null && finExistenteF.compareTo(ultimaFechaFinF) > 0) {
+                ultimaFechaFinF = finExistenteF;
+            }
+        }
+
+        // CAMBIO 6: Control de superposición de fechas
+        if (nuevaFechaInicioF.compareTo(ultimaFechaFinF) <= 0) {
+            throw new LogicaException("La fecha de inicio (" + desdeFecha + ") se superpone con un contrato anterior."
+                    + " Debe ser posterior a " + ultimaFechaFinF + " (formato YYYY-MM-DD).");
+        }
+
+        PilotoEscuderia nuevaAsociacion = new PilotoEscuderia(desdeFecha, "", piloto, escuderia);
         piloto.agregarPilotoEscuderia(nuevaAsociacion);
         escuderia.agregarPilotoEscuderia(nuevaAsociacion);
 
@@ -184,10 +263,12 @@ public class LogicaGestion {
      * @param hastaFecha La fecha de fin de contrato (ej. "31/12/2025").
      * @throws LogicaException Si no se encuentra un contrato activo entre ambos.
      */
+    /**
+     * Termina el contrato de un piloto, validando fechas.
+     */
     public void desvincularPilotoDeEscuderia(Piloto piloto, Escuderia escuderia, String hastaFecha) throws LogicaException {
+        
         PilotoEscuderia asociacionActiva = null;
-
-        // Buscamos la asociación activa (sin hastaFecha) entre ese piloto y esa¿¿ escudería
         for (PilotoEscuderia pe : piloto.getPilotosEscuderias()) {
             String hf = pe.getHastaFecha();
             if (pe.getEscuderia().equals(escuderia) && (hf == null || hf.trim().isEmpty())) {
@@ -197,10 +278,18 @@ public class LogicaGestion {
         }
 
         if (asociacionActiva != null) {
-            // Si la encontramos, simplemente establecemos la fecha de fin
+            // CAMBIO 7: Validamos que la fecha de fin sea posterior a la de inicio
+            String nuevaFechaFinF = Utilidades.formatearFecha(hastaFecha);
+            String fechaInicioActivoF = Utilidades.formatearFecha(asociacionActiva.getDesdeFecha());
+
+            if (nuevaFechaFinF.compareTo(fechaInicioActivoF) < 0) {
+                throw new LogicaException("La fecha de fin (" + hastaFecha + ") no puede ser anterior a la fecha de inicio (" + asociacionActiva.getDesdeFecha() + ").");
+            }
+            
             asociacionActiva.setHastaFecha(hastaFecha);
         } else {
-            throw new LogicaException("El piloto " + piloto.getNombre() + " no tiene un contrato activo con " + escuderia.getNombre() + ".");
+            throw new LogicaException("El piloto " + piloto.getNombre()
+                    + " no tiene un contrato activo con " + escuderia.getNombre() + ".");
         }
     }
 
