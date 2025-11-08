@@ -32,13 +32,22 @@ public class SistemaGestion {
         String pathMecanicos = "Datos/DatosMecanicos.csv";
         String pathPilotos = "Datos/DatosPilotos.csv";
 
-        this.paises = GestorArchivos.cargarPaises(pathPaises);
-        this.pilotos = GestorArchivos.cargarPilotos(pathPilotos);
-        this.mecanicos = GestorArchivos.cargarMecanicos(pathMecanicos);
-        this.autos = GestorArchivos.cargarAutos(pathAutos);
-        this.circuitos = GestorArchivos.cargarCircuitos(pathCircuitos);
-        this.carreras = GestorArchivos.cargarCarreras(pathCarreras);
-        this.escuderias = GestorArchivos.cargarEscuderias(pathEscuderias);
+        // 1. Cargar entidades SIN dependencias
+        this.paises = GestorArchivos.leerPaisesDesdeCSV(pathPaises);
+        this.escuderias = GestorArchivos.leerEscuderiasDesdeCSV(pathEscuderias);
+
+        // 2. Cargar entidades que dependen de País o Escudería
+        // (Piloto, Mecanico y Circuito dependen de 'paises')
+        this.pilotos = GestorArchivos.leerPilotosDesdeCSV(pathPilotos, this.paises);
+        this.mecanicos = GestorArchivos.leerMecanicosDesdeCSV(pathMecanicos, this.paises);
+        this.circuitos = GestorArchivos.leerCircuitosDesdeCSV(pathCircuitos, this.paises);
+        
+        // ¡AQUÍ EL CAMBIO! Autos depende de Escuderias (como te mostré en GestorArchivos)
+        this.autos = GestorArchivos.leerAutosDesdeCSV(pathAutos, this.escuderias);
+
+        // 3. Cargar entidades que dependen de las anteriores
+        // (Carreras depende de Circuitos)
+        this.carreras = GestorArchivos.leerCarrerasDesdeCSV(pathCarreras, this.circuitos);
     }
 
     //GETTERS

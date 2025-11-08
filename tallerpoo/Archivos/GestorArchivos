@@ -58,21 +58,40 @@ public class GestorArchivos{
     }
 
 
-    //LEER AUTOS DESDE CSV
-    public static List<Auto> leerAutosDesdeCSV(String path) {
-        List<Auto> autos = new ArrayList<>();
+    // NUEVO HELPER para buscar Escuderia por nombre
+    private static Escuderia buscarEscuderiaPorNombre(List<Escuderia> escuderias, String nombre) {
+        for (Escuderia e : escuderias) {
+            if (e.getNombre().equalsIgnoreCase(nombre.trim())) {
+                return e;
+            }
+        }
+        return null; // O lanzar una excepción
+    }
 
+    //LEER AUTOS DESDE CSV
+    public static List<Auto> leerAutosDesdeCSV(String path, List<Escuderia> escuderias) { // <-- ACEPTA ESCUDERIAS
+        List<Auto> autos = new ArrayList<>();
         try (BufferedReader br = new BufferedReader(new FileReader(path))) {
             String linea;
             br.readLine(); // Saltear encabezado
 
             while ((linea = br.readLine()) != null) {
                 String[] valores = linea.split(",");
-
-                String modelo = valores[0];
-                String motor = valores[1];
+                String modelo = valores[0].trim();
+                String motor = valores[1].trim();
+                String nombreEscuderia = valores[2].trim(); // <-- LEE LA NUEVA COLUMNA
 
                 Auto a = new Auto(modelo, motor);
+                
+                // Busca la escudería
+                Escuderia escuderiaAsignada = buscarEscuderiaPorNombre(escuderias, nombreEscuderia);
+
+                if (escuderiaAsignada != null) {
+                    // ¡Aquí establecemos la relación en AMBAS direcciones!
+                    // Esto usa tus métodos agregarAuto(a) y setEscuderia(this)
+                    escuderiaAsignada.agregarAuto(a);
+                }
+                
                 autos.add(a);
             }
         } catch (IOException e) {

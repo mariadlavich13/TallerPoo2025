@@ -179,5 +179,45 @@ public class LogicaInformes{
         // Simplemente devuelve la lista que ya tiene el sistema
         return datos.getPilotos();
     }
+    /**
+     * Informe de autos utilizados por escudería en diferentes carreras
+     * Devuelve una lista de todos los participantes de todas las carreras.
+     * El objeto AutoPiloto contiene toda la información necesaria para armar el reporte.
+     *
+     * @param datos El SistemaGestion.
+     * @return Una lista de todos los AutoPiloto registrados.
+     */
+    public List<AutoPiloto> getReporteAutosPorEscuderia(SistemaGestion datos) {
+        
+        List<AutoPiloto> informeCompleto = new ArrayList<>();
+        
+        // Itera sobre todas las carreras
+        for (Carrera c : datos.getCarreras()) {
+            // Agrega todos los participantes de esa carrera a la lista
+            // (c.getParticipantes() devuelve la lista de AutoPiloto)
+            informeCompleto.addAll(c.getParticipantes());
+        }
+
+        // Ordenar la lista, por escudería
+        Collections.sort(informeCompleto, new Comparator<AutoPiloto>() {
+            @Override
+            public int compare(AutoPiloto ap1, AutoPiloto ap2) {
+                String escuderia1 = (ap1.getAuto().getEscuderia() != null) ? ap1.getAuto().getEscuderia().getNombre() : "Z/Sin Escuderia";
+                String escuderia2 = (ap2.getAuto().getEscuderia() != null) ? ap2.getAuto().getEscuderia().getNombre() : "Z/Sin Escuderia";
+                
+                int compEscuderia = escuderia1.compareTo(escuderia2);
+                if (compEscuderia != 0) {
+                    return compEscuderia;
+                }
+                
+                // Si es la misma escudería, ordena por fecha de carrera
+                String fecha1 = formatearFecha(ap1.getCarrera().getFechaRealizacion());
+                String fecha2 = formatearFecha(ap2.getCarrera().getFechaRealizacion());
+                return fecha1.compareTo(fecha2);
+            }
+        });
+
+        return informeCompleto;
+    }
     
 }
