@@ -7,6 +7,7 @@ import tallerpoo.clases.Piloto;
 import tallerpoo.clases.Puntaje;
 import tallerpoo.clases.Escuderia;
 import tallerpoo.clases.Mecanico;
+import tallerpoo.clases.Circuito;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -233,5 +234,33 @@ public class LogicaInformes{
     public List<Escuderia> getReporteMecanicosPorEscuderia(SistemaGestion datos) {
         // Los datos ya están vinculados, solo devolvemos la lista.
         return datos.getEscuderias();
+    }
+    /**
+     * Cantidad de carreras que se corrieron en un circuito determinado
+     * Cuenta cuántas carreras en el sistema están asociadas a un circuito específico.
+     *
+     * @param datos El SistemaGestion que tiene la lista de carreras.
+     * @param circuitoBuscado El objeto Circuito por el cual filtrar.
+     * @return Un entero (int) con el total de carreras encontradas.
+     */
+    public int getContadorCarrerasEnCircuito(SistemaGestion datos, Circuito circuitoBuscado) {
+        
+        int contador = 0;
+
+        // 1. Obtenemos todas las carreras del sistema
+        List<Carrera> todasLasCarreras = datos.getCarreras();
+
+        // 2. Recorremos la lista
+        for (Carrera carrera : todasLasCarreras) {
+            
+            // 3. Comparamos si el circuito de la carrera es el que buscamos
+            if (carrera.getCircuito() != null && carrera.getCircuito().equals(circuitoBuscado)) {
+                // ¡Coincidencia! Sumamos al contador
+                contador++;
+            }
+        }
+        
+        // 4. Devolvemos el total
+        return contador;
     }
 }
