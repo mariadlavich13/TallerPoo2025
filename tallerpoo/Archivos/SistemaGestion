@@ -31,6 +31,7 @@ public class SistemaGestion {
         String pathEscuderias = "Datos/DatosEscuderias.csv";
         String pathMecanicos = "Datos/DatosMecanicos.csv";
         String pathPilotos = "Datos/DatosPilotos.csv";
+        String pathMecanicoEscuderia = "Datos/DatosMecanicoEscuderia.csv";
 
         // 1. Cargar entidades SIN dependencias
         this.paises = GestorArchivos.leerPaisesDesdeCSV(pathPaises);
@@ -42,12 +43,14 @@ public class SistemaGestion {
         this.mecanicos = GestorArchivos.leerMecanicosDesdeCSV(pathMecanicos, this.paises);
         this.circuitos = GestorArchivos.leerCircuitosDesdeCSV(pathCircuitos, this.paises);
         
-        // ¡AQUÍ EL CAMBIO! Autos depende de Escuderias (como te mostré en GestorArchivos)
+        //Autos depende de Escuderias (como te mostré en GestorArchivos)
         this.autos = GestorArchivos.leerAutosDesdeCSV(pathAutos, this.escuderias);
 
         // 3. Cargar entidades que dependen de las anteriores
         // (Carreras depende de Circuitos)
         this.carreras = GestorArchivos.leerCarrerasDesdeCSV(pathCarreras, this.circuitos);
+        // 4. VINCULAR M-N
+        GestorArchivos.vincularMecanicosAEscuderias(pathMecanicoEscuderia, this.mecanicos, this.escuderias);
     }
 
     //GETTERS

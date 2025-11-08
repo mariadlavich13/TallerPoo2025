@@ -5,6 +5,8 @@ import tallerpoo.clases.Carrera;
 import tallerpoo.clases.ResultadoCarrera;
 import tallerpoo.clases.Piloto;
 import tallerpoo.clases.Puntaje;
+import tallerpoo.clases.Escuderia;
+import tallerpoo.clases.Mecanico;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -219,5 +221,17 @@ public class LogicaInformes{
 
         return informeCompleto;
     }
-    
+    /**
+     * Informe de años de experiencia y especialidad de mecánicos por escudería.
+     * Devuelve la lista completa de escuderías.
+     * La lógica de presentación iterará sobre esta lista, ya que las escuderías
+     * (gracias a la carga de datos) ya contienen su lista de mecánicos.
+     *
+     * @param datos El SistemaGestion.
+     * @return La lista de todas las Escuderias.
+     */
+    public List<Escuderia> getReporteMecanicosPorEscuderia(SistemaGestion datos) {
+        // Los datos ya están vinculados, solo devolvemos la lista.
+        return datos.getEscuderias();
+    }
 }

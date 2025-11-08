@@ -67,6 +67,15 @@ public class GestorArchivos{
         }
         return null; // O lanzar una excepción
     }
+    // HELPER para buscar Mecánico por DNI
+private static Mecanico buscarMecanicoPorDni(List<Mecanico> mecanicos, String dni) {
+    for (Mecanico m : mecanicos) {
+        if (m.getDni().equals(dni.trim())) {
+            return m;
+        }
+    }
+    return null;
+}
 
     //LEER AUTOS DESDE CSV
     public static List<Auto> leerAutosDesdeCSV(String path, List<Escuderia> escuderias) { // <-- ACEPTA ESCUDERIAS
@@ -251,6 +260,32 @@ public class GestorArchivos{
         }
 
         return pilotos;
+    }
+    /**
+    * NUEVO MÉTODO: Lee el archivo de unión M-N y vincula los objetos.
+    */
+    public static void vincularMecanicosAEscuderias(String path, List<Mecanico> todosLosMecanicos, List<Escuderia> todasLasEscuderias) {
+
+        try (BufferedReader br = new BufferedReader(new FileReader(path))) {
+            String linea;
+            br.readLine(); // Saltear encabezado
+
+         while ((linea = br.readLine()) != null) {
+            String[] valores = linea.split(",");
+            String dniMecanico = valores[0].trim();
+            String nombreEscuderia = valores[1].trim();
+
+            Mecanico mecanico = buscarMecanicoPorDni(todosLosMecanicos, dniMecanico);
+            Escuderia escuderia = buscarEscuderiaPorNombre(todasLasEscuderias, nombreEscuderia);
+
+            if (mecanico != null && escuderia != null) {
+                mecanico.agregarEscuderia(escuderia); //
+                escuderia.agregarMecanico(mecanico); //
+            }
+        }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
     /**
      * Escribe un nuevo resultado de carrera al final del archivo CSV.
