@@ -75,7 +75,7 @@ public class LogicaGestion {
         }
         
         // Validación: ¿Ya existe un resultado para este piloto en esta carrera?
-        for (ResultadoCarrera r : datos.getResultados()) {
+        for (ResultadoCarrera r : datos.getResultadosCarreras()) {
             if (r.getCarrera().equals(carrera) && r.getPiloto().equals(piloto)) {
                 throw new LogicaException("El piloto " + piloto.getNombre() + " ya tiene un resultado registrado para esta carrera.");
             }
@@ -110,7 +110,7 @@ public class LogicaGestion {
         
         List<PilotoPuntaje> puntajesFinales = new ArrayList<>();
         List<Piloto> todosLosPilotos = datos.getPilotos();
-        List<ResultadoCarrera> todosLosResultados = datos.getResultados();
+        List<ResultadoCarrera> todosLosResultados = datos.getResultadosCarreras();
 
         // Bucle exterior: Itera sobre cada piloto
         for (Piloto piloto : todosLosPilotos) {
