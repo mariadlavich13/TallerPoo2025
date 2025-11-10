@@ -1,4 +1,5 @@
 package tallerpoo.logica;
+
 import tallerpoo.archivos.SistemaGestion;
 import tallerpoo.clases.Piloto;
 import tallerpoo.clases.Auto;
@@ -12,12 +13,24 @@ import tallerpoo.clases.Mecanico;
 import tallerpoo.clases.PilotoEscuderia;
 import tallerpoo.logica.Utilidades;
 import tallerpoo.logica.LogicaException;
+import java.util.List;
+import java.util.ArrayList;
 
+/**
+ * Contiene la lógica para gestionar las operaciones
+ * del sistema, como asociar entidades, registrar resultados y calcular puntajes.
+ */
 public class LogicaGestion {
+
     /**
-    /**
-     *Asocia piloto a auto en una carrera.
-     * Verifica que no haya duplicados.
+     * Asocia un piloto a un auto en una carrera específica.
+     * Verifica que el auto no esté ya asignado a otro piloto en esa carrera.
+     * Verifica que el piloto no esté ya participando con otro auto en esa carrera.
+     *
+     * @param carrera La carrera a la que se asocian.
+     * @param piloto El piloto a asociar.
+     * @param auto El auto a asociar.
+     * @param fechaAsignacion La fecha de la asignación.
      * @return El objeto AutoPiloto creado si la asignación es exitosa.
      * @throws LogicaException Si el auto o el piloto ya están asignados en esa carrera.
      */
@@ -39,32 +52,35 @@ public class LogicaGestion {
 
         // Si pasa la verificación, crea la asociación
         AutoPiloto nuevaASociacion = new AutoPiloto(fechaAsignacion, piloto, auto, carrera);
-        
-        // Guarda la asignación en Persistencia
+        // Guarda la asignación en Persistencia (listas en memoria)
         carrera.agregarParticipante(nuevaASociacion);
         piloto.agregarAutoPiloto(nuevaASociacion);
         auto.agregarAutoPiloto(nuevaASociacion);
         
-        return nuevaAsociacion; // Devolvemos el objeto creado
+        return nuevaASociacion; // Devolvemos el objeto creado
     }
 
     /**
      * Registra el resultado final de un piloto en una carrera.
-     * Esto guarda el resultado y actualiza las estadísticas del piloto.
+     * Esto guarda el resultado en la lista de SistemaGestion, actualiza las
+     * estadísticas del piloto (victorias, podios, vueltas rápidas) y
+     * escribe el resultado en el archivo CSV "DatosResultadoCarrera.csv".
      *
      * @param datos El sistema de gestión con todas las listas.
      * @param carrera La carrera que finalizó.
      * @param piloto El piloto que obtuvo el resultado.
      * @param posicion La posición final (1, 2, 3...).
      * @param tuvoVueltaRapida true si este piloto hizo la vuelta rápida, false si no.
+     * @throws LogicaException Si la posición es inválida (< 1), si el piloto
+     * no participó en la carrera, o si ya tiene un resultado registrado para la misma.
      */
     public void registrarResultado(SistemaGestion datos, Carrera carrera, Piloto piloto, int posicion, boolean tuvoVueltaRapida) throws LogicaException {
         
-        //Validaciones
+        // --- 1. Validaciones ---
         if (posicion < 1) {
             throw new LogicaException("La posición debe ser mayor o igual a 1.");
         }
-        //¿El piloto realmente participó en la carrera?
+        // ¿El piloto realmente participó en la carrera?
         boolean participo = false;
         for (AutoPiloto ap : carrera.getParticipantes()) {
             if (ap.getPiloto().equals(piloto)) {
@@ -76,18 +92,18 @@ public class LogicaGestion {
             throw new LogicaException("El piloto " + piloto.getNombre() + " no participó en esta carrera.");
         }
         
-        //¿Ya existe un resultado para este piloto en esta carrera?
+        // ¿Ya existe un resultado para este piloto en esta carrera?
         for (ResultadoCarrera r : datos.getResultadosCarreras()) {
             if (r.getCarrera().equals(carrera) && r.getPiloto().equals(piloto)) {
                 throw new LogicaException("El piloto " + piloto.getNombre() + " ya tiene un resultado registrado para esta carrera.");
             }
         }
 
-        // Crear y guardar el objeto resultado
+        // --- 2. Crear y guardar el objeto resultado en memoria ---
         ResultadoCarrera resultado = new ResultadoCarrera(piloto, posicion, carrera);
-        datos.agregarResultadoCarrera(resultado);
+        datos.agregarResultadoCarrera(resultado); 
 
-        //Actualizar estadísticas del Piloto
+        // --- 3. Actualizar estadísticas del Piloto ---
         if (posicion == 1) {
             piloto.setVictorias(piloto.getVictorias() + 1);
         }
@@ -98,15 +114,17 @@ public class LogicaGestion {
             piloto.setVueltasRapidas(piloto.getVueltasRapidas() + 1);
         }
 
-        //Guardar en el archivo CSV
+        // --- 4. Guardar en el archivo CSV ---
         String pathResultados = "Datos/DatosResultadoCarrera.csv";
         GestorArchivos.escribirResultadoCSV(pathResultados, resultado);
     }
+
     /**
-     * Calcula el puntaje total de todos los pilotos basado en los resultados de todas las carreras.
+     * Calcula el puntaje total de todos los pilotos basado en los resultados de
+     * todas las carreras cargadas en el sistema.
      *
-     * @param datos El objeto SistemaGestion que contiene todas las listas.
-     * @return Una lista de objetos PilotoPuntaje, ordenada de mayor a menor puntaje.
+     * @param datos El objeto SistemaGestion que contiene la lista de pilotos y resultados.
+     * @return Una lista de objetos PilotoPuntaje, sin ordenar.
      */
     public List<PilotoPuntaje> calcularPuntajes(SistemaGestion datos) {
         
@@ -116,42 +134,35 @@ public class LogicaGestion {
 
         // Bucle exterior: Itera sobre cada piloto
         for (Piloto piloto : todosLosPilotos) {
-            
             int puntajeTotalDelPiloto = 0; // Inicia el contador para este piloto
 
             // Bucle interior: Itera sobre todos los resultados de todas las carreras
             for (ResultadoCarrera resultado : todosLosResultados) {
                 
                 // Comprueba si el resultado pertenece al piloto actual
-                // (Comparamos por DNI por seguridad)
                 if (resultado.getPiloto().getDni().equals(piloto.getDni())) {
-                    
                     // Obtiene los puntos para esa posición
                     int puntosObtenidos = Puntaje.obtenerPuntaje(resultado.getPosicion());
-                    
-                    // Los suma al total del piloto
-                    puntajeTotalDelPiloto += puntosObtenidos;
+                    puntajeTotalDelPiloto += puntosObtenidos; // Los suma al total del piloto
                 }
             }
-
             // Una vez contados todos los resultados, crea el objeto contenedor
             PilotoPuntaje pp = new PilotoPuntaje(piloto, puntajeTotalDelPiloto);
             puntajesFinales.add(pp);
         }
-
         return puntajesFinales;
     }
 
-
-
-    /**Asocia un piloto a una escudería en un período de tiempo.
-     * Verifica que el piloto no tenga ya un contrato activo (sin 'hastaFecha') con otra escudería.
+    /**
+     * Asocia un piloto a una escudería (crea un contrato).
+     * Verifica que el piloto no tenga ya un contrato activo (sin 'hastaFecha')
+     * y que la nueva fecha de inicio no se superponga con contratos anteriores.
      *
      * @param piloto El piloto a asociar.
      * @param escuderia La escudería a la que se une.
-     * @param desdeFecha La fecha de inicio del contrato (ej. "01/01/2025").
+     * @param desdeFecha La fecha de inicio del contrato (ej. "01-01-2025").
      * @return El objeto de asociación PilotoEscuderia creado.
-     * @throws LogicaException Si el piloto ya tiene un contrato activo.
+     * @throws LogicaException Si el piloto ya tiene un contrato activo o si las fechas se superponen.
      */
     public PilotoEscuderia asociarPilotoAEscuderia(Piloto piloto, Escuderia escuderia, String desdeFecha) throws LogicaException {
         
@@ -161,25 +172,26 @@ public class LogicaGestion {
 
         for (PilotoEscuderia pe : piloto.getPilotosEscuderias()) {
             String hastaFecha = pe.getHastaFecha();
-
+            // Control 1: ¿Tiene un contrato activo?
             if (hastaFecha == null || hastaFecha.trim().isEmpty()) {
                 throw new LogicaException("El piloto " + piloto.getNombre()
                         + " ya tiene un contrato activo con la escudería " + pe.getEscuderia().getNombre() + ".");
             }
 
-            //Comparamos fechas formateadas
+            // Control 2: Buscar la última fecha de fin
             String finExistenteF = Utilidades.formatearFecha(hastaFecha);
             if (finExistenteF != null && finExistenteF.compareTo(ultimaFechaFinF) > 0) {
                 ultimaFechaFinF = finExistenteF;
             }
         }
 
-        //Control de superposición de fechas
+        // Control 3: de superposición de fechas
         if (nuevaFechaInicioF.compareTo(ultimaFechaFinF) <= 0) {
             throw new LogicaException("La fecha de inicio (" + desdeFecha + ") se superpone con un contrato anterior."
                     + " Debe ser posterior a " + ultimaFechaFinF + " (formato YYYY-MM-DD).");
         }
 
+        // Si pasa, crea la asociación
         PilotoEscuderia nuevaAsociacion = new PilotoEscuderia(desdeFecha, "", piloto, escuderia);
         piloto.agregarPilotoEscuderia(nuevaAsociacion);
         escuderia.agregarPilotoEscuderia(nuevaAsociacion);
@@ -192,12 +204,14 @@ public class LogicaGestion {
      *
      * @param piloto El piloto a desvincular.
      * @param escuderia La escudería de la que se desvincula.
-     * @param hastaFecha La fecha de fin de contrato (ej. "31/12/2025").
-     * @throws LogicaException Si no se encuentra un contrato activo entre ambos.
+     * @param hastaFecha La fecha de fin de contrato (ej. "31-12-2025").
+     * @throws LogicaException Si no se encuentra un contrato activo entre ambos,
+     * o si la fecha de fin es anterior a la fecha de inicio del contrato.
      */
     public void desvincularPilotoDeEscuderia(Piloto piloto, Escuderia escuderia, String hastaFecha) throws LogicaException {
         
         PilotoEscuderia asociacionActiva = null;
+        // Busca el contrato activo
         for (PilotoEscuderia pe : piloto.getPilotosEscuderias()) {
             String hf = pe.getHastaFecha();
             if (pe.getEscuderia().equals(escuderia) && (hf == null || hf.trim().isEmpty())) {
@@ -237,14 +251,13 @@ public class LogicaGestion {
             throw new LogicaException("El auto " + auto.getModelo()
                     + " ya pertenece a la escudería " + auto.getEscuderia().getNombre() + ".");
         }
-
-        // El método agregarAuto de Escuderia ya maneja la relación bidireccional
-        // (internamente hace a.setEscuderia(this) para mantener la coherencia y setea la escudería al auto)
+        
+        // El método agregarAuto de Escuderia maneja la relación bidireccional
         escuderia.agregarAuto(auto);
     }
 
     /**
-     * Asocia un mecánico a una escudería
+     * Asocia un mecánico a una escudería.
      * Control: Verifica que el mecánico no esté ya asignado a esa escudería.
      *
      * @param mecanico El mecánico a contratar.
@@ -253,31 +266,30 @@ public class LogicaGestion {
      */
     public void asociarMecanicoAEscuderia(Mecanico mecanico, Escuderia escuderia) throws LogicaException {
         
-        // Control: Evitar duplicados en la relación muchos a muchos
+        // Control: Evitar duplicados
         if (escuderia.getMecanicos().contains(mecanico)) {
             throw new LogicaException("El mecánico " + mecanico.getNombre()
                     + " ya está asignado a " + escuderia.getNombre());
         }
 
-        // Establecemos la relación bidireccional usando los métodos "agregar"
+        // Establecemos la relación bidireccional
         escuderia.agregarMecanico(mecanico);
         mecanico.agregarEscuderia(escuderia);
     }
 
     /**
- * Asigna una pole position a un piloto y actualiza sus estadísticas.
- *
- * @param piloto El piloto que obtuvo la pole.
- * @throws LogicaException Si el piloto es nulo.
- */
-public void asignarPolePosition(Piloto piloto) throws LogicaException {
-    if (piloto == null) {
-        throw new LogicaException("El piloto no puede ser nulo.");
+     * Asigna una pole position a un piloto y actualiza sus estadísticas en memoria.
+     * (No persiste este cambio en el CSV, solo en el objeto).
+     *
+     * @param piloto El piloto que obtuvo la pole.
+     * @throws LogicaException Si el piloto es nulo.
+     */
+    public void asignarPolePosition(Piloto piloto) throws LogicaException {
+        if (piloto == null) {
+            throw new LogicaException("El piloto no puede ser nulo.");
+        }
+
+        // Actualiza la estadística del piloto
+        piloto.setPolePosition(piloto.getPolePosition() + 1);
     }
-
-    // Actualiza la estadística del piloto
-    piloto.setPolePosition(piloto.getPolePosition() + 1); //
-
-    // Solo lo actualiza en memoria (temporal).
-}
 }

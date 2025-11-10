@@ -1,40 +1,83 @@
 package tallerpoo.clases;
 
+/**
+ * Representa una pista de carreras (Circuito).
+ * Contiene su nombre, longitud y el país donde se ubica.
+ */
 public class Circuito {
-  private String nombre;
-  private double longitud;
-  private Pais pais; // Relación con Pais
-  //constructores
-  public Circuito () {
-    this.nombre="";
-    this.longitud=0;
-  }
+    private String nombre;
+    private double longitud;
+    private Pais pais; // Relación con Pais
 
-  public Circuito(String nombre, double longitud, Pais pais) {
-    this.nombre=nombre;
-    this.longitud=longitud;
-    this.pais=pais;
-  }
-  //Gets y Sets
-  public String getNombre() {
-    return nombre;
-  }
+    /**
+     * Constructor por defecto.
+     * Inicializa un circuito con nombre vacío y longitud 0.
+     */
+    public Circuito() {
+        this.nombre = "";
+        this.longitud = 0;
+    }
 
-  public double getLongitud() {
-    return longitud;
-  }
+    /**
+     * Constructor para crear un nuevo circuito.
+     *
+     * @param nombre El nombre del circuito (ej. "Circuito de Monaco").
+     * @param longitud La longitud de la pista en kilómetros (ej. 3.337).
+     * @param pais El objeto Pais donde se ubica el circuito.
+     */
+    public Circuito(String nombre, double longitud, Pais pais) {
+        this.nombre = nombre;
+        this.longitud = longitud;
+        this.pais = pais;
+    }
+    
+    // --- Getters y Setters ---
 
-  public void setNombre(String nombre) {
-    this.nombre=nombre;
-  }
+    /**
+     * Obtiene el nombre del circuito.
+     * @return El nombre.
+     */
+    public String getNombre() {
+        return nombre;
+    }
 
-  public void setLongitud(double longitud) {
-    this.longitud=longitud;
-  }
-  public Pais getPais() {
-    return pais;
-  }
-  public void setPais (Pais pais){
-    this.pais = pais;
-  }
+    /**
+     * Obtiene la longitud del circuito.
+     * @return La longitud.
+     */
+    public double getLongitud() {
+        return longitud;
+    }
+
+    /**
+     * Establece el nombre del circuito.
+     * @param nombre El nuevo nombre.
+     */
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    /**
+     * Establece la longitud del circuito.
+     * @param longitud La nueva longitud.
+     */
+    public void setLongitud(double longitud) {
+        this.longitud = longitud;
+    }
+
+    /**
+     * Obtiene el país del circuito.
+     * @return El Pais.
+     */
+    public Pais getPais() {
+        return pais;
+    }
+
+    /**
+     * Establece el país del circuito.
+     * @param pais El nuevo Pais.
+     */
+    public void setPais(Pais pais) {
+        this.pais = pais;
+    }
 }

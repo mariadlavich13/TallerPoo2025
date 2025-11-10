@@ -2,6 +2,24 @@ package tallerpoo.archivos;
 
 import tallerpoo.logica.LogicaException;
 
+import tallerpoo.clases.Pais;
+import tallerpoo.clases.Auto;
+import tallerpoo.clases.Carrera;
+import tallerpoo.clases.Circuito;
+import tallerpoo.clases.Escuderia;
+import tallerpoo.clases.Mecanico;
+import tallerpoo.clases.Piloto;
+import tallerpoo.clases.ResultadoCarrera;
+import java.util.List;
+import java.util.ArrayList;
+
+
+/**
+ * Clase principal de persistencia y datos.
+ * Funciona como un contenedor en memoria para todas las listas de objetos
+ * (Pilotos, Carreras, etc.) que se cargan desde los archivos CSV.
+ * Esta clase es el "corazón" de los datos de la aplicación.
+ */
 public class SistemaGestion {
     private List<Pais> paises;
     private List<Auto> autos;
@@ -11,8 +29,12 @@ public class SistemaGestion {
     private List<Mecanico> mecanicos;
     private List<Piloto> pilotos;
     private List<ResultadoCarrera> resultadosCarreras;
-    
 
+    /**
+     * Constructor de SistemaGestion.
+     * Inicializa todas las listas internas como vacías (ArrayLists)
+     * para evitar NullPointerException.
+     */
     public SistemaGestion() {
         this.paises = new ArrayList<>();
         this.autos = new ArrayList<>();
@@ -25,8 +47,18 @@ public class SistemaGestion {
     }
     
     
-    public void cargarDatos() throws LogicaException{
-        // Lógica para cargar datos desde archivos o base de datos
+    /**
+     * Carga todos los datos iniciales desde los archivos CSV a la memoria.
+     * Sigue el orden de dependencias: países y escuderías primero,
+     * luego pilotos, mecánicos, autos, y finalmente carreras y resultados.
+     * Este método es llamado por la GUI al iniciar la aplicación.
+     *
+     * @throws LogicaException Si alguno de los archivos CSV no se encuentra,
+     * está corrupto o contiene datos inválidos (ej. DNI no encontrado).
+     * La GUI debe capturar (catch) esta excepción y mostrarla al usuario.
+     */
+    public void cargarDatos() throws LogicaException {
+        // Define las rutas de los archivos de datos
         String pathPaises = "Datos/DatosPaises.csv";
         String pathAutos = "Datos/DatosAutos.csv";
         String pathCarreras = "Datos/DatosCarreras.csv";
@@ -35,77 +67,140 @@ public class SistemaGestion {
         String pathMecanicos = "Datos/DatosMecanicos.csv";
         String pathPilotos = "Datos/DatosPilotos.csv";
         String pathMecanicoEscuderia = "Datos/DatosMecanicoEscuderia.csv";
-        String pathResultados = "Datos/DatosResultadoCarrera.csv"
+        String pathResultados = "Datos/DatosResultadoCarrera.csv";
 
         // 1. Cargar entidades SIN dependencias
         this.paises = GestorArchivos.leerPaisesDesdeCSV(pathPaises);
         this.escuderias = GestorArchivos.leerEscuderiasDesdeCSV(pathEscuderias);
 
         // 2. Cargar entidades que dependen de País o Escudería
-        // (Piloto, Mecanico y Circuito dependen de 'paises')
         this.pilotos = GestorArchivos.leerPilotosDesdeCSV(pathPilotos, this.paises);
         this.mecanicos = GestorArchivos.leerMecanicosDesdeCSV(pathMecanicos, this.paises);
         this.circuitos = GestorArchivos.leerCircuitosDesdeCSV(pathCircuitos, this.paises);
-        
-        //Autos depende de Escuderias (como te mostré en GestorArchivos)
         this.autos = GestorArchivos.leerAutosDesdeCSV(pathAutos, this.escuderias);
 
         // 3. Cargar entidades que dependen de las anteriores
-        // (Carreras depende de Circuitos)
         this.carreras = GestorArchivos.leerCarrerasDesdeCSV(pathCarreras, this.circuitos);
-        // 4. VINCULAR M-N
+        
+        // 4. VINCULAR M-N (Mecánicos <-> Escuderías)
         GestorArchivos.vincularMecanicosAEscuderias(pathMecanicoEscuderia, this.mecanicos, this.escuderias);
+        
         // 5. Cargar Resultados de Carreras (depende de Pilotos y Carreras)
         this.resultadosCarreras = GestorArchivos.leerResultadosDesdeCSV(pathResultados, this.pilotos, this.carreras);
     }
 
-    //GETTERS
+    // --- GETTERS ---
+
+    /**
+     * Devuelve la lista de todos los países.
+     * @return Una lista de objetos Pais.
+     */
     public List<Pais> getPaises() {
-        return paises;
-    }
+        return paises; }
+    
+    /**
+     * Devuelve la lista de todos los autos.
+     * @return Una lista de objetos Auto.
+     */
     public List<Auto> getAutos() {
-        return autos;
-    }
+        return autos; }
+    
+    /**
+     * Devuelve la lista de todas las carreras.
+     * @return Una lista de objetos Carrera.
+     */
     public List<Carrera> getCarreras() {
-        return carreras;
-    }
+        return carreras; }
+    
+    /**
+     * Devuelve la lista de todos los circuitos.
+     * @return Una lista de objetos Circuito.
+     */
     public List<Circuito> getCircuitos() {
-        return circuitos;
-    }
+        return circuitos; }
+    
+    /**
+     * Devuelve la lista de todas las escuderías.
+     * @return Una lista de objetos Escuderia.
+     */
     public List<Escuderia> getEscuderias() {
-        return escuderias;
-    }
+        return escuderias; }
+    
+    /**
+     * Devuelve la lista de todos los mecánicos.
+     * @return Una lista de objetos Mecanico.
+     */
     public List<Mecanico> getMecanicos() {
-        return mecanicos;
-    }
+        return mecanicos; }
+    
+    /**
+     * Devuelve la lista de todos los pilotos.
+     * @return Una lista de objetos Piloto.
+     */
     public List<Piloto> getPilotos() {
-        return pilotos;
-    }
+        return pilotos; }
+    
+    /**
+     * Devuelve la lista de todos los resultados de carreras.
+     * @return Una lista de objetos ResultadoCarrera.
+     */
     public List<ResultadoCarrera> getResultadosCarreras() {
-        return resultadosCarreras;
-    }
-    public void agregarPais(Pais pais) {
-        this.paises.add(pais);
-    }
+        return resultadosCarreras; }
+
+    // --- ADDERS (Mutators) ---
+
+    /**
+     * Agrega un nuevo país a la lista en memoria.
+     * @param pais El objeto Pais a agregar.
+     */
+    public void agregarPais(Pais pais) { this.paises.add(pais); }
+    
+    /**
+     * Agrega un nuevo mecánico a la lista en memoria.
+     * @param mecanico El objeto Mecanico a agregar.
+     */
     public void agregarMecanico(Mecanico mecanico) {
-        this.mecanicos.add(mecanico);
-    }
+        this.mecanicos.add(mecanico); }
+    
+    /**
+     * Agrega un nuevo piloto a la lista en memoria.
+     * @param piloto El objeto Piloto a agregar.
+     */
     public void agregarPiloto(Piloto piloto) {
-        this.pilotos.add(piloto);
-    }
+        this.pilotos.add(piloto); }
+    
+    /**
+     * Agrega una nueva escudería a la lista en memoria.
+     * @param escuderia El objeto Escuderia a agregar.
+     */
     public void agregarEscuderia(Escuderia escuderia) {
-        this.escuderias.add(escuderia);
-    }
+        this.escuderias.add(escuderia); }
+    
+    /**
+     * Agrega un nuevo auto a la lista en memoria.
+     * @param auto El objeto Auto a agregar.
+     */
     public void agregarAuto(Auto auto) {
-        this.autos.add(auto);
-    }
+        this.autos.add(auto); }
+    
+    /**
+     * Agrega un nuevo circuito a la lista en memoria.
+     * @param circuito El objeto Circuito a agregar.
+     */
     public void agregarCircuito(Circuito circuito) {
-        this.circuitos.add(circuito);
-    }
+        this.circuitos.add(circuito); }
+    
+    /**
+     * Agrega una nueva carrera a la lista en memoria.
+     * @param carrera El objeto Carrera a agregar.
+     */
     public void agregarCarrera(Carrera carrera) {
-        this.carreras.add(carrera);
-    }
+        this.carreras.add(carrera); }
+    
+    /**
+     * Agrega un nuevo resultado de carrera a la lista en memoria.
+     * @param resultado El objeto ResultadoCarrera a agregar.
+     */
     public void agregarResultadoCarrera(ResultadoCarrera resultado) {
-        this.resultadosCarreras.add(resultado);
-    }
+        this.resultadosCarreras.add(resultado); }
 }

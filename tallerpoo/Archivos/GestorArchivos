@@ -10,56 +10,54 @@ import tallerpoo.clases.Mecanico;
 import tallerpoo.clases.Piloto;
 import tallerpoo.clases.Pais;
 import tallerpoo.clases.ResultadoCarrera;
+import tallerpoo.clases.Especialidad; // Importa Especialidad
 import tallerpoo.logica.LogicaException;
 
-public class GestorArchivos{
+/**
+ * Clase de utilidad estática para manejar la lectura y escritura
+ * de los archivos CSV (Capa de Persistencia).
+ * Convierte líneas de texto de CSV en objetos de las 'clases' y viceversa.
+ */
+public class GestorArchivos {
 
-    //LEER PAISES DESDE CSV
-    public static List<Pais> leerPaisesDesdeCSV(String path) {
-        List<Pais> paises = new ArrayList<>();
-        try (BufferedReader br = new BufferedReader(new FileReader(path))) {
-            String linea;
-            br.readLine(); // Saltear encabezado (ej: "idPais,descripcion")
+    // --- MÉTODOS HELPER (Buscadores) ---
 
-            while ((linea = br.readLine()) != null) {
-                String[] valores = linea.split(",");
-                
-                int idPais = Integer.parseInt(valores[0].trim());
-                String descripcion = valores[1].trim();
-
-                // Usamos el constructor que inicializa las listas vacías
-                // (Basado en tu clase Pais)
-                Pais p = new Pais(idPais, descripcion, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
-                paises.add(p);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return paises;
-    }
-
-    //Helper para buscar un Pais por ID
+    /**
+     * Busca un Pais por su ID en una lista.
+     * @param paises Lista de Países.
+     * @param id ID a buscar.
+     * @return El Pais encontrado, o null.
+     */
     private static Pais buscarPaisPorId(List<Pais> paises, int id) {
-    for (Pais p : paises) {
-        if (p.getIdPais() == id) {
-            return p;
+        for (Pais p : paises) {
+            if (p.getIdPais() == id) {
+                return p;
+            }
         }
-    }
-    return null;
+        return null;
     }
 
-    //Helper para buscar un Circuito por Nombre
+    /**
+     * Busca un Circuito por su nombre en una lista.
+     * @param circuitos Lista de Circuitos.
+     * @param nombre Nombre a buscar (ignora mayúsculas/minúsculas).
+     * @return El Circuito encontrado, o null.
+     */
     private static Circuito buscarCircuitoPorNombre(List<Circuito> circuitos, String nombre) {
-    for (Circuito c : circuitos) {
-        if (c.getNombre().equalsIgnoreCase(nombre.trim())) {
-            return c;
+        for (Circuito c : circuitos) {
+            if (c.getNombre().equalsIgnoreCase(nombre.trim())) {
+                return c;
+            }
         }
-    }
-    return null;
+        return null;
     }
 
-
-    //Helper para buscar Escuderia por nombre
+    /**
+     * Busca una Escuderia por su nombre en una lista.
+     * @param escuderias Lista de Escuderias.
+     * @param nombre Nombre a buscar (ignora mayúsculas/minúsculas).
+     * @return La Escuderia encontrada, o null.
+     */
     private static Escuderia buscarEscuderiaPorNombre(List<Escuderia> escuderias, String nombre) {
         for (Escuderia e : escuderias) {
             if (e.getNombre().equalsIgnoreCase(nombre.trim())) {
@@ -68,16 +66,28 @@ public class GestorArchivos{
         }
         return null;
     }
-    //Helper para buscar Mecánico por DNI
-private static Mecanico buscarMecanicoPorDni(List<Mecanico> mecanicos, String dni) {
-    for (Mecanico m : mecanicos) {
-        if (m.getDni().equals(dni.trim())) {
-            return m;
+
+    /**
+     * Busca un Mecánico por su DNI en una lista.
+     * @param mecanicos Lista de Mecanicos.
+     * @param dni DNI a buscar.
+     * @return El Mecanico encontrado, o null.
+     */
+    private static Mecanico buscarMecanicoPorDni(List<Mecanico> mecanicos, String dni) {
+        for (Mecanico m : mecanicos) {
+            if (m.getDni().equals(dni.trim())) {
+                return m;
+            }
         }
+        return null;
     }
-    return null;
-}
-// Helper para buscar Piloto por DNI
+
+    /**
+     * Busca un Piloto por su DNI en una lista.
+     * @param pilotos Lista de Pilotos.
+     * @param dni DNI a buscar.
+     * @return El Piloto encontrado, o null.
+     */
     private static Piloto buscarPilotoPorDni(List<Piloto> pilotos, String dni) {
         for (Piloto p : pilotos) {
             if (p.getDni().equals(dni.trim())) {
@@ -87,7 +97,12 @@ private static Mecanico buscarMecanicoPorDni(List<Mecanico> mecanicos, String dn
         return null;
     }
 
-    // Helper para buscar Carrera por Fecha
+    /**
+     * Busca una Carrera por su fecha en una lista.
+     * @param carreras Lista de Carreras.
+     * @param fecha Fecha a buscar.
+     * @return La Carrera encontrada, o null.
+     */
     private static Carrera buscarCarreraPorFecha(List<Carrera> carreras, String fecha) {
         for (Carrera c : carreras) {
             if (c.getFechaRealizacion().equals(fecha.trim())) {
@@ -97,224 +112,348 @@ private static Mecanico buscarMecanicoPorDni(List<Mecanico> mecanicos, String dn
         return null;
     }
 
-    //LEER AUTOS DESDE CSV
-    public static List<Auto> leerAutosDesdeCSV(String path, List<Escuderia> escuderias) { //ACEPTA ESCUDERIAS
-        List<Auto> autos = new ArrayList<>();
+    // --- MÉTODOS DE LECTURA (CSV a Objetos) ---
+
+    /**
+     * Lee el archivo "DatosPaises.csv".
+     * @param path Ruta al archivo.
+     * @return Lista de objetos Pais.
+     * @throws LogicaException Si el archivo no se encuentra o hay un error de formato.
+     */
+    public static List<Pais> leerPaisesDesdeCSV(String path) throws LogicaException {
+        List<Pais> paises = new ArrayList<>();
+        int nroLinea = 1;
         try (BufferedReader br = new BufferedReader(new FileReader(path))) {
             String linea;
             br.readLine(); // Saltear encabezado
+            nroLinea++;
 
             while ((linea = br.readLine()) != null) {
+                if (linea.trim().isEmpty()) { nroLinea++; continue; }
                 String[] valores = linea.split(",");
-                String modelo = valores[0].trim();
-                String motor = valores[1].trim();
-                String nombreEscuderia = valores[2].trim(); // LEE LA NUEVA COLUMNA
-
-                Auto a = new Auto(modelo, motor);
+                if (valores.length < 2) throw new LogicaException("Error en " + path + " (Línea " + nroLinea + "): Línea incompleta.");
                 
-                // Busca la escudería
-                Escuderia escuderiaAsignada = buscarEscuderiaPorNombre(escuderias, nombreEscuderia);
-
-                if (escuderiaAsignada != null) {
-                    // Aquí establecemos la relación en AMBAS direcciones
-                    // Esto usa tus métodos agregarAuto(a) y setEscuderia(this)
-                    escuderiaAsignada.agregarAuto(a);
+                try {
+                    int idPais = Integer.parseInt(valores[0].trim());
+                    String descripcion = valores[1].trim();
+                    Pais p = new Pais(idPais, descripcion, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+                    paises.add(p);
+                    nroLinea++;
+                } catch (NumberFormatException e) {
+                    throw new LogicaException("Error en " + path + " (Línea " + nroLinea + "): ID de país no es un número.");
                 }
-                
-                autos.add(a);
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new LogicaException("Error  al leer el archivo " + path + ": " + e.getMessage());
+        }
+        return paises;
+    }
+
+    /**
+     * Lee el archivo "DatosAutos.csv".
+     * @param path Ruta al archivo.
+     * @param escuderias Lista de escuderías para asignar la relación.
+     * @return Lista de objetos Auto.
+     * @throws LogicaException Si el archivo no se encuentra o hay un error de formato.
+     */
+    public static List<Auto> leerAutosDesdeCSV(String path, List<Escuderia> escuderias) throws LogicaException {
+        List<Auto> autos = new ArrayList<>();
+        int nroLinea = 1;
+        try (BufferedReader br = new BufferedReader(new FileReader(path))) {
+            String linea;
+            br.readLine(); // Saltear encabezado
+            nroLinea++;
+
+            while ((linea = br.readLine()) != null) {
+                if (linea.trim().isEmpty()) { nroLinea++; continue; }
+                String[] valores = linea.split(",");
+                if (valores.length < 3) throw new LogicaException("Error en " + path + " (Línea " + nroLinea + "): Línea incompleta.");
+
+                String modelo = valores[0].trim();
+                String motor = valores[1].trim();
+                String nombreEscuderia = valores[2].trim();
+
+                Auto a = new Auto(modelo, motor);
+                Escuderia escuderiaAsignada = buscarEscuderiaPorNombre(escuderias, nombreEscuderia);
+                
+                if (escuderiaAsignada == null) {
+                    throw new LogicaException("Error en " + path + " (Línea " + nroLinea + "): No se encontró la escudería '" + nombreEscuderia + "'.");
+                }
+                
+                escuderiaAsignada.agregarAuto(a); // Establece relación bidireccional
+                autos.add(a);
+                nroLinea++;
+            }
+        } catch (IOException e) {
+            throw new LogicaException("Error  al leer el archivo " + path + ": " + e.getMessage());
         }
         return autos;
     }
 
-    //LEER CIRCUITO DESDE CSV
-    public static List<Circuito> leerCircuitosDesdeCSV(String path, List<Pais> paises) { // <--- Acepta la lista de Países
+    /**
+     * Lee el archivo "DatosCircuitos.csv".
+     * @param path Ruta al archivo.
+     * @param paises Lista de países para asignar la relación.
+     * @return Lista de objetos Circuito.
+     * @throws LogicaException Si el archivo no se encuentra o hay un error de formato.
+     */
+    public static List<Circuito> leerCircuitosDesdeCSV(String path, List<Pais> paises) throws LogicaException {
         List<Circuito> circuitos = new ArrayList<>();
+        int nroLinea = 1;
         try (BufferedReader br = new BufferedReader(new FileReader(path))) {
             br.readLine(); // Saltear encabezado
-
+            nroLinea++;
+            String linea;
             while ((linea = br.readLine()) != null) {
+                if (linea.trim().isEmpty()) { nroLinea++; continue; }
                 String[] valores = linea.split(",");
-                String nombre = valores[0];
-                double longitud = Double.parseDouble(valores[1].trim());
-                int idPais = Integer.parseInt(valores[2].trim()); // <-- Lee el nuevo ID
+                if (valores.length < 3) throw new LogicaException("Error en " + path + " (Línea " + nroLinea + "): Línea incompleta.");
 
-                // Busca el objeto Pais
-                Pais paisAsignado = buscarPaisPorId(paises, idPais);
+                try {
+                    String nombre = valores[0].trim();
+                    double longitud = Double.parseDouble(valores[1].trim());
+                    int idPais = Integer.parseInt(valores[2].trim());
 
-                // Crea el objeto con el País real, no con null
-                Circuito c = new Circuito(nombre, longitud, paisAsignado);
-                circuitos.add(c);
+                    Pais paisAsignado = buscarPaisPorId(paises, idPais);
+                    if (paisAsignado == null) {
+                        throw new LogicaException("Error en " + path + " (Línea " + nroLinea + "): No se encontró el país con ID " + idPais);
+                    }
+                    
+                    Circuito c = new Circuito(nombre, longitud, paisAsignado);
+                    circuitos.add(c);
+                    nroLinea++;
+                } catch (NumberFormatException e) {
+                    throw new LogicaException("Error en " + path + " (Línea " + nroLinea + "): Longitud o ID de país no son números válidos.");
+                }
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new LogicaException("Error  al leer el archivo " + path + ": " + e.getMessage());
         }
         return circuitos;
     }
 
-
-    //LEER CARRERA DESDE CSV
-    public static List<Carrera> leerCarrerasDesdeCSV(String path, List<Circuito> todosLosCircuitos) { // <--- Acepta la lista de Circuitos
+    /**
+     * Lee el archivo "DatosCarreras.csv".
+     * @param path Ruta al archivo.
+     * @param todosLosCircuitos Lista de circuitos para asignar la relación.
+     * @return Lista de objetos Carrera.
+     * @throws LogicaException Si el archivo no se encuentra o hay un error de formato.
+     */
+    public static List<Carrera> leerCarrerasDesdeCSV(String path, List<Circuito> todosLosCircuitos) throws LogicaException {
         List<Carrera> carreras = new ArrayList<>();
+        int nroLinea = 1;
         try (BufferedReader br = new BufferedReader(new FileReader(path))) {
             br.readLine(); // Saltear encabezado
-
+            nroLinea++;
+            String linea;
             while ((linea = br.readLine()) != null) {
+                if (linea.trim().isEmpty()) { nroLinea++; continue; }
                 String[] valores = linea.split(",");
-                String fechaRealizacion = valores[0];
-                int nroVueltas = Integer.parseInt(valores[1].trim());
-                String horaRealizacion = valores[2];
-                String nombreCircuito = valores[3]; // <-- Lee el nombre del circuito
+                if (valores.length < 4) throw new LogicaException("Error en " + path + " (Línea " + nroLinea + "): Línea incompleta.");
 
-                // Busca el objeto Circuito
-                Circuito circuitoAsignado = buscarCircuitoPorNombre(todosLosCircuitos, nombreCircuito);
+                try {
+                    String fechaRealizacion = valores[0].trim();
+                    int nroVueltas = Integer.parseInt(valores[1].trim());
+                    String horaRealizacion = valores[2].trim();
+                    String nombreCircuito = valores[3].trim();
 
-                // Saca el país desde el circuito
-                Pais paisAsignado = (circuitoAsignado != null) ? circuitoAsignado.getPais() : null;
+                    Circuito circuitoAsignado = buscarCircuitoPorNombre(todosLosCircuitos, nombreCircuito);
+                    if (circuitoAsignado == null) {
+                        throw new LogicaException("Error en " + path + " (Línea " + nroLinea + "): No se encontró el circuito '" + nombreCircuito + "'.");
+                    }
 
-                // Crea la Carrera con los objetos reales
-                Carrera c = new Carrera(fechaRealizacion, nroVueltas, horaRealizacion, paisAsignado, circuitoAsignado);
-                carreras.add(c);
+                    Pais paisAsignado = circuitoAsignado.getPais();
+                    Carrera c = new Carrera(fechaRealizacion, nroVueltas, horaRealizacion, paisAsignado, circuitoAsignado);
+                    carreras.add(c);
+                    nroLinea++;
+                } catch (NumberFormatException e) {
+                    throw new LogicaException("Error en " + path + " (Línea " + nroLinea + "): Nro de vueltas no es un número.");
+                }
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new LogicaException("Error  al leer el archivo " + path + ": " + e.getMessage());
         }
         return carreras;
     }
 
-    //LEER ESCUDERIAS DESDE CSV
-    public static List<Escuderia> leerEscuderiasDesdeCSV(String path) {
+    /**
+     * Lee el archivo "DatosEscuderias.csv".
+     * @param path Ruta al archivo.
+     * @return Lista de objetos Escuderia.
+     * @throws LogicaException Si el archivo no se encuentra o hay un error de formato.
+     */
+    public static List<Escuderia> leerEscuderiasDesdeCSV(String path) throws LogicaException {
         List<Escuderia> escuderias = new ArrayList<>();
-
+        int nroLinea = 1;
         try (BufferedReader br = new BufferedReader(new FileReader(path))) {
             String linea;
             br.readLine(); // Saltear encabezado
+            nroLinea++;
 
             while ((linea = br.readLine()) != null) {
+                if (linea.trim().isEmpty()) { nroLinea++; continue; }
                 String[] valores = linea.split(",");
+                if (valores.length < 1) throw new LogicaException("Error en " + path + " (Línea " + nroLinea + "): Línea incompleta.");
 
-                String nombre = valores[0];
-
+                String nombre = valores[0].trim();
                 Escuderia e = new Escuderia(nombre);
                 escuderias.add(e);
+                nroLinea++;
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new LogicaException("Error  al leer el archivo " + path + ": " + e.getMessage());
         }
         return escuderias;
     }
 
-    //LEER MECANICOS DESDE CSV
-    // Acepta la lista de países para poder buscar y asignar el objeto correcto
-    public static List<Mecanico> leerMecanicosDesdeCSV(String path, List<Pais> paises) {
+    /**
+     * Lee el archivo "DatosMecanicos.csv".
+     * @param path Ruta al archivo.
+     * @param paises Lista de países para asignar la relación.
+     * @return Lista de objetos Mecanico.
+     * @throws LogicaException Si el archivo no se encuentra o hay un error de formato.
+     */
+    public static List<Mecanico> leerMecanicosDesdeCSV(String path, List<Pais> paises) throws LogicaException {
         List<Mecanico> mecanicos = new ArrayList<>();
+        int nroLinea = 1;
         try (BufferedReader br = new BufferedReader(new FileReader(path))) {
             String linea;
             br.readLine(); // Saltear encabezado
+            nroLinea++;
 
             while ((linea = br.readLine()) != null) {
+                if (linea.trim().isEmpty()) { nroLinea++; continue; }
                 String[] valores = linea.split(",");
-                String dni = valores[0].trim();
-                String nombre = valores[1].trim();
-                String apellido = valores[2].trim();
-                
-                // 1. Lee el ID del país (en lugar de un String)
-                int idPais = Integer.parseInt(valores[3].trim()); 
-                
-                Especialidad esp = Especialidad.valueOf(valores[4].trim());
-                int aniosExperiencia = Integer.parseInt(valores[5].trim());
+                if (valores.length < 6) throw new LogicaException("Error en " + path + " (Línea " + nroLinea + "): Línea incompleta.");
 
-                // 2. Busca el objeto Pais usando el helper
-                Pais paisAsignado = buscarPaisPorId(paises, idPais);
+                try {
+                    String dni = valores[0].trim();
+                    String nombre = valores[1].trim();
+                    String apellido = valores[2].trim();
+                    int idPais = Integer.parseInt(valores[3].trim());
+                    Especialidad esp = Especialidad.valueOf(valores[4].trim().toUpperCase()); // Convertir a mayúsculas
+                    int aniosExperiencia = Integer.parseInt(valores[5].trim());
 
-                // 3. Pasa el objeto Pais al constructor
-                Mecanico m = new Mecanico(dni, nombre, apellido, paisAsignado, esp, aniosExperiencia, new ArrayList<>());
-                mecanicos.add(m);
+                    Pais paisAsignado = buscarPaisPorId(paises, idPais);
+                    if (paisAsignado == null) {
+                        throw new LogicaException("Error en " + path + " (Línea " + nroLinea + "): No se encontró el país con ID " + idPais);
+                    }
+                    
+                    Mecanico m = new Mecanico(dni, nombre, apellido, paisAsignado, esp, aniosExperiencia, new ArrayList<>());
+                    mecanicos.add(m);
+                    nroLinea++;
+                } catch (NumberFormatException e) {
+                    throw new LogicaException("Error en " + path + " (Línea " + nroLinea + "): ID de país o Años de exp. no son números.");
+                } catch (IllegalArgumentException e) {
+                    throw new LogicaException("Error en " + path + " (Línea " + nroLinea + "): Especialidad '" + valores[4].trim() + "' no válida.");
+                }
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new LogicaException("Error  al leer el archivo " + path + ": " + e.getMessage());
         }
-
         return mecanicos;
     }
 
-    //LEER PILOTOS DESDE CSV
-    // Acepta la lista de países
-    public static List<Piloto> leerPilotosDesdeCSV(String path, List<Pais> paises) {
+    /**
+     * Lee el archivo "DatosPilotos.csv".
+     * @param path Ruta al archivo.
+     * @param paises Lista de países para asignar la relación.
+     * @return Lista de objetos Piloto.
+     * @throws LogicaException Si el archivo no se encuentra o hay un error de formato.
+     */
+    public static List<Piloto> leerPilotosDesdeCSV(String path, List<Pais> paises) throws LogicaException {
         List<Piloto> pilotos = new ArrayList<>();
+        int nroLinea = 1;
         try (BufferedReader br = new BufferedReader(new FileReader(path))) {
             String linea;
             br.readLine(); // Saltear encabezado
+            nroLinea++;
 
             while ((linea = br.readLine()) != null) {
-                // Asegúrate de que tu CSV tenga la columna extra para el idPais
+                if (linea.trim().isEmpty()) { nroLinea++; continue; }
                 String[] valores = linea.split(",");
-                
-                // Evita líneas vacías o corruptas
-                if (valores.length < 9) continue; 
-                
-                String dni = valores[0].trim();
-                String nombre = valores[1].trim();
-                String apellido = valores[2].trim();
-                
-                // 1. Lee el ID del país (asumiendo que es la 4ta columna)
-                int idPais = Integer.parseInt(valores[3].trim()); 
-                
-                int numeroCompetencia = Integer.parseInt(valores[4].trim());
-                int victorias = Integer.parseInt(valores[5].trim());
-                int polePosition = Integer.parseInt(valores[6].trim());
-                int vueltasRapidas = Integer.parseInt(valores[7].trim());
-                int podios = Integer.parseInt(valores[8].trim());
+                if (valores.length < 9) {
+                    throw new LogicaException("Error en " + path + " (Línea " + nroLinea + "): La línea está incompleta.");
+                }
 
-                // 2. Busca el objeto Pais
-                Pais paisAsignado = buscarPaisPorId(paises, idPais);
+                try {
+                    String dni = valores[0].trim();
+                    String nombre = valores[1].trim();
+                    String apellido = valores[2].trim();
+                    int idPais = Integer.parseInt(valores[3].trim());
+                    int numeroCompetencia = Integer.parseInt(valores[4].trim());
+                    int victorias = Integer.parseInt(valores[5].trim());
+                    int polePosition = Integer.parseInt(valores[6].trim());
+                    int vueltasRapidas = Integer.parseInt(valores[7].trim());
+                    int podios = Integer.parseInt(valores[8].trim());
 
-                Piloto p = new Piloto(dni, nombre, apellido, paisAsignado, numeroCompetencia, victorias, polePosition, vueltasRapidas, podios);
-
-                pilotos.add(p);
+                    Pais paisAsignado = buscarPaisPorId(paises, idPais);
+                    if (paisAsignado == null) {
+                        throw new LogicaException("Error en " + path + " (Línea " + nroLinea + "): No se encontró el país con ID " + idPais);
+                    }
+                    
+                    Piloto p = new Piloto(dni, nombre, apellido, paisAsignado, numeroCompetencia, victorias, polePosition, vueltasRapidas, podios);
+                    pilotos.add(p);
+                    nroLinea++;
+                } catch (NumberFormatException e) {
+                    throw new LogicaException("Error en " + path + " (Línea " + nroLinea + "): Dato numérico (ID, stats) inválido.");
+                }
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new LogicaException("Error  al leer el archivo " + path + ": " + e.getMessage());
         }
-
         return pilotos;
     }
-    /**
-    *Lee el archivo de unión M-N y vincula los objetos.
-    */
-    public static void vincularMecanicosAEscuderias(String path, List<Mecanico> todosLosMecanicos, List<Escuderia> todasLasEscuderias) {
 
+    /**
+     * Lee el archivo de unión "DatosMecanicoEscuderia.csv" y vincula las entidades.
+     * @param path Ruta al archivo.
+     * @param todosLosMecanicos Lista de todos los mecánicos.
+     * @param todasLasEscuderias Lista de todas las escuderías.
+     * @throws LogicaException Si el archivo no se encuentra o hay un error de formato.
+     */
+    public static void vincularMecanicosAEscuderias(String path, List<Mecanico> todosLosMecanicos, List<Escuderia> todasLasEscuderias) throws LogicaException {
+        int nroLinea = 1;
         try (BufferedReader br = new BufferedReader(new FileReader(path))) {
             String linea;
             br.readLine(); // Saltear encabezado
+            nroLinea++;
 
-        while ((linea = br.readLine()) != null) {
-            String[] valores = linea.split(",");
-            String dniMecanico = valores[0].trim();
-            String nombreEscuderia = valores[1].trim();
+            while ((linea = br.readLine()) != null) {
+                if (linea.trim().isEmpty()) { nroLinea++; continue; }
+                String[] valores = linea.split(",");
+                if (valores.length < 2) throw new LogicaException("Error en " + path + " (Línea " + nroLinea + "): Línea incompleta.");
 
-            Mecanico mecanico = buscarMecanicoPorDni(todosLosMecanicos, dniMecanico);
-            Escuderia escuderia = buscarEscuderiaPorNombre(todasLasEscuderias, nombreEscuderia);
+                String dniMecanico = valores[0].trim();
+                String nombreEscuderia = valores[1].trim();
 
-            if (mecanico != null && escuderia != null) {
-                mecanico.agregarEscuderia(escuderia); //
-                escuderia.agregarMecanico(mecanico); //
+                Mecanico mecanico = buscarMecanicoPorDni(todosLosMecanicos, dniMecanico);
+                Escuderia escuderia = buscarEscuderiaPorNombre(todasLasEscuderias, nombreEscuderia);
+
+                if (mecanico == null) {
+                    throw new LogicaException("Error en " + path + " (Línea " + nroLinea + "): No se encontró el mecánico con DNI " + dniMecanico);
+                }
+                if (escuderia == null) {
+                    throw new LogicaException("Error en " + path + " (Línea " + nroLinea + "): No se encontró la escudería '" + nombreEscuderia + "'.");
+                }
+                
+                mecanico.agregarEscuderia(escuderia);
+                escuderia.agregarMecanico(mecanico);
+                nroLinea++;
             }
-        }
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new LogicaException("Error  al leer el archivo " + path + ": " + e.getMessage());
         }
     }
+
     /**
-     * Escribe un nuevo resultado de carrera al final del archivo CSV.
-     * Usa 'true' en FileWriter para modo "append" (añadir).
+     * Escribe un nuevo resultado de carrera al final del archivo CSV (modo 'append').
      *
-     * @param path La ruta al archivo DatosResultadoCarrera.csv
+     * @param path La ruta al archivo "DatosResultadoCarrera.csv".
      * @param resultado El objeto ResultadoCarrera a guardar.
+     * @throws LogicaException Si ocurre un error de E/S (IOException) al escribir.
      */
-    public static void escribirResultadoCSV(String path, ResultadoCarrera resultado) {
+    public static void escribirResultadoCSV(String path, ResultadoCarrera resultado) throws LogicaException {
         // Usamos try-with-resources para asegurarnos de que el writer se cierre
         try (FileWriter fw = new FileWriter(path, true); // <-- El 'true' es para AÑADIR (append)
             BufferedWriter bw = new BufferedWriter(fw);
@@ -324,24 +463,27 @@ private static Mecanico buscarMecanicoPorDni(List<Mecanico> mecanicos, String dn
             String linea = resultado.getPiloto().getDni() + "," +
                         resultado.getCarrera().getFechaRealizacion() + "," +
                         resultado.getPosicion();
-            
             out.println(linea); // Escribe la nueva línea
 
         } catch (IOException e) {
-            e.printStackTrace();
+            // Lanzamos LogicaException en lugar de e.printStackTrace()
+            throw new LogicaException("Error al escribir en el archivo " + path + ": " + e.getMessage());
         }
     }
 
-/**
-     * Lee los resultados desde el CSV.
-     * LANZA LogicaException si el archivo no se encuentra, está corrupto
-     * o si un DNI o fecha de carrera no se encuentra.
+    /**
+     * Lee el archivo "DatosResultadoCarrera.csv".
+     * @param path Ruta al archivo.
+     * @param pilotos Lista de pilotos para asignar la relación.
+     * @param carreras Lista de carreras para asignar la relación.
+     * @return Lista de objetos ResultadoCarrera.
+     * @throws LogicaException Si el archivo no se encuentra o hay un error de formato.
      */
     public static List<ResultadoCarrera> leerResultadosDesdeCSV(String path, List<Piloto> pilotos, List<Carrera> carreras)
-            throws LogicaException { //Declarar que puede lanzar la excepción
+            throws LogicaException {
 
         List<ResultadoCarrera> resultados = new ArrayList<>();
-        int nroLinea = 1; //Añadir contador de línea para errores claros
+        int nroLinea = 1;
 
         try (BufferedReader br = new BufferedReader(new FileReader(path))) {
             String linea;
@@ -356,38 +498,34 @@ private static Mecanico buscarMecanicoPorDni(List<Mecanico> mecanicos, String dn
 
                 String[] valores = linea.split(",");
                 if (valores.length < 3) {
-                    //Lanzar excepción en lugar de 'continue'
-                    throw new LogicaException("Error en DatosResultadoCarrera.csv (Línea " + nroLinea + "): La línea está incompleta.");
+                    throw new LogicaException("Error en " + path + " (Línea " + nroLinea + "): La línea está incompleta.");
                 }
 
                 String dniPiloto = valores[0].trim();
                 String fechaCarrera = valores[1].trim();
                 int posicion;
 
-                //Try-catch específico para el número
                 try {
                     posicion = Integer.parseInt(valores[2].trim());
                 } catch (NumberFormatException e) {
-                    throw new LogicaException("Error en DatosResultadoCarrera.csv (Línea " + nroLinea + "): La posición '" + valores[2].trim() + "' no es un número.");
+                    throw new LogicaException("Error en " + path + " (Línea " + nroLinea + "): La posición '" + valores[2].trim() + "' no es un número.");
                 }
 
                 Piloto pilotoAsignado = buscarPilotoPorDni(pilotos, dniPiloto);
                 Carrera carreraAsignada = buscarCarreraPorFecha(carreras, fechaCarrera);
 
-                //Lanzar excepción si no se encuentran los datos
                 if (pilotoAsignado == null) {
-                    throw new LogicaException("Error en DatosResultadoCarrera.csv (Línea " + nroLinea + "): No se encontró el piloto con DNI " + dniPiloto);
+                    throw new LogicaException("Error en " + path + " (Línea " + nroLinea + "): No se encontró el piloto con DNI " + dniPiloto);
                 }
                 if (carreraAsignada == null) {
-                    throw new LogicaException("Error en DatosResultadoCarrera.csv (Línea " + nroLinea + "): No se encontró la carrera con fecha " + fechaCarrera);
+                    throw new LogicaException("Error en " + path + " (Línea " + nroLinea + "): No se encontró la carrera con fecha " + fechaCarrera);
                 }
                 
                 ResultadoCarrera res = new ResultadoCarrera(pilotoAsignado, posicion, carreraAsignada);
                 resultados.add(res);
-                nroLinea++; // Incrementar al final del bucle
+                nroLinea++;
             }
         } catch (IOException e) {
-            //Capturar la IOException y lanzarla como LogicaException
             throw new LogicaException("Error al leer el archivo " + path + ": " + e.getMessage());
         }
         return resultados;

@@ -2,67 +2,126 @@ package tallerpoo.clases;
 
 import java.util.ArrayList;
 import java.util.List;
+
+/**
+ * Representa un vehículo (Auto) de Fórmula 1.
+ * Contiene información sobre su modelo, motor y la escudería a la que pertenece.
+ * También mantiene una lista de las carreras en las que ha participado (a través de AutoPiloto).
+ */
 public class Auto {
     private String modelo;
     private String motor;
-    //Asociación con autoPiloto
-    private List<AutoPiloto> autosPiloto;
-    //Asociación bidireccional: cada auto pertenece (0...1) a una escuderia
-    private Escuderia escuderia;
+    private List<AutoPiloto> autosPiloto; //Asociación con autoPiloto
+    private Escuderia escuderia; //Asociación bidireccional: cada auto pertenece (0...1) a una escuderia
 
-    //constructores por defecto
+    /**
+     * Constructor por defecto.
+     * Inicializa un auto con valores vacíos y una lista de participantes vacía.
+     */
     public Auto() {
-        this.modelo="";
-        this.motor="";
+        this.modelo = "";
+        this.motor = "";
         this.autosPiloto = new ArrayList<>();
     }
     
-    //Constructor para crear un auto nuevo del cual solo se conoce sus datos básicos
+    /**
+     * Constructor para crear un auto nuevo del cual solo se conoce sus datos básicos.
+     * Usado al registrar un auto nuevo.
+     *
+     * @param modelo El modelo del auto (ej. "SF-24").
+     * @param motor El fabricante del motor (ej. "Ferrari 066/12").
+     */
     public Auto(String modelo, String motor) {
         this.modelo = modelo;
         this.motor = motor;
         this.autosPiloto = new ArrayList<>();
     }
 
-    //Constructor para cargar un auto que ya existía, y se sabe todas sus relaciones
+    /**
+     * Constructor para cargar un auto que ya existía, y se sabe todas sus relaciones.
+     *
+     * @param modelo El modelo del auto.
+     * @param motor El fabricante del motor.
+     * @param autosPiloto La lista de participaciones (AutoPiloto) de este auto.
+     */
     public Auto(String modelo, String motor, List<AutoPiloto> autosPiloto) {
-        this.modelo=modelo;
-        this.motor=motor;
+        this.modelo = modelo;
+        this.motor = motor;
         this.autosPiloto = autosPiloto;
     }
 
-    //Gets y Sets
+    // --- Getters y Setters ---
+
+    /**
+     * Obtiene el modelo del auto.
+     * @return El modelo.
+     */
     public String getModelo() {
         return modelo;
     }
 
+    /**
+     * Obtiene el motor del auto.
+     * @return El motor.
+     */
     public String getMotor() {
         return motor;
     }
 
+    /**
+     * Establece el modelo del auto.
+     * @param modelo El nuevo modelo.
+     */
     public void setModelo(String modelo) {
-        this.modelo=modelo;
+        this.modelo = modelo;
     }
 
+    /**
+     * Establece el motor del auto.
+     * @param motor El nuevo motor.
+     */
     public void setMotor(String motor) {
-        this.motor=motor;
+        this.motor = motor;
     }
-    //Auto-Piloto
+
+    /**
+     * Obtiene la lista de participaciones (AutoPiloto) de este auto.
+     * @return Lista de AutoPiloto.
+     */
     public List<AutoPiloto> getAutosPiloto() {
         return autosPiloto;
     }
+
+    /**
+     * Establece la lista de participaciones (AutoPiloto) de este auto.
+     * @param autosPiloto La nueva lista de AutoPiloto.
+     */
     public void setAutosPiloto(List<AutoPiloto> autosPiloto) {
         this.autosPiloto = autosPiloto;
     }
+
+    /**
+     * Agrega una nueva participación (AutoPiloto) a la lista del auto.
+     * @param autoPiloto La participación a agregar.
+     */
     public void agregarAutoPiloto(AutoPiloto autoPiloto) {
         this.autosPiloto.add(autoPiloto);
     }
-    //Escuderia
-    public Escuderia getEscuderia (){ 
+
+    /**
+     * Obtiene la escudería dueña de este auto.
+     * @return La Escuderia.
+     */
+    public Escuderia getEscuderia() {
         return escuderia;
     }
-    public void setEscuderia (Escuderia escuderia){
+
+    /**
+     * Establece la escudería dueña de este auto.
+     * (Usado por Escuderia.agregarAuto para mantener la relación bidireccional).
+     * @param escuderia La escudería a asignar.
+     */
+    public void setEscuderia(Escuderia escuderia) {
         this.escuderia = escuderia;
     }
-    
 }

@@ -8,15 +8,19 @@ import tallerpoo.clases.Puntaje;
 import tallerpoo.clases.Escuderia;
 import tallerpoo.clases.Mecanico;
 import tallerpoo.clases.Circuito;
+import tallerpoo.clases.AutoPiloto;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import tallerpoo.logica.Utilidades;
 
-public class LogicaInformes{
+/**
+ * Contiene la lógica de negocio para generar los diferentes informes
+ * solicitados por el sistema.
+ */
+public class LogicaInformes {
     
-
     /**
      * Obtiene una lista detallada de resultados de carreras dentro de un rango de fechas.
      *
@@ -28,7 +32,6 @@ public class LogicaInformes{
     public List<ResultadoCarrera> getReporteResultadosPorFechas(SistemaGestion datos, String fechaDesde, String fechaHasta) {
         
         List<ResultadoCarrera> resultadosEnRango = new ArrayList<>();
-        
         //Se llama a la clase de Utilidades
         String fechaDesdeFormateada = Utilidades.formatearFecha(fechaDesde);
         String fechaHastaFormateada = Utilidades.formatearFecha(fechaHasta);
@@ -41,27 +44,34 @@ public class LogicaInformes{
             //Se llama a la clase de Utilidades
             String fechaCarreraFormateada = Utilidades.formatearFecha(fechaCarrera);
 
+            // Comprobar si las fechas formateadas no son nulas
+            if (fechaCarreraFormateada == null || fechaDesdeFormateada == null || fechaHastaFormateada == null) {
+                continue; // O manejar como un error
+            }
+
             boolean estaDespuesDeInicio = fechaCarreraFormateada.compareTo(fechaDesdeFormateada) >= 0;
             boolean estaAntesDeFin = fechaCarreraFormateada.compareTo(fechaHastaFormateada) <= 0;
-
             if (estaDespuesDeInicio && estaAntesDeFin) {
                 resultadosEnRango.add(resultado);
             }
         }
 
+        // Ordenar la lista
         Collections.sort(resultadosEnRango, new Comparator<ResultadoCarrera>() {
             @Override
             public int compare(ResultadoCarrera r1, ResultadoCarrera r2) {
-                
-                //Se llama a la clase de Utilidades
                 String fecha1 = Utilidades.formatearFecha(r1.getCarrera().getFechaRealizacion());
                 String fecha2 = Utilidades.formatearFecha(r2.getCarrera().getFechaRealizacion());
                 
-                int comparacionFecha = fecha1.compareTo(fecha2);
+                int comparacionFecha = 0;
+                if (fecha1 != null && fecha2 != null) {
+                    comparacionFecha = fecha1.compareTo(fecha2);
+                }
                 
-                if (comparacionFecha != 0) {
+                 if (comparacionFecha != 0) {
                     return comparacionFecha;
                 } else {
+                    // Si las fechas son iguales, ordena por posición
                     return Integer.compare(r1.getPosicion(), r2.getPosicion());
                 }
             }
@@ -69,28 +79,29 @@ public class LogicaInformes{
         return resultadosEnRango;
     }
 
-    /**Devuelve el ranking de pilotos ordenado.
-     * Llama a LogicaGestion para calcular y luego este método ordena.
-     *
-     * @param datos El objeto SistemaGestion (para los datos).
-     * @param logicaGestion El objeto LogicaGestion (para el cálculo).
-     * @return Una lista de PilotoPuntaje ordenada.
-     */
+     /**
+      * Devuelve el ranking de pilotos ordenado de mayor a menor puntaje.
+      * Llama a LogicaGestion.calcularPuntajes y luego ordena el resultado.
+      *
+      * @param datos El objeto SistemaGestion (para los datos).
+      * @param logicaGestion El objeto LogicaGestion (para el cálculo).
+      * @return Una lista de PilotoPuntaje ordenada.
+      */
     public List<PilotoPuntaje> getRankingPilotos(SistemaGestion datos, LogicaGestion logicaGestion) {
         
         //Llama al método de LogicaGestion para "Calcular"
         List<PilotoPuntaje> puntajesSinOrdenar = logicaGestion.calcularPuntajes(datos);
-
+        
         //Este método se encarga de "Rankear" (Ordenar)
         // Usa el compareTo que definiste en PilotoPuntaje
         Collections.sort(puntajesSinOrdenar);
-
+        
         //Devuelve la lista ordenada
         return puntajesSinOrdenar;
     }
 
-    /**Calcula la cantidad de veces que un piloto específico corrió en un circuito determinado.
-     * (Versión alternativa recorriendo todas las carreras del sistema).
+    /**
+     * Calcula la cantidad de veces que un piloto específico corrió en un circuito determinado.
      *
      * @param datos El objeto SistemaGestion que contiene la lista de todas las carreras.
      * @param pilotoBuscado El piloto a consultar.
@@ -100,11 +111,8 @@ public class LogicaInformes{
     public int getContadorPilotoEnCircuito(SistemaGestion datos, Piloto pilotoBuscado, Circuito circuitoBuscado) {
         
         int contador = 0;
-
-        //Obtenemos la lista de todas las carreras del sistema
         List<Carrera> todasLasCarreras = datos.getCarreras();
 
-        //Recorremos cada carrera, una por una
         for (Carrera carrera : todasLasCarreras) {
             
             //Verificamos si esta carrera es en el circuito que buscamos
@@ -112,29 +120,22 @@ public class LogicaInformes{
                 
                 //Si es en el circuito correcto, revisamos los participantes
                 List<AutoPiloto> participantesDeLaCarrera = carrera.getParticipantes();
-                
                 for (AutoPiloto participante : participantesDeLaCarrera) {
                     
                     //Verificamos si el piloto que buscamos está en esa lista
                     if (participante.getPiloto() != null && participante.getPiloto().equals(pilotoBuscado)) {
-                        
-                        //Coincide, sumamos 1
                         contador++;
-                        
-                        // Como un piloto solo corre una vez por carrera, dejamos de buscar en esta carrera y vamos a la siguiente.
+                        // Como un piloto solo corre una vez por carrera, salimos de este bucle
                         break;
                     }
                 }
             }
         }
-        
-        //Devolvemos el total
         return contador;
     }
+
     /**
-     * "Histórico de un piloto determinado"
-     * Devuelve el objeto Piloto, que ya contiene sus estadísticas.
-     * La clase que llama puede formatear la salida.
+     * Obtiene las estadísticas de un piloto específico.
      *
      * @param datos El SistemaGestion.
      * @param dni El DNI del piloto a buscar.
@@ -150,73 +151,71 @@ public class LogicaInformes{
     }
 
     /**
-     * "Histórico de cada piloto"
-     * Devuelve la lista COMPLETA de pilotos.
-     * La clase que llama puede iterar esta lista y mostrar las estadísticas.
+     * Obtiene el histórico de estadísticas de todos los pilotos.
      *
      * @param datos El SistemaGestion.
-     * @return La lista de todos los pilotos.
+     * @return La lista de todos los pilotos (que contienen sus propias estadísticas).
      */
     public List<Piloto> getEstadisticasTodosLosPilotos(SistemaGestion datos) {
         // Simplemente devuelve la lista que ya tiene el sistema
         return datos.getPilotos();
     }
+
     /**
-     * Informe de autos utilizados por escudería en diferentes carreras
-     * Devuelve una lista de todos los participantes de todas las carreras.
-     * El objeto AutoPiloto contiene toda la información necesaria para armar el reporte.
+     * Genera un informe de autos utilizados por escudería en diferentes carreras.
      *
      * @param datos El SistemaGestion.
-     * @return Una lista de todos los AutoPiloto registrados.
+     * @return Una lista de todos los AutoPiloto registrados, ordenada por escudería y fecha.
      */
     public List<AutoPiloto> getReporteAutosPorEscuderia(SistemaGestion datos) {
         
         List<AutoPiloto> informeCompleto = new ArrayList<>();
-        
         // Itera sobre todas las carreras
         for (Carrera c : datos.getCarreras()) {
             // Agrega todos los participantes de esa carrera a la lista
-            // (c.getParticipantes() devuelve la lista de AutoPiloto)
             informeCompleto.addAll(c.getParticipantes());
         }
 
-        // Ordenar la lista, por escudería
+        // Ordenar la lista, por escudería y luego por fecha
         Collections.sort(informeCompleto, new Comparator<AutoPiloto>() {
             @Override
             public int compare(AutoPiloto ap1, AutoPiloto ap2) {
-                String escuderia1 = (ap1.getAuto().getEscuderia() != null) ? ap1.getAuto().getEscuderia().getNombre() : "Z/Sin Escuderia";
-                String escuderia2 = (ap2.getAuto().getEscuderia() != null) ? ap2.getAuto().getEscuderia().getNombre() : "Z/Sin Escuderia";
+                String escuderia1 = (ap1.getAuto() != null && ap1.getAuto().getEscuderia() != null) ? ap1.getAuto().getEscuderia().getNombre() : "Z/Sin Escuderia";
+                String escuderia2 = (ap2.getAuto() != null && ap2.getAuto().getEscuderia() != null) ? ap2.getAuto().getEscuderia().getNombre() : "Z/Sin Escuderia";
                 
                 int compEscuderia = escuderia1.compareTo(escuderia2);
                 if (compEscuderia != 0) {
                     return compEscuderia;
                 }
-                
+  
                 // Si es la misma escudería, ordena por fecha de carrera
-                String fecha1 = formatearFecha(ap1.getCarrera().getFechaRealizacion());
-                String fecha2 = formatearFecha(ap2.getCarrera().getFechaRealizacion());
+                String fecha1 = Utilidades.formatearFecha(ap1.getCarrera().getFechaRealizacion());
+                String fecha2 = Utilidades.formatearFecha(ap2.getCarrera().getFechaRealizacion());
+                
+                if (fecha1 == null && fecha2 == null) return 0;
+                if (fecha1 == null) return 1;
+                if (fecha2 == null) return -1;
+                
                 return fecha1.compareTo(fecha2);
             }
         });
 
         return informeCompleto;
     }
+
     /**
-     * Informe de años de experiencia y especialidad de mecánicos por escudería.
-     * Devuelve la lista completa de escuderías.
-     * La lógica de presentación iterará sobre esta lista, ya que las escuderías
-     * (gracias a la carga de datos) ya contienen su lista de mecánicos.
+     * Genera un informe de años de experiencia y especialidad de mecánicos por escudería.
      *
      * @param datos El SistemaGestion.
-     * @return La lista de todas las Escuderias.
+     * @return La lista de todas las Escuderias (que contienen sus listas de mecánicos).
      */
     public List<Escuderia> getReporteMecanicosPorEscuderia(SistemaGestion datos) {
         // Los datos ya están vinculados, solo devolvemos la lista.
         return datos.getEscuderias();
     }
+
     /**
-     * Cantidad de carreras que se corrieron en un circuito determinado
-     * Cuenta cuántas carreras en el sistema están asociadas a un circuito específico.
+     * Cuenta la cantidad de carreras que se corrieron en un circuito determinado.
      *
      * @param datos El SistemaGestion que tiene la lista de carreras.
      * @param circuitoBuscado El objeto Circuito por el cual filtrar.
@@ -225,21 +224,14 @@ public class LogicaInformes{
     public int getContadorCarrerasEnCircuito(SistemaGestion datos, Circuito circuitoBuscado) {
         
         int contador = 0;
-
-        // 1. Obtenemos todas las carreras del sistema
         List<Carrera> todasLasCarreras = datos.getCarreras();
-
-        // 2. Recorremos la lista
+        
         for (Carrera carrera : todasLasCarreras) {
-            
-            // 3. Comparamos si el circuito de la carrera es el que buscamos
+            // Comparamos si el circuito de la carrera es el que buscamos
             if (carrera.getCircuito() != null && carrera.getCircuito().equals(circuitoBuscado)) {
-                // ¡Coincidencia! Sumamos al contador
                 contador++;
             }
         }
-        
-        // 4. Devolvemos el total
         return contador;
     }
 }

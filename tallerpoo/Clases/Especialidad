@@ -1,5 +1,11 @@
 package tallerpoo.clases;
 
+/**
+ * Enumeración que define las posibles especialidades de un Mecánico.
+ */
 public enum Especialidad {
-    MOTOR, NEUMATICOS, CHASIS, ELECTRONICA
+    MOTOR, 
+    NEUMATICOS, 
+    CHASIS, 
+    ELECTRONICA
 }

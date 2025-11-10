@@ -2,7 +2,6 @@ package tallerpoo.logica;
 
 import tallerpoo.archivos.SistemaGestion;
 import tallerpoo.logica.LogicaException;
-
 import tallerpoo.clases.Piloto;
 import tallerpoo.clases.Mecanico;
 import tallerpoo.clases.Especialidad;
@@ -10,35 +9,59 @@ import tallerpoo.clases.Auto;
 import tallerpoo.clases.Escuderia;
 import tallerpoo.clases.Circuito;
 import tallerpoo.clases.Pais;
+import tallerpoo.clases.Carrera;
 
+/**
+ * Contiene la lógica para registrar nuevas entidades en el sistema.
+ * Realiza validaciones de duplicados antes de crear y agregar los objetos.
+ */
 public class LogicaRegistro {
 
+    /**
+     * Registra un nuevo piloto en el sistema.
+     * Verifica que el DNI no esté duplicado.
+     *
+     * @param datos El SistemaGestion donde se agregará el piloto.
+     * @param dni DNI del piloto.
+     * @param nombre Nombre del piloto.
+     * @param apellido Apellido del piloto.
+     * @param pais País de origen.
+     * @param nroComp Número de competición.
+     * @param victorias Conteo inicial de victorias.
+     * @param polePosition Conteo inicial de poles.
+     * @param vueltasRapidas Conteo inicial de vueltas rápidas.
+     * @param podios Conteo inicial de podios.
+     * @throws LogicaException Si el DNI ya existe.
+     */
+    public void registrarPiloto(SistemaGestion datos, String dni, String nombre, String apellido, Pais pais, int nroComp, int victorias, int polePosition, int vueltasRapidas, int podios)
+            throws LogicaException {
 
-/**Registra un nuevo piloto.
- * Verifica que el DNI no esté duplicado.
- * @throws LogicaException Si el DNI ya existe.
- */
-public void registrarPiloto(SistemaGestion datos, String dni, String nombre, String apellido, Pais pais, int nroComp, int victorias, int polePosition, int vueltasRapidas, int podios)
-    throws LogicaException {
-
-    // 1. Verificar duplicados
-    for (Piloto p : datos.getPilotos()) {
-        if (p.getDni().equals(dni)) {
-            throw new LogicaException("Ya existe un piloto con DNI " + dni); //
+        // 1. Verificar duplicados
+        for (Piloto p : datos.getPilotos()) {
+            if (p.getDni().equals(dni)) {
+                throw new LogicaException("Ya existe un piloto con DNI " + dni);
+            }
         }
+
+        // 2. Si pasa el control, crea el objeto
+        Piloto nuevoPiloto = new Piloto(dni, nombre, apellido, pais, nroComp, victorias, polePosition, vueltasRapidas, podios);
+        // 3. Llama a la persistencia
+        datos.agregarPiloto(nuevoPiloto);
     }
 
-    // 2. Si pasa el control, crea el objeto
-    //Se pasa "pais" al constructor
-    Piloto nuevoPiloto = new Piloto(dni, nombre, apellido, pais, nroComp, victorias, polePosition, vueltasRapidas, podios); //
 
-    // 3. Llama a la persistencia
-    datos.agregarPiloto(nuevoPiloto); //
-}
-
-
-    /**Registra un nuevo mecánico.
+    /**
+     * Registra un nuevo mecánico en el sistema.
      * Verifica que el DNI no esté duplicado.
+     *
+     * @param datos El SistemaGestion donde se agregará el mecánico.
+     * @param dni DNI del mecánico.
+     * @param nombre Nombre del mecánico.
+     * @param apellido Apellido del mecánico.
+     * @param pais País de origen.
+     * @param especialidad Especialidad del mecánico.
+     * @param aniosExperiencia Años de experiencia.
+     * @throws LogicaException Si el DNI ya existe.
      */
     public void registrarMecanico(SistemaGestion datos, String dni, String nombre, String apellido, Pais pais, Especialidad especialidad, int aniosExperiencia)
             throws LogicaException {
@@ -49,25 +72,35 @@ public void registrarPiloto(SistemaGestion datos, String dni, String nombre, Str
             }
         }
         
-        // El constructor de Mecanico espera una lista de escuderías, la iniciamos vacía y luego se puede gestionar en LogicaGestion
+        // El constructor de Mecanico espera una lista de escuderías, la iniciamos vacía
         Mecanico nuevoMecanico = new Mecanico(dni, nombre, apellido, pais, especialidad, aniosExperiencia, new java.util.ArrayList<>());
-        //Llama a la persistencia
         datos.agregarMecanico(nuevoMecanico);
     }
 
 
-    /**Registra un nuevo auto.
-     * Verifica que el modelo no esté duplicado.
+    /**
+     * Registra un nuevo auto en el sistema.
+     * (Nota: No verifica duplicados actualmente).
+     *
+     * @param datos El SistemaGestion donde se agregará el auto.
+     * @param modelo Modelo del auto.
+     * @param motor Motor del auto.
      */
     public void registrarAuto(SistemaGestion datos, String modelo, String motor) {
+        // TODO: Añadir verificación de duplicados por modelo si es necesario
         Auto nuevoAuto = new Auto(modelo, motor);
-        //Llama a la persistencia
         datos.agregarAuto(nuevoAuto);
     }
 
 
-    /**Registra una nueva escudería.
-     * Verifica que el nombre no esté duplicado.
+    /**
+     * Registra una nueva escudería en el sistema.
+     * Verifica que el nombre no esté duplicado (ignorando mayúsculas/minúsculas).
+     *
+     * @param datos El SistemaGestion donde se agregará la escudería.
+     * @param nombre Nombre de la escudería.
+     * @param pais País de origen.
+     * @throws LogicaException Si el nombre de la escudería ya existe.
      */
     public void registrarEscuderia(SistemaGestion datos, String nombre, Pais pais) throws LogicaException {
         for (Escuderia e : datos.getEscuderias()) {
@@ -76,15 +109,20 @@ public void registrarPiloto(SistemaGestion datos, String dni, String nombre, Str
             }
         }
         Escuderia nuevaEscuderia = new Escuderia(nombre);
-        //Se utiliza el set para asignar el país, para no completar las listas con null solo para ingresar el país
-        nuevaEscuderia.setPais(pais);
-        //Llama a la persistencia
+        nuevaEscuderia.setPais(pais); // Asigna el país
         datos.agregarEscuderia(nuevaEscuderia);
     }
 
 
-    /**Registra un nuevo circuito.
-     * Verifica que el nombre no esté duplicado.
+    /**
+     * Registra un nuevo circuito en el sistema.
+     * Verifica que el nombre no esté duplicado (ignorando mayúsculas/minúsculas).
+     *
+     * @param datos El SistemaGestion donde se agregará el circuito.
+     * @param nombre Nombre del circuito.
+     * @param longitud Longitud del circuito.
+     * @param pais País de ubicación.
+     * @throws LogicaException Si el nombre del circuito ya existe.
      */
     public void registrarCircuito(SistemaGestion datos, String nombre, double longitud, Pais pais) throws LogicaException {
         for (Circuito c : datos.getCircuitos()) {
@@ -94,13 +132,18 @@ public void registrarPiloto(SistemaGestion datos, String dni, String nombre, Str
         }
         
         Circuito nuevoCircuito = new Circuito(nombre, longitud, pais);
-        //Llama a la persistencia
         datos.agregarCircuito(nuevoCircuito);
     }
 
 
-    /**Registra un nuevo país.
+    /**
+     * Registra un nuevo país en el sistema.
      * Verifica que el ID no esté duplicado.
+     *
+     * @param datos El SistemaGestion donde se agregará el país.
+     * @param idPais ID único del país.
+     * @param descripcion Nombre del país.
+     * @throws LogicaException Si el ID del país ya existe.
      */
     public void registrarPais(SistemaGestion datos, int idPais, String descripcion) throws LogicaException {
         for (Pais p : datos.getPaises()) {
@@ -113,8 +156,17 @@ public void registrarPiloto(SistemaGestion datos, String dni, String nombre, Str
         datos.agregarPais(nuevoPais);
     }
 
-    /**Registrar una nueva carrera.
-     * Verifica que no haya dos carreras en el mismo circuito el mismo día.
+    /**
+     * Registra una nueva carrera en el sistema.
+     * Verifica que no haya dos carreras en el mismo circuito en la misma fecha.
+     *
+     * @param datos El SistemaGestion donde se agregará la carrera.
+     * @param fechaRealizacion Fecha de la carrera.
+     * @param nroVueltas Número de vueltas.
+     * @param horaRealizacion Hora de la carrera.
+     * @param pais País (obtenido del circuito).
+     * @param circuito Circuito de la carrera.
+     * @throws LogicaException Si ya existe una carrera en ese circuito y fecha.
      */
     public void registrarCarrera(SistemaGestion datos, String fechaRealizacion, int nroVueltas, String horaRealizacion, Pais pais, Circuito circuito)
             throws LogicaException {

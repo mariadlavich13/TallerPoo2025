@@ -3,65 +3,118 @@ package tallerpoo.clases;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Carrera{
+/**
+ * Representa un evento de Carrera en una fecha, hora y circuito específicos.
+ * Contiene la lista de todos los participantes (AutoPiloto) de la carrera.
+ */
+public class Carrera {
     private String fechaRealizacion;
     private int nroVueltas;
     private String horaRealizacion;
-    private Pais pais; // Relación con Pais
+    private Pais pais; // Relación con Pais (del circuito)
     private Circuito circuito; //asociación carrera (0..*)-(1) Circuito
-    private List<AutoPiloto> participantes;//asociación carrea (1) - (1..*)Autopiloto
+    private List<AutoPiloto> participantes; //asociación carrea (1) - (1..*)Autopiloto
 
-    //constructor
+    /**
+     * Constructor para crear una nueva carrera.
+     * Inicializa la lista de participantes vacía.
+     *
+     * @param fechaRealizacion Fecha de la carrera (ej. "16-03-2025").
+     * @param nroVueltas Número de vueltas programadas.
+     * @param horaRealizacion Hora de inicio de la carrera.
+     * @param pais El Pais donde se corre (obtenido del circuito).
+     * @param circuito El Circuito donde se corre.
+     */
     public Carrera(String fechaRealizacion, int nroVueltas, String horaRealizacion, Pais pais, Circuito circuito) {
         this.fechaRealizacion = fechaRealizacion;
-        this.nroVueltas= nroVueltas;
+        this.nroVueltas = nroVueltas;
         this.horaRealizacion = horaRealizacion;
         this.pais = pais;
         this.circuito = circuito;
         this.participantes = new ArrayList<>();
     }
-    //Gets y Sets
+    
+    // --- Getters y Setters ---
+
+    /**
+     * Obtiene la fecha de realización de la carrera.
+     * @return La fecha.
+     */
     public String getFechaRealizacion() {
         return fechaRealizacion;
     }
 
+    /**
+     * Obtiene el número de vueltas de la carrera.
+     * @return El número de vueltas.
+     */
     public int getNroVueltas() {
         return nroVueltas;
     }
+
+    /**
+     * Obtiene la hora de realización de la carrera.
+     * @return La hora.
+     */
     public String getHoraRealizacion() {
         return horaRealizacion;
     }
+
+    /**
+     * Obtiene el país donde se realiza la carrera.
+     * @return El Pais.
+     */
     public Pais getPais() {
         return pais;
     }
-    //circuito
+
+    /**
+     * Obtiene el circuito de la carrera.
+     * @return El Circuito.
+     */
     public Circuito getCircuito() {
         return circuito;
     }
+
+    /**
+     * Establece el circuito de la carrera.
+     * @param circuito El nuevo circuito.
+     */
     public void setCircuito(Circuito circuito) {
         this.circuito = circuito;
     }
-    //participantes
-    public List<AutoPiloto> getParticipantes (){
+
+    /**
+     * Obtiene la lista de todos los participantes (AutoPiloto) de esta carrera.
+     * @return Lista de AutoPiloto.
+     */
+    public List<AutoPiloto> getParticipantes() {
         return participantes;
     }
-    public void setParticipantes (List<AutoPiloto>participantes){
+
+    /**
+     * Establece la lista de participantes de esta carrera.
+     * @param participantes La nueva lista de AutoPiloto.
+     */
+    public void setParticipantes(List<AutoPiloto> participantes) {
         this.participantes = participantes;
     }
-    public void agregarParticipante (AutoPiloto ap) {
+
+    /**
+     * Agrega un nuevo participante (AutoPiloto) a la carrera.
+     * Establece la relación bidireccional asignando esta carrera al objeto AutoPiloto.
+     *
+     * @param ap La participación (AutoPiloto) a agregar.
+     */
+    public void agregarParticipante(AutoPiloto ap) {
         if (ap == null) return;
-        //Registra al participante en la colección interna de la carrera. Así cumple la multiplicidad “Carrera 1 — 1..* AutoPiloto”
+        //Registra al participante en la colección interna de la carrera.
+        //Así cumple la multiplicidad “Carrera 1 — 1..* AutoPiloto”
         this.participantes.add(ap);
         ap.setCarrera(this);
     }
     
-    /**
-     * Metodo estatico para calcular el puntaje total de un piloto a partir
-     * de una lista de todos los resultados de las carreras.
-     * @param piloto El piloto para el cual se calculara el puntaje.
-     * @param resultados La lista completa de resultados de todas las carreras.
-     * @return El puntaje total acumulado por el piloto.
-    
+    /* (Método estático de puntaje comentado en el original)
     public static int calcularPuntajeTotal(Piloto piloto, List<ResultadoCarrera> resultados) {
         int puntajeTotal = 0;
         for (ResultadoCarrera resultado : resultados) {
@@ -71,6 +124,5 @@ public class Carrera{
         }
         return puntajeTotal;
     }
-*/
-
+    */
 }
