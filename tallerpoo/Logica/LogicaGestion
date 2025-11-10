@@ -59,11 +59,11 @@ public class LogicaGestion {
      */
     public void registrarResultado(SistemaGestion datos, Carrera carrera, Piloto piloto, int posicion, boolean tuvoVueltaRapida) throws LogicaException {
         
-        // --- 1. Validaciones ---
+        //Validaciones
         if (posicion < 1) {
             throw new LogicaException("La posición debe ser mayor o igual a 1.");
-        } 
-        // Validación: ¿El piloto realmente participó en la carrera?
+        }
+        //¿El piloto realmente participó en la carrera?
         boolean participo = false;
         for (AutoPiloto ap : carrera.getParticipantes()) {
             if (ap.getPiloto().equals(piloto)) {
@@ -75,18 +75,18 @@ public class LogicaGestion {
             throw new LogicaException("El piloto " + piloto.getNombre() + " no participó en esta carrera.");
         }
         
-        // Validación: ¿Ya existe un resultado para este piloto en esta carrera?
+        //¿Ya existe un resultado para este piloto en esta carrera?
         for (ResultadoCarrera r : datos.getResultadosCarreras()) {
             if (r.getCarrera().equals(carrera) && r.getPiloto().equals(piloto)) {
                 throw new LogicaException("El piloto " + piloto.getNombre() + " ya tiene un resultado registrado para esta carrera.");
             }
         }
 
-        // --- 2. Crear y guardar el objeto resultado ---
+        // Crear y guardar el objeto resultado
         ResultadoCarrera resultado = new ResultadoCarrera(piloto, posicion, carrera);
-        datos.agregarResultadoCarrera(resultado); 
+        datos.agregarResultadoCarrera(resultado);
 
-        // --- 3. Actualizar estadísticas del Piloto ---
+        //Actualizar estadísticas del Piloto
         if (posicion == 1) {
             piloto.setVictorias(piloto.getVictorias() + 1);
         }
@@ -97,7 +97,7 @@ public class LogicaGestion {
             piloto.setVueltasRapidas(piloto.getVueltasRapidas() + 1);
         }
 
-        // --- 4. Guardar en el archivo CSV ---
+        //Guardar en el archivo CSV
         String pathResultados = "Datos/DatosResultadoCarrera.csv";
         GestorArchivos.escribirResultadoCSV(pathResultados, resultado);
     }
@@ -176,54 +176,13 @@ public class LogicaGestion {
         
         return nuevaASociacion;
     }
-    /**
-     * Registra el resultado final de un piloto en una carrera.
-     */
-    public void registrarResultado(SistemaGestion datos, Carrera carrera, Piloto piloto, int posicion, boolean tuvoVueltaRapida) throws LogicaException {
-        
-        if (posicion < 1) {
-            throw new LogicaException("La posición debe ser mayor o igual a 1.");
-        } 
-        boolean participo = false;
-        for (AutoPiloto ap : carrera.getParticipantes()) {
-            if (ap.getPiloto().equals(piloto)) {
-                participo = true;
-                break;
-            }
-        }
-        if (!participo) {
-            throw new LogicaException("El piloto " + piloto.getNombre() + " no participó en esta carrera.");
-        }
-        
-        // CAMBIO 2: Corregido a "getResultadosCarreras()"
-        for (ResultadoCarrera r : datos.getResultadosCarreras()) {
-            if (r.getCarrera().equals(carrera) && r.getPiloto().equals(piloto)) {
-                throw new LogicaException("El piloto " + piloto.getNombre() + " ya tiene un resultado registrado para esta carrera.");
-            }
-        }
 
-        ResultadoCarrera resultado = new ResultadoCarrera(piloto, posicion, carrera);
-        datos.agregarResultadoCarrera(resultado);
-
-        if (posicion == 1) {
-            piloto.setVictorias(piloto.getVictorias() + 1);
-        }
-        if (posicion <= 3) {
-            piloto.setPodios(piloto.getPodios() + 1);
-        }  
-        if (tuvoVueltaRapida) {
-            piloto.setVueltasRapidas(piloto.getVueltasRapidas() + 1);
-        }
-
-        String pathResultados = "Datos/DatosResultadoCarrera.csv";
-        GestorArchivos.escribirResultadoCSV(pathResultados, resultado);
-    }
     /**
      * Asocia un piloto a una escudería, validando fechas.
      */
     public PilotoEscuderia asociarPilotoAEscuderia(Piloto piloto, Escuderia escuderia, String desdeFecha) throws LogicaException {
         
-        // CAMBIO 4: Usamos la utilidad para formatear
+        //Usamos la utilidad para formatear
         String nuevaFechaInicioF = Utilidades.formatearFecha(desdeFecha);
         String ultimaFechaFinF = "0000-00-00"; 
 
@@ -235,14 +194,14 @@ public class LogicaGestion {
                         + " ya tiene un contrato activo con la escudería " + pe.getEscuderia().getNombre() + ".");
             }
 
-            // CAMBIO 5: Comparamos fechas formateadas
+            //Comparamos fechas formateadas
             String finExistenteF = Utilidades.formatearFecha(hastaFecha);
             if (finExistenteF != null && finExistenteF.compareTo(ultimaFechaFinF) > 0) {
                 ultimaFechaFinF = finExistenteF;
             }
         }
 
-        // CAMBIO 6: Control de superposición de fechas
+        //Control de superposición de fechas
         if (nuevaFechaInicioF.compareTo(ultimaFechaFinF) <= 0) {
             throw new LogicaException("La fecha de inicio (" + desdeFecha + ") se superpone con un contrato anterior."
                     + " Debe ser posterior a " + ultimaFechaFinF + " (formato YYYY-MM-DD).");
@@ -278,7 +237,7 @@ public class LogicaGestion {
         }
 
         if (asociacionActiva != null) {
-            // CAMBIO 7: Validamos que la fecha de fin sea posterior a la de inicio
+            //Validamos que la fecha de fin sea posterior a la de inicio
             String nuevaFechaFinF = Utilidades.formatearFecha(hastaFecha);
             String fechaInicioActivoF = Utilidades.formatearFecha(asociacionActiva.getDesdeFecha());
 
