@@ -29,7 +29,7 @@ public class LogicaInformes{
         
         List<ResultadoCarrera> resultadosEnRango = new ArrayList<>();
         
-        // CAMBIO 3: Se llama a la clase de Utilidades
+        //Se llama a la clase de Utilidades
         String fechaDesdeFormateada = Utilidades.formatearFecha(fechaDesde);
         String fechaHastaFormateada = Utilidades.formatearFecha(fechaHasta);
 
@@ -38,7 +38,7 @@ public class LogicaInformes{
             Carrera carreraDelResultado = resultado.getCarrera();
             String fechaCarrera = carreraDelResultado.getFechaRealizacion();
             
-            // CAMBIO 4: Se llama a la clase de Utilidades
+            //Se llama a la clase de Utilidades
             String fechaCarreraFormateada = Utilidades.formatearFecha(fechaCarrera);
 
             boolean estaDespuesDeInicio = fechaCarreraFormateada.compareTo(fechaDesdeFormateada) >= 0;
@@ -53,13 +53,13 @@ public class LogicaInformes{
             @Override
             public int compare(ResultadoCarrera r1, ResultadoCarrera r2) {
                 
-                // CAMBIO 5: Se llama a la clase de Utilidades
+                //Se llama a la clase de Utilidades
                 String fecha1 = Utilidades.formatearFecha(r1.getCarrera().getFechaRealizacion());
                 String fecha2 = Utilidades.formatearFecha(r2.getCarrera().getFechaRealizacion());
                 
                 int comparacionFecha = fecha1.compareTo(fecha2);
                 
-                 if (comparacionFecha != 0) {
+                if (comparacionFecha != 0) {
                     return comparacionFecha;
                 } else {
                     return Integer.compare(r1.getPosicion(), r2.getPosicion());
@@ -69,7 +69,7 @@ public class LogicaInformes{
         return resultadosEnRango;
     }
 
-     /**Devuelve el ranking de pilotos ordenado.
+    /**Devuelve el ranking de pilotos ordenado.
      * Llama a LogicaGestion para calcular y luego este método ordena.
      *
      * @param datos El objeto SistemaGestion (para los datos).

@@ -153,34 +153,6 @@ public class LogicaGestion {
      * @return El objeto de asociación PilotoEscuderia creado.
      * @throws LogicaException Si el piloto ya tiene un contrato activo.
      */
-    /**
-     *Asocia piloto a auto en una carrera.
-     */
-    public AutoPiloto asociarPilotoAutoACarrera(Carrera carrera, Piloto piloto, Auto auto, String fechaAsignacion) throws LogicaException {
-        
-        for (AutoPiloto participante : carrera.getParticipantes()) {
-            if (participante.getAuto().equals(auto)) {
-                throw new LogicaException("El auto " + auto.getModelo() + " ya está asignado a otro piloto en esta carrera.");
-            }
-        }
-        
-        for (AutoPiloto participante : carrera.getParticipantes()) {
-            if (participante.getPiloto().equals(piloto)) {
-                throw new LogicaException("El piloto " + piloto.getNombre() + " ya está participando con otro auto en esta carrera.");
-            }
-        }
-
-        AutoPiloto nuevaASociacion = new AutoPiloto(fechaAsignacion, piloto, auto, carrera);
-        carrera.agregarParticipante(nuevaASociacion);
-        piloto.agregarAutoPiloto(nuevaASociacion);
-        auto.agregarAutoPiloto(nuevaASociacion);
-        
-        return nuevaASociacion;
-    }
-
-    /**
-     * Asocia un piloto a una escudería, validando fechas.
-     */
     public PilotoEscuderia asociarPilotoAEscuderia(Piloto piloto, Escuderia escuderia, String desdeFecha) throws LogicaException {
         
         //Usamos la utilidad para formatear
@@ -222,9 +194,6 @@ public class LogicaGestion {
      * @param escuderia La escudería de la que se desvincula.
      * @param hastaFecha La fecha de fin de contrato (ej. "31/12/2025").
      * @throws LogicaException Si no se encuentra un contrato activo entre ambos.
-     */
-    /**
-     * Termina el contrato de un piloto, validando fechas.
      */
     public void desvincularPilotoDeEscuderia(Piloto piloto, Escuderia escuderia, String hastaFecha) throws LogicaException {
         

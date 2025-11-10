@@ -14,26 +14,27 @@ import tallerpoo.clases.Pais;
 public class LogicaRegistro {
 
 
-    /**Registra un nuevo piloto.
-     * Verifica que el DNI no esté duplicado.
-     * @throws LogicaException Si el DNI ya existe.
-     */
-public void registrarPiloto(SistemaGestion datos, String dni, String nombre, String apellido, int nroComp, int victorias, int polePosition, int vueltasRapidas, int podios)
+/**Registra un nuevo piloto.
+ * Verifica que el DNI no esté duplicado.
+ * @throws LogicaException Si el DNI ya existe.
+ */
+public void registrarPiloto(SistemaGestion datos, String dni, String nombre, String apellido, Pais pais, int nroComp, int victorias, int polePosition, int vueltasRapidas, int podios)
     throws LogicaException {
-        
-        // 1. Verificar duplicados
-        for (Piloto p : datos.getPilotos()) {
-            if (p.getDni().equals(dni)) {
-                throw new LogicaException("Ya existe un piloto con DNI " + dni);
-            }
+
+    // 1. Verificar duplicados
+    for (Piloto p : datos.getPilotos()) {
+        if (p.getDni().equals(dni)) {
+            throw new LogicaException("Ya existe un piloto con DNI " + dni); //
         }
-        
-        // 2. Si pasa el control, crea el objeto
-        Piloto nuevoPiloto = new Piloto(dni, nombre, apellido, nroComp, victorias, polePosition, vueltasRapidas, podios);
-        
-        // 3. Llama a la persistencia
-        datos.agregarPiloto(nuevoPiloto);
     }
+
+    // 2. Si pasa el control, crea el objeto
+    //Se pasa "pais" al constructor
+    Piloto nuevoPiloto = new Piloto(dni, nombre, apellido, pais, nroComp, victorias, polePosition, vueltasRapidas, podios); //
+
+    // 3. Llama a la persistencia
+    datos.agregarPiloto(nuevoPiloto); //
+}
 
 
     /**Registra un nuevo mecánico.
