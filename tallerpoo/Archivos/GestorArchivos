@@ -10,6 +10,7 @@ import tallerpoo.clases.Mecanico;
 import tallerpoo.clases.Piloto;
 import tallerpoo.clases.Pais;
 import tallerpoo.clases.ResultadoCarrera;
+import tallerpoo.logica.LogicaException;
 
 public class GestorArchivos{
 
@@ -37,37 +38,37 @@ public class GestorArchivos{
         return paises;
     }
 
-    // Helper para buscar un Pais por ID
+    //Helper para buscar un Pais por ID
     private static Pais buscarPaisPorId(List<Pais> paises, int id) {
     for (Pais p : paises) {
         if (p.getIdPais() == id) {
             return p;
         }
     }
-    return null; // O lanzar una excepción si no se encuentra
+    return null;
     }
 
-    // Helper para buscar un Circuito por Nombre
+    //Helper para buscar un Circuito por Nombre
     private static Circuito buscarCircuitoPorNombre(List<Circuito> circuitos, String nombre) {
     for (Circuito c : circuitos) {
         if (c.getNombre().equalsIgnoreCase(nombre.trim())) {
             return c;
         }
     }
-    return null; // O lanzar una excepción
+    return null;
     }
 
 
-    // NUEVO HELPER para buscar Escuderia por nombre
+    //Helper para buscar Escuderia por nombre
     private static Escuderia buscarEscuderiaPorNombre(List<Escuderia> escuderias, String nombre) {
         for (Escuderia e : escuderias) {
             if (e.getNombre().equalsIgnoreCase(nombre.trim())) {
                 return e;
             }
         }
-        return null; // O lanzar una excepción
+        return null;
     }
-    // HELPER para buscar Mecánico por DNI
+    //Helper para buscar Mecánico por DNI
 private static Mecanico buscarMecanicoPorDni(List<Mecanico> mecanicos, String dni) {
     for (Mecanico m : mecanicos) {
         if (m.getDni().equals(dni.trim())) {
@@ -76,9 +77,28 @@ private static Mecanico buscarMecanicoPorDni(List<Mecanico> mecanicos, String dn
     }
     return null;
 }
+// Helper para buscar Piloto por DNI
+    private static Piloto buscarPilotoPorDni(List<Piloto> pilotos, String dni) {
+        for (Piloto p : pilotos) {
+            if (p.getDni().equals(dni.trim())) {
+                return p;
+            }
+        }
+        return null;
+    }
+
+    // Helper para buscar Carrera por Fecha
+    private static Carrera buscarCarreraPorFecha(List<Carrera> carreras, String fecha) {
+        for (Carrera c : carreras) {
+            if (c.getFechaRealizacion().equals(fecha.trim())) {
+                return c;
+            }
+        }
+        return null;
+    }
 
     //LEER AUTOS DESDE CSV
-    public static List<Auto> leerAutosDesdeCSV(String path, List<Escuderia> escuderias) { // <-- ACEPTA ESCUDERIAS
+    public static List<Auto> leerAutosDesdeCSV(String path, List<Escuderia> escuderias) { //ACEPTA ESCUDERIAS
         List<Auto> autos = new ArrayList<>();
         try (BufferedReader br = new BufferedReader(new FileReader(path))) {
             String linea;
@@ -88,7 +108,7 @@ private static Mecanico buscarMecanicoPorDni(List<Mecanico> mecanicos, String dn
                 String[] valores = linea.split(",");
                 String modelo = valores[0].trim();
                 String motor = valores[1].trim();
-                String nombreEscuderia = valores[2].trim(); // <-- LEE LA NUEVA COLUMNA
+                String nombreEscuderia = valores[2].trim(); // LEE LA NUEVA COLUMNA
 
                 Auto a = new Auto(modelo, motor);
                 
@@ -96,7 +116,7 @@ private static Mecanico buscarMecanicoPorDni(List<Mecanico> mecanicos, String dn
                 Escuderia escuderiaAsignada = buscarEscuderiaPorNombre(escuderias, nombreEscuderia);
 
                 if (escuderiaAsignada != null) {
-                    // ¡Aquí establecemos la relación en AMBAS direcciones!
+                    // Aquí establecemos la relación en AMBAS direcciones
                     // Esto usa tus métodos agregarAuto(a) y setEscuderia(this)
                     escuderiaAsignada.agregarAuto(a);
                 }
@@ -127,7 +147,7 @@ private static Mecanico buscarMecanicoPorDni(List<Mecanico> mecanicos, String dn
                 // Crea el objeto con el País real, no con null
                 Circuito c = new Circuito(nombre, longitud, paisAsignado);
                 circuitos.add(c);
-            }   
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -262,7 +282,7 @@ private static Mecanico buscarMecanicoPorDni(List<Mecanico> mecanicos, String dn
         return pilotos;
     }
     /**
-    * NUEVO MÉTODO: Lee el archivo de unión M-N y vincula los objetos.
+    *Lee el archivo de unión M-N y vincula los objetos.
     */
     public static void vincularMecanicosAEscuderias(String path, List<Mecanico> todosLosMecanicos, List<Escuderia> todasLasEscuderias) {
 
@@ -270,7 +290,7 @@ private static Mecanico buscarMecanicoPorDni(List<Mecanico> mecanicos, String dn
             String linea;
             br.readLine(); // Saltear encabezado
 
-         while ((linea = br.readLine()) != null) {
+        while ((linea = br.readLine()) != null) {
             String[] valores = linea.split(",");
             String dniMecanico = valores[0].trim();
             String nombreEscuderia = valores[1].trim();
@@ -297,18 +317,79 @@ private static Mecanico buscarMecanicoPorDni(List<Mecanico> mecanicos, String dn
     public static void escribirResultadoCSV(String path, ResultadoCarrera resultado) {
         // Usamos try-with-resources para asegurarnos de que el writer se cierre
         try (FileWriter fw = new FileWriter(path, true); // <-- El 'true' es para AÑADIR (append)
-             BufferedWriter bw = new BufferedWriter(fw);
-             PrintWriter out = new PrintWriter(bw)) 
+            BufferedWriter bw = new BufferedWriter(fw);
+            PrintWriter out = new PrintWriter(bw))
         {
             // Formato: dni_piloto, fecha_carrera, posicion
             String linea = resultado.getPiloto().getDni() + "," +
-                           resultado.getCarrera().getFechaRealizacion() + "," +
-                           resultado.getPosicion();
+                        resultado.getCarrera().getFechaRealizacion() + "," +
+                        resultado.getPosicion();
             
             out.println(linea); // Escribe la nueva línea
 
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+/**
+     * Lee los resultados desde el CSV.
+     * LANZA LogicaException si el archivo no se encuentra, está corrupto
+     * o si un DNI o fecha de carrera no se encuentra.
+     */
+    public static List<ResultadoCarrera> leerResultadosDesdeCSV(String path, List<Piloto> pilotos, List<Carrera> carreras)
+            throws LogicaException { //Declarar que puede lanzar la excepción
+
+        List<ResultadoCarrera> resultados = new ArrayList<>();
+        int nroLinea = 1; //Añadir contador de línea para errores claros
+
+        try (BufferedReader br = new BufferedReader(new FileReader(path))) {
+            String linea;
+            br.readLine(); // Saltear encabezado
+            nroLinea++;
+
+            while ((linea = br.readLine()) != null) {
+                if (linea.trim().isEmpty()) {
+                    nroLinea++;
+                    continue;
+                }
+
+                String[] valores = linea.split(",");
+                if (valores.length < 3) {
+                    //Lanzar excepción en lugar de 'continue'
+                    throw new LogicaException("Error en DatosResultadoCarrera.csv (Línea " + nroLinea + "): La línea está incompleta.");
+                }
+
+                String dniPiloto = valores[0].trim();
+                String fechaCarrera = valores[1].trim();
+                int posicion;
+
+                //Try-catch específico para el número
+                try {
+                    posicion = Integer.parseInt(valores[2].trim());
+                } catch (NumberFormatException e) {
+                    throw new LogicaException("Error en DatosResultadoCarrera.csv (Línea " + nroLinea + "): La posición '" + valores[2].trim() + "' no es un número.");
+                }
+
+                Piloto pilotoAsignado = buscarPilotoPorDni(pilotos, dniPiloto);
+                Carrera carreraAsignada = buscarCarreraPorFecha(carreras, fechaCarrera);
+
+                //Lanzar excepción si no se encuentran los datos
+                if (pilotoAsignado == null) {
+                    throw new LogicaException("Error en DatosResultadoCarrera.csv (Línea " + nroLinea + "): No se encontró el piloto con DNI " + dniPiloto);
+                }
+                if (carreraAsignada == null) {
+                    throw new LogicaException("Error en DatosResultadoCarrera.csv (Línea " + nroLinea + "): No se encontró la carrera con fecha " + fechaCarrera);
+                }
+                
+                ResultadoCarrera res = new ResultadoCarrera(pilotoAsignado, posicion, carreraAsignada);
+                resultados.add(res);
+                nroLinea++; // Incrementar al final del bucle
+            }
+        } catch (IOException e) {
+            //Capturar la IOException y lanzarla como LogicaException
+            throw new LogicaException("Error al leer el archivo " + path + ": " + e.getMessage());
+        }
+        return resultados;
     }
 }
