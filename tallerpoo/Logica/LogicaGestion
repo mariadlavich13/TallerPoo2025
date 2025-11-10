@@ -11,6 +11,7 @@ import tallerpoo.clases.Escuderia;
 import tallerpoo.clases.Mecanico;
 import tallerpoo.clases.PilotoEscuderia;
 import tallerpoo.logica.Utilidades;
+import tallerpoo.logica.LogicaException;
 
 public class LogicaGestion {
     /**
@@ -294,4 +295,20 @@ public class LogicaGestion {
         mecanico.agregarEscuderia(escuderia);
     }
 
+    /**
+ * Asigna una pole position a un piloto y actualiza sus estadísticas.
+ *
+ * @param piloto El piloto que obtuvo la pole.
+ * @throws LogicaException Si el piloto es nulo.
+ */
+public void asignarPolePosition(Piloto piloto) throws LogicaException {
+    if (piloto == null) {
+        throw new LogicaException("El piloto no puede ser nulo.");
+    }
+
+    // Actualiza la estadística del piloto
+    piloto.setPolePosition(piloto.getPolePosition() + 1); //
+
+    // Solo lo actualiza en memoria (temporal).
+}
 }
