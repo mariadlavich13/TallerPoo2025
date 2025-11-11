@@ -1,4 +1,4 @@
-package tallerpoo.clases;
+package clases;
 
 /**
  * Clase asociativa que vincula un Piloto y un Auto a una Carrera específica.
@@ -101,5 +101,13 @@ public class AutoPiloto {
      */
     public void setCarrera(Carrera carrera) {
         this.carrera = carrera;
+    }
+
+    @Override
+    public String toString() {
+        return "Fecha asignado: " + fechaAsignacion +
+                " - Piloto: " + (piloto != null ? piloto.getNombre() + " " + piloto.getApellido() : "N/A") +
+                ", Auto: " + (auto != null ? auto.getModelo() : "N/A") +
+                ", Carrera: " + (carrera != null ? carrera.getCircuito().getNombre() : "N/A");
     }
 }

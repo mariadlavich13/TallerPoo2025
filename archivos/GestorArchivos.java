@@ -1,17 +1,17 @@
-package tallerpoo.archivos;
+package archivos;
 
 import java.io.*;
 import java.util.*;
-import tallerpoo.clases.Auto;
-import tallerpoo.clases.Escuderia;
-import tallerpoo.clases.Carrera;
-import tallerpoo.clases.Circuito;
-import tallerpoo.clases.Mecanico;
-import tallerpoo.clases.Piloto;
-import tallerpoo.clases.Pais;
-import tallerpoo.clases.ResultadoCarrera;
-import tallerpoo.clases.Especialidad; // Importa Especialidad
-import tallerpoo.logica.LogicaException;
+import clases.Auto;
+import clases.Escuderia;
+import clases.Carrera;
+import clases.Circuito;
+import clases.Mecanico;
+import clases.Piloto;
+import clases.Pais;
+import clases.ResultadoCarrera;
+import clases.Especialidad;
+import logica.LogicaException;
 
 /**
  * Clase de utilidad estática para manejar la lectura y escritura
@@ -443,31 +443,6 @@ public class GestorArchivos {
             }
         } catch (IOException e) {
             throw new LogicaException("Error  al leer el archivo " + path + ": " + e.getMessage());
-        }
-    }
-
-    /**
-     * Escribe un nuevo resultado de carrera al final del archivo CSV (modo 'append').
-     *
-     * @param path La ruta al archivo "DatosResultadoCarrera.csv".
-     * @param resultado El objeto ResultadoCarrera a guardar.
-     * @throws LogicaException Si ocurre un error de E/S (IOException) al escribir.
-     */
-    public static void escribirResultadoCSV(String path, ResultadoCarrera resultado) throws LogicaException {
-        // Usamos try-with-resources para asegurarnos de que el writer se cierre
-        try (FileWriter fw = new FileWriter(path, true); // <-- El 'true' es para AÑADIR (append)
-            BufferedWriter bw = new BufferedWriter(fw);
-            PrintWriter out = new PrintWriter(bw))
-        {
-            // Formato: dni_piloto, fecha_carrera, posicion
-            String linea = resultado.getPiloto().getDni() + "," +
-                        resultado.getCarrera().getFechaRealizacion() + "," +
-                        resultado.getPosicion();
-            out.println(linea); // Escribe la nueva línea
-
-        } catch (IOException e) {
-            // Lanzamos LogicaException en lugar de e.printStackTrace()
-            throw new LogicaException("Error al escribir en el archivo " + path + ": " + e.getMessage());
         }
     }
 

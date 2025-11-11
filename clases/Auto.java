@@ -1,4 +1,4 @@
-package tallerpoo.clases;
+package clases;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -124,4 +124,16 @@ public class Auto {
     public void setEscuderia(Escuderia escuderia) {
         this.escuderia = escuderia;
     }
+
+
+    /**
+ * Representación en String del Auto.
+ * @return Una cadena que muestra el Modelo y el Motor.
+ */
+@Override
+public String toString() {
+    // Ejemplo: "SF-24 (Ferrari 066/12) - Ferrari"
+    String nombreEscuderia = (this.escuderia != null) ? " - " + this.escuderia.getNombre() : "";
+    return "Modelo: " + this.modelo + " (" + this.motor + ")" + nombreEscuderia;
+}
 }

@@ -1,15 +1,14 @@
-package tallerpoo.logica;
+package logica;
 
-import tallerpoo.archivos.SistemaGestion;
-import tallerpoo.logica.LogicaException;
-import tallerpoo.clases.Piloto;
-import tallerpoo.clases.Mecanico;
-import tallerpoo.clases.Especialidad;
-import tallerpoo.clases.Auto;
-import tallerpoo.clases.Escuderia;
-import tallerpoo.clases.Circuito;
-import tallerpoo.clases.Pais;
-import tallerpoo.clases.Carrera;
+import archivos.SistemaGestion;
+import clases.Piloto;
+import clases.Mecanico;
+import clases.Especialidad;
+import clases.Auto;
+import clases.Escuderia;
+import clases.Circuito;
+import clases.Pais;
+import clases.Carrera;
 
 /**
  * Contiene la lógica para registrar nuevas entidades en el sistema.
@@ -87,7 +86,7 @@ public class LogicaRegistro {
      * @param motor Motor del auto.
      */
     public void registrarAuto(SistemaGestion datos, String modelo, String motor) {
-        // TODO: Añadir verificación de duplicados por modelo si es necesario
+        //Añadir verificación de duplicados por modelo si es necesario
         Auto nuevoAuto = new Auto(modelo, motor);
         datos.agregarAuto(nuevoAuto);
     }
@@ -150,7 +149,11 @@ public class LogicaRegistro {
             if (p.getIdPais() == idPais) {
                 throw new LogicaException("Ya existe un país con el ID " + idPais);
             }
-        }
+
+            if (p.getDescripcion().equalsIgnoreCase(descripcion)) {
+                throw new LogicaException("Ya existe un país con el nombre " + descripcion);
+            }
+            }
         
         Pais nuevoPais = new Pais(idPais, descripcion, new java.util.ArrayList<>(), new java.util.ArrayList<>(), new java.util.ArrayList<>(), new java.util.ArrayList<>());
         datos.agregarPais(nuevoPais);

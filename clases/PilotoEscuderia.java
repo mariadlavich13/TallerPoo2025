@@ -1,6 +1,5 @@
-package tallerpoo.clases;
+package clases;
 
-import java.util.List;
 
 /**
  * Clase asociativa que vincula un Piloto a una Escuderia durante un período de tiempo.
@@ -103,5 +102,14 @@ public class PilotoEscuderia {
      */
     public void setEscuderia(Escuderia escuderia) {
         this.escuderia = escuderia;
+    }
+    @Override
+    public String toString() {
+        return "El piloto estará en la escuderia (" +
+                "desdeFecha:'" + desdeFecha + '\'' +
+                ", hastaFecha:'" + hastaFecha + '\'' +
+                ", piloto:" + piloto +
+                ", escuderia:" + escuderia +
+                ')';
     }
 }

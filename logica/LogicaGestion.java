@@ -1,18 +1,15 @@
-package tallerpoo.logica;
+package logica;
 
-import tallerpoo.archivos.SistemaGestion;
-import tallerpoo.clases.Piloto;
-import tallerpoo.clases.Auto;
-import tallerpoo.clases.Carrera;
-import tallerpoo.clases.AutoPiloto;
-import tallerpoo.clases.ResultadoCarrera;
-import tallerpoo.archivos.GestorArchivos;
-import tallerpoo.clases.Puntaje;
-import tallerpoo.clases.Escuderia;
-import tallerpoo.clases.Mecanico;
-import tallerpoo.clases.PilotoEscuderia;
-import tallerpoo.logica.Utilidades;
-import tallerpoo.logica.LogicaException;
+import archivos.SistemaGestion;
+import clases.Piloto;
+import clases.Auto;
+import clases.Carrera;
+import clases.AutoPiloto;
+import clases.ResultadoCarrera;
+import clases.Puntaje;
+import clases.Escuderia;
+import clases.Mecanico;
+import clases.PilotoEscuderia;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -60,11 +57,10 @@ public class LogicaGestion {
         return nuevaASociacion; // Devolvemos el objeto creado
     }
 
-    /**
+/**
      * Registra el resultado final de un piloto en una carrera.
      * Esto guarda el resultado en la lista de SistemaGestion, actualiza las
-     * estadísticas del piloto (victorias, podios, vueltas rápidas) y
-     * escribe el resultado en el archivo CSV "DatosResultadoCarrera.csv".
+     * estadísticas del piloto (victorias, podios, vueltas rápidas).
      *
      * @param datos El sistema de gestión con todas las listas.
      * @param carrera La carrera que finalizó.
@@ -72,7 +68,8 @@ public class LogicaGestion {
      * @param posicion La posición final (1, 2, 3...).
      * @param tuvoVueltaRapida true si este piloto hizo la vuelta rápida, false si no.
      * @throws LogicaException Si la posición es inválida (< 1), si el piloto
-     * no participó en la carrera, o si ya tiene un resultado registrado para la misma.
+     * no participó en la carrera, o si ya tiene un resultado registrado para la misma,
+     * O SI LA POSICIÓN YA HA SIDO ASIGNADA A OTRO PILOTO.
      */
     public void registrarResultado(SistemaGestion datos, Carrera carrera, Piloto piloto, int posicion, boolean tuvoVueltaRapida) throws LogicaException {
         
@@ -98,6 +95,13 @@ public class LogicaGestion {
                 throw new LogicaException("El piloto " + piloto.getNombre() + " ya tiene un resultado registrado para esta carrera.");
             }
         }
+        // ¿Ya existe un resultado con la misma posición en esta carrera? (no se permiten empates)
+        for (ResultadoCarrera r : datos.getResultadosCarreras()) {
+            // Revisa si, para la misma carrera, ya existe un resultado con la misma posición
+            if (r.getCarrera().equals(carrera) && r.getPosicion() == posicion) {
+                throw new LogicaException("La posición " + posicion + " ya ha sido asignada al piloto " + r.getPiloto().getNombre() + " " + r.getPiloto().getApellido() + " en esta carrera.");
+            }
+        }
 
         // --- 2. Crear y guardar el objeto resultado en memoria ---
         ResultadoCarrera resultado = new ResultadoCarrera(piloto, posicion, carrera);
@@ -109,14 +113,10 @@ public class LogicaGestion {
         }
         if (posicion <= 3) {
             piloto.setPodios(piloto.getPodios() + 1);
-        }  
+        }
         if (tuvoVueltaRapida) {
             piloto.setVueltasRapidas(piloto.getVueltasRapidas() + 1);
         }
-
-        // --- 4. Guardar en el archivo CSV ---
-        String pathResultados = "Datos/DatosResultadoCarrera.csv";
-        GestorArchivos.escribirResultadoCSV(pathResultados, resultado);
     }
 
     /**

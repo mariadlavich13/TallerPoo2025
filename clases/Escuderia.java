@@ -1,4 +1,4 @@
-package tallerpoo.clases;
+package clases;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -163,5 +163,9 @@ public class Escuderia {
         if (a == null) return;
         this.autos.add(a);
         a.setEscuderia(this);
+    }
+    @Override
+    public String toString() {
+        return nombre;
     }
 }

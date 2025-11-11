@@ -1,7 +1,7 @@
-package tallerpoo.clases;
+package clases;
 
-import java.util.ArrayList; // Importa ArrayList
-import java.util.List; // Importa List
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Representa a un Mecánico, extendiendo la clase Persona.
@@ -97,5 +97,11 @@ public class Mecanico extends Persona {
      */
     public void agregarEscuderia(Escuderia escuderia) {
         this.escuderias.add(escuderia);
+    }
+    @Override
+    public String toString() {
+        return "Mecánico: " + getNombre() + " " + getApellido() +
+                ", Especialidad: " + especialidad +
+                ", Años de experiencia: " + aniosExperiencia;
     }
 }

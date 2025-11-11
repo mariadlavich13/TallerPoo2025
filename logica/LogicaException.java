@@ -1,4 +1,4 @@
-package tallerpoo.logica;
+package logica;
 
 /**
  * Excepción personalizada para la capa de Lógica.

@@ -1,4 +1,4 @@
-package tallerpoo.clases;
+package clases;
 
 /**
  * Enumeración que define el sistema de puntuación oficial de la Fórmula 1.

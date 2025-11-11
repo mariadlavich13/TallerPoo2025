@@ -1,4 +1,4 @@
-package tallerpoo.clases;
+package clases;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -110,5 +110,10 @@ public class Pais {
      */
     public void agregarCarrera(Carrera carrera) {
         this.carreras.add(carrera);
+    }
+
+    @Override
+    public String toString() {
+        return descripcion;
     }
 }

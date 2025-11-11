@@ -1,6 +1,5 @@
-package tallerpoo.clases;
+package clases;
 
-import java.util.List;
 
 /**
  * Clase para almacenar el resultado final de un piloto en una carrera específica.

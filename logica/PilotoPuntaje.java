@@ -1,6 +1,6 @@
-package tallerpoo.logica;
+package logica;
 
-import tallerpoo.clases.Piloto;
+import clases.Piloto;
 
 /**
  * Clase contenedora temporal usada para los informes de ranking.

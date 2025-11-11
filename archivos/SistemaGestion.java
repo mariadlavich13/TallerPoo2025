@@ -1,15 +1,15 @@
-package tallerpoo.archivos;
+package archivos;
 
-import tallerpoo.logica.LogicaException;
+import logica.LogicaException;
 
-import tallerpoo.clases.Pais;
-import tallerpoo.clases.Auto;
-import tallerpoo.clases.Carrera;
-import tallerpoo.clases.Circuito;
-import tallerpoo.clases.Escuderia;
-import tallerpoo.clases.Mecanico;
-import tallerpoo.clases.Piloto;
-import tallerpoo.clases.ResultadoCarrera;
+import clases.Pais;
+import clases.Auto;
+import clases.Carrera;
+import clases.Circuito;
+import clases.Escuderia;
+import clases.Mecanico;
+import clases.Piloto;
+import clases.ResultadoCarrera;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -33,7 +33,6 @@ public class SistemaGestion {
     /**
      * Constructor de SistemaGestion.
      * Inicializa todas las listas internas como vacías (ArrayLists)
-     * para evitar NullPointerException.
      */
     public SistemaGestion() {
         this.paises = new ArrayList<>();
@@ -59,15 +58,15 @@ public class SistemaGestion {
      */
     public void cargarDatos() throws LogicaException {
         // Define las rutas de los archivos de datos
-        String pathPaises = "Datos/DatosPaises.csv";
-        String pathAutos = "Datos/DatosAutos.csv";
-        String pathCarreras = "Datos/DatosCarreras.csv";
-        String pathCircuitos = "Datos/DatosCircuitos.csv";
-        String pathEscuderias = "Datos/DatosEscuderias.csv";
-        String pathMecanicos = "Datos/DatosMecanicos.csv";
-        String pathPilotos = "Datos/DatosPilotos.csv";
-        String pathMecanicoEscuderia = "Datos/DatosMecanicoEscuderia.csv";
-        String pathResultados = "Datos/DatosResultadoCarrera.csv";
+        String pathPaises = "datos/DatosPais.csv";
+        String pathAutos = "datos/DatosAuto.csv";
+        String pathCarreras = "datos/DatosCarrera.csv";
+        String pathCircuitos = "datos/DatosCircuito.csv";
+        String pathEscuderias = "datos/DatosEscuderia.csv";
+        String pathMecanicos = "datos/DatosMecanico.csv";
+        String pathPilotos = "datos/DatosPiloto.csv";
+        String pathMecanicoEscuderia = "datos/DatosMecanicoEscuderia.csv";
+        String pathResultados = "datos/DatosResultadoCarrera.csv";
 
         // 1. Cargar entidades SIN dependencias
         this.paises = GestorArchivos.leerPaisesDesdeCSV(pathPaises);

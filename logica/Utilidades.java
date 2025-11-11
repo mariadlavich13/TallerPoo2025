@@ -1,4 +1,4 @@
-package tallerpoo.logica;
+package logica;
 
 /**
  * Clase de utilidad con métodos estáticos (static)

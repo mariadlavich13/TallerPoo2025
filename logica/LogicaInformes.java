@@ -1,19 +1,16 @@
-package tallerpoo.logica;
+package logica;
 
-import tallerpoo.archivos.SistemaGestion;
-import tallerpoo.clases.Carrera;
-import tallerpoo.clases.ResultadoCarrera;
-import tallerpoo.clases.Piloto;
-import tallerpoo.clases.Puntaje;
-import tallerpoo.clases.Escuderia;
-import tallerpoo.clases.Mecanico;
-import tallerpoo.clases.Circuito;
-import tallerpoo.clases.AutoPiloto;
+import archivos.SistemaGestion;
+import clases.Carrera;
+import clases.ResultadoCarrera;
+import clases.Piloto;
+import clases.Escuderia;
+import clases.Circuito;
+import clases.AutoPiloto;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import tallerpoo.logica.Utilidades;
 
 /**
  * Contiene la lógica de negocio para generar los diferentes informes
@@ -68,7 +65,7 @@ public class LogicaInformes {
                     comparacionFecha = fecha1.compareTo(fecha2);
                 }
                 
-                 if (comparacionFecha != 0) {
+                if (comparacionFecha != 0) {
                     return comparacionFecha;
                 } else {
                     // Si las fechas son iguales, ordena por posición
@@ -79,7 +76,7 @@ public class LogicaInformes {
         return resultadosEnRango;
     }
 
-     /**
+    /**
       * Devuelve el ranking de pilotos ordenado de mayor a menor puntaje.
       * Llama a LogicaGestion.calcularPuntajes y luego ordena el resultado.
       *
@@ -187,7 +184,6 @@ public class LogicaInformes {
                 if (compEscuderia != 0) {
                     return compEscuderia;
                 }
-  
                 // Si es la misma escudería, ordena por fecha de carrera
                 String fecha1 = Utilidades.formatearFecha(ap1.getCarrera().getFechaRealizacion());
                 String fecha2 = Utilidades.formatearFecha(ap2.getCarrera().getFechaRealizacion());

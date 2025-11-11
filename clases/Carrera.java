@@ -1,4 +1,4 @@
-package tallerpoo.clases;
+package clases;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -125,4 +125,11 @@ public class Carrera {
         return puntajeTotal;
     }
     */
+
+    @Override
+    public String toString() {
+        return "Carrera en " + circuito.getNombre() + ", " + pais.getDescripcion() +
+                " el " + fechaRealizacion + " a las " + horaRealizacion +
+                " con " + nroVueltas + " vueltas.";
+    }
 }

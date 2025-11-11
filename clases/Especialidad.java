@@ -1,4 +1,4 @@
-package tallerpoo.clases;
+package clases;
 
 /**
  * Enumeración que define las posibles especialidades de un Mecánico.

@@ -1,4 +1,4 @@
-package tallerpoo.clases;
+package clases;
 
 /**
  * Representa una pista de carreras (Circuito).
@@ -79,5 +79,10 @@ public class Circuito {
      */
     public void setPais(Pais pais) {
         this.pais = pais;
+    }
+
+    @Override
+    public String toString() {
+        return nombre + " (" + longitud + " km), " + pais.getDescripcion();
     }
 }

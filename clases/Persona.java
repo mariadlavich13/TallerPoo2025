@@ -1,7 +1,4 @@
-package tallerpoo.clases;
-
-import java.util.List;
-import java.util.ArrayList;
+package clases;
 
 /**
  * Clase base abstracta para Piloto y Mecanico.
@@ -106,7 +103,6 @@ public class Persona {
      */
     @Override
     public String toString() {
-        return "Persona: dni: " + dni + ", nombre: " + nombre + ", apellido: " + apellido +
-                ", pais: " + (pais != null ? pais.getIdPais() : "Sin país");
+        return  "Nombre: " + nombre + " " + apellido + " " +"País: " + (pais != null ? pais.getDescripcion() : "Sin país");
     }
 }
