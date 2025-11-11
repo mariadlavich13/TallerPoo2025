@@ -17,10 +17,8 @@ import java.awt.event.ActionListener;
 import java.util.List;
 import java.util.ArrayList; // Necesario para la lista de participantes
 
-/**
- * PANEL DE PRUEBAS DE GUI (Test Harness)
- * * Esta clase es una GUI de Swing (JFrame) que carga todo el sistema
- * y proporciona un menú para probar CADA UNA de las funciones de la capa de Lógica.
+/** Esta clase es una GUI de Swing (JFrame) que carga todo el sistema
+ * y proporciona un menú para probar cada una de las funciones de la capa de Lógica.
  * Atrapa y muestra las 'LogicaException' usando JOptionPane.
  * * Es la base funcional sobre la cual se puede construir la GUI estética.
  */
@@ -57,9 +55,8 @@ public class MainGUI extends JFrame {
             // Intenta cargar todos los CSV
             sistema.cargarDatos(); //
             mostrarInfo("Sistema cargado exitosamente.\n" +
-                        sistema.getPilotos().size() + " pilotos, " +
-                        sistema.getCarreras().size() + " carreras, " +
-                        sistema.getResultadosCarreras().size() + " resultados cargados.");
+                        sistema.getPilotos().size() + " pilotos y " +
+                        sistema.getCarreras().size() + " carreras cargados.");
         } catch (LogicaException e) {
             // Si algo falla (CSV faltante, dato corrupto, ID no encontrado),
             // la GUI lo captura y lo muestra.
@@ -82,12 +79,12 @@ public class MainGUI extends JFrame {
             "Usa los menús de arriba para probar cada método de tu capa de lógica.\n\n" +
             "1. Carga de datos: Exitosa.\n" +
             "2. Manejo de excepciones: Activo.\n" +
-            "3. Lógica de negocio: Conectada.\n\n" +
-            "¡Listo para probar!"
+            "3. Lógica de negocio: Conectada.\n\n"
+            
         );
         bienvenida.setEditable(false);
         bienvenida.setFont(new Font("Arial", Font.PLAIN, 16));
-        bienvenida.setMargin(new Insets(20, 20, 20, 20));
+        bienvenida.setMargin(new Insets(10, 10, 10, 10));
         add(bienvenida, BorderLayout.CENTER);
 
         // 4. Construir la Barra de Menús
@@ -113,12 +110,12 @@ public class MainGUI extends JFrame {
 
         // --- Menú GESTIONAR (LógicaGestion) ---
         JMenu menuGestion = new JMenu("Gestionar (LógicaGestion)");
-        menuGestion.add(crearItemMenu("Asociar Piloto a Auto en Carrera...", e -> testAsociarPilotoAutoCarrera()));
-        menuGestion.add(crearItemMenu("Registrar Resultado de Carrera...", e -> testRegistrarResultado()));
         menuGestion.add(crearItemMenu("Asociar Piloto a Escudería (Contrato)...", e -> testAsociarPilotoEscuderia()));
         menuGestion.add(crearItemMenu("Desvincular Piloto de Escudería (Fin Contrato)...", e -> testDesvincularPilotoEscuderia()));
         menuGestion.add(crearItemMenu("Asociar Auto a Escudería...", e -> testAsociarAutoAEscuderia()));
         menuGestion.add(crearItemMenu("Asociar Mecánico a Escudería...", e -> testAsociarMecanicoAEscuderia()));
+        menuGestion.add(crearItemMenu("Asociar Piloto a Auto en Carrera...", e -> testAsociarPilotoAutoCarrera()));
+        menuGestion.add(crearItemMenu("Registrar Resultado de Carrera...", e -> testRegistrarResultado()));
         menuGestion.add(crearItemMenu("Asignar Pole Position a Piloto...", e -> testAsignarPolePosition()));
         menuBar.add(menuGestion);
         
@@ -139,7 +136,7 @@ public class MainGUI extends JFrame {
     }
     
     // -----------------------------------------------------------------
-    // --- MÉTODOS DE PRUEBA: REGISTRO (LogicaRegistro) ---
+    // --- MÉTODOS DE REGISTRO (LogicaRegistro) ---
     // -----------------------------------------------------------------
     
 private void registrarPais() {
@@ -267,7 +264,7 @@ private void registrarPais() {
     }
 
     // -----------------------------------------------------------------
-    // --- MÉTODOS DE PRUEBA: GESTIÓN (LogicaGestion) ---
+    // --- MÉTODOS DE GESTIÓN (LogicaGestion) ---
     // -----------------------------------------------------------------
     
     private void testAsociarPilotoAutoCarrera() {
@@ -365,7 +362,7 @@ private void registrarPais() {
     }
     
     // -----------------------------------------------------------------
-    // --- MÉTODOS DE PRUEBA: INFORMES (LogicaInformes) ---
+    // --- MÉTODOS DE INFORMES (LogicaInformes) ---
     // -----------------------------------------------------------------
     
     private void testRankingPilotos() {
@@ -557,7 +554,7 @@ private void registrarPais() {
     }
     
     // -----------------------------------------------------------------
-    // --- UTILIDADES DE SELECCIÓN (Simulan JComboBoxes) ---
+    // --- UTILIDADES DE SELECCIÓN (JComboBoxes) ---
     // -----------------------------------------------------------------
     
     private Pais seleccionarPais() {
