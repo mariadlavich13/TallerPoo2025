@@ -200,7 +200,7 @@ private void registrarPais() {
             Pais p = seleccionarPais();
             if (p == null) return;
             String nombre = getDesdeUsuario("Nombre del nuevo circuito:");
-            double longitud = Double.parseDouble(getDesdeUsuario("Longitud (km, ej: 5.891):"));
+            int longitud = Integer.parseInt(getDesdeUsuario("Longitud (km, ej: 5):"));
             logicaRegistro.registrarCircuito(sistema, nombre, longitud, p); //
             mostrarInfo("¡Circuito '" + nombre + "' registrado con éxito!");
         } catch (LogicaException | NumberFormatException | NullPointerException ex) {

@@ -6,7 +6,7 @@ package clases;
  */
 public class Circuito {
     private String nombre;
-    private double longitud;
+    private int longitud;
     private Pais pais; // Relación con Pais
 
     /**
@@ -25,7 +25,7 @@ public class Circuito {
      * @param longitud La longitud de la pista en kilómetros (ej. 3.337).
      * @param pais El objeto Pais donde se ubica el circuito.
      */
-    public Circuito(String nombre, double longitud, Pais pais) {
+    public Circuito(String nombre, int longitud, Pais pais) {
         this.nombre = nombre;
         this.longitud = longitud;
         this.pais = pais;
@@ -45,7 +45,7 @@ public class Circuito {
      * Obtiene la longitud del circuito.
      * @return La longitud.
      */
-    public double getLongitud() {
+    public int getLongitud() {
         return longitud;
     }
 
@@ -61,7 +61,7 @@ public class Circuito {
      * Establece la longitud del circuito.
      * @param longitud La nueva longitud.
      */
-    public void setLongitud(double longitud) {
+    public void setLongitud(int longitud) {
         this.longitud = longitud;
     }
 

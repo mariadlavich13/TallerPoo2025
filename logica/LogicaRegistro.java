@@ -123,7 +123,7 @@ public class LogicaRegistro {
      * @param pais País de ubicación.
      * @throws LogicaException Si el nombre del circuito ya existe.
      */
-    public void registrarCircuito(SistemaGestion datos, String nombre, double longitud, Pais pais) throws LogicaException {
+    public void registrarCircuito(SistemaGestion datos, String nombre, int longitud, Pais pais) throws LogicaException {
         for (Circuito c : datos.getCircuitos()) {
             if (c.getNombre().equalsIgnoreCase(nombre)) {
                 throw new LogicaException("Ya existe un circuito con el nombre " + nombre);

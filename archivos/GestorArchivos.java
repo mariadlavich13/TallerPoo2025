@@ -211,7 +211,7 @@ public class GestorArchivos {
 
                 try {
                     String nombre = valores[0].trim();
-                    double longitud = Double.parseDouble(valores[1].trim());
+                    int longitud = Integer.parseInt(valores[1].trim());
                     int idPais = Integer.parseInt(valores[2].trim());
 
                     Pais paisAsignado = buscarPaisPorId(paises, idPais);
@@ -223,7 +223,7 @@ public class GestorArchivos {
                     circuitos.add(c);
                     nroLinea++;
                 } catch (NumberFormatException e) {
-                    throw new LogicaException("Error en " + path + " (Línea " + nroLinea + "): Longitud o ID de país no son números válidos.");
+                    throw new LogicaException("Error en " + path + " (Línea " + nroLinea + "): Longitud (debe ser un entero) o ID de país no son números válidos.");
                 }
             }
         } catch (IOException e) {
