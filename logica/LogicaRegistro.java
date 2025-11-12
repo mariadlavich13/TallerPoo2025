@@ -35,7 +35,13 @@ public class LogicaRegistro {
      */
     public void registrarPiloto(SistemaGestion datos, String dni, String nombre, String apellido, Pais pais, String nroCompString, int victorias, int polePosition, int vueltasRapidas, int podios)
             throws LogicaException {
-
+        try {
+        // Intentamos convertir el DNI a un número (Long para soportar cifras grandes)
+        // Si el String contiene letras, lanzará una excepción.
+        Long.parseLong(dni.trim());
+        } catch (NumberFormatException e) {
+        throw new LogicaException("Formato de DNI inválido: El DNI debe contener solo números.");
+        }
         int nroComp;
         try {
             // Control de Número de Competencia: Convierte y lanza LogicaException si falla el formato
@@ -78,6 +84,11 @@ public class LogicaRegistro {
      */
     public void registrarMecanico(SistemaGestion datos, String dni, String nombre, String apellido, Pais pais, Especialidad especialidad, int aniosExperiencia)
             throws LogicaException {
+        try {
+        Long.parseLong(dni.trim());
+        } catch (NumberFormatException e) {
+        throw new LogicaException("El DNI del mecánico debe contener solo números.");
+        }
         // Verificación de duplicados
         for (Mecanico m : datos.getMecanicos()) {
             if (m.getDni().equals(dni)) {
