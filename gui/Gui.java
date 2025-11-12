@@ -625,42 +625,69 @@ public class Gui extends JFrame {
         }
     }
 
-    /**
+/**
      * Manejador de GUI para registrar un nuevo Piloto.
-     * Pide los datos y llama a {@link LogicaRegistro#registrarPiloto(SistemaGestion, String, String, String, Pais, int, int, int, int, int)}.
+     * Pide los datos y llama a {@link LogicaRegistro#registrarPiloto(SistemaGestion, String, String, String, Pais, String, int, int, int, int)}.
      */
     private void testRegistrarPiloto() {
         try {
             String dni = getDesdeUsuario("DNI del piloto:");
+            if (dni == null) return;
             String nom = getDesdeUsuario("Nombre:");
+            if (nom == null) return;
             String ape = getDesdeUsuario("Apellido:");
+            if (ape == null) return;
+            
             Pais p = seleccionarPais();
             if (p == null) return;
-            int nro = Integer.parseInt(getDesdeUsuario("Nro Competencia:"));
-            logicaRegistro.registrarPiloto(sistema, dni, nom, ape, p, nro, 0, 0, 0, 0);
+            
+            // Obtener el número de competencia como String y pasarlo a la lógica
+            String nroCompString = getDesdeUsuario("Nro Competencia:");
+            if (nroCompString == null) return;
+
+            // La capa de lógica (LogicaRegistro) se encarga de validar el formato del número.
+            logicaRegistro.registrarPiloto(sistema, dni, nom, ape, p, nroCompString, 0, 0, 0, 0);
+            
             mostrarInfo("¡Piloto '" + nom + " " + ape + "' registrado con éxito!");
-        } catch (LogicaException | NumberFormatException | NullPointerException ex) {
+        } catch (LogicaException | NullPointerException ex) {
+            // Este bloque captura errores de lógica (DNI/Nombre duplicado, formato de Nro Competencia)
             mostrarError(ex.getMessage());
+        } catch (Exception ex) {
+            mostrarError("Ocurrió un error inesperado: " + ex.getMessage());
         }
     }
 
-    /**
+/**
      * Manejador de GUI para registrar un nuevo Mecánico.
      * Pide los datos y llama a {@link LogicaRegistro#registrarMecanico(SistemaGestion, String, String, String, Pais, Especialidad, int)}.
      */
     private void testRegistrarMecanico() {
         try {
             String dni = getDesdeUsuario("DNI del mecánico:");
+            if (dni == null) return;
             String nom = getDesdeUsuario("Nombre:");
             String ape = getDesdeUsuario("Apellido:");
             Pais p = seleccionarPais();
             if (p == null) return;
             Especialidad esp = seleccionarEspecialidad();
             if (esp == null) return;
-            int anios = Integer.parseInt(getDesdeUsuario("Años de experiencia:"));
+            
+            String aniosInput = getDesdeUsuario("Años de experiencia:");
+            if (aniosInput == null) return;
+            
+            int anios;
+            try {
+                // Se intenta convertir el String a int.
+                anios = Integer.parseInt(aniosInput.trim());
+            } catch (NumberFormatException e) {
+                // Captura el error de formato y lanza LogicaException.
+                throw new LogicaException("Error de formato: Los años de experiencia deben ser un número entero válido.");
+            }
+
             logicaRegistro.registrarMecanico(sistema, dni, nom, ape, p, esp, anios);
             mostrarInfo("¡Mecánico '" + nom + " " + ape + "' registrado con éxito!");
-        } catch (LogicaException | NumberFormatException | NullPointerException ex) {
+        } catch (LogicaException | NullPointerException ex) {
+            // Este bloque captura ahora la LogicaException lanzada por NumberFormatException.
             mostrarError(ex.getMessage());
         }
     }

@@ -26,20 +26,27 @@ public class LogicaRegistro {
      * @param nombre Nombre del piloto.
      * @param apellido Apellido del piloto.
      * @param pais País de origen.
-     * @param nroComp Número de competición.
+     * @param nroCompString Número de competición como String para validación en la capa de lógica.
      * @param victorias Conteo inicial de victorias.
      * @param polePosition Conteo inicial de poles.
      * @param vueltasRapidas Conteo inicial de vueltas rápidas.
      * @param podios Conteo inicial de podios.
-     * @throws LogicaException Si el DNI o el nombre completo ya existen.
+     * @throws LogicaException Si el DNI o el nombre completo ya existen o si el formato del número de competencia es inválido.
      */
-    public void registrarPiloto(SistemaGestion datos, String dni, String nombre, String apellido, Pais pais, int nroComp, int victorias, int polePosition, int vueltasRapidas, int podios)
+    public void registrarPiloto(SistemaGestion datos, String dni, String nombre, String apellido, Pais pais, String nroCompString, int victorias, int polePosition, int vueltasRapidas, int podios)
             throws LogicaException {
 
+        int nroComp;
+        try {
+            // Control de Número de Competencia: Convierte y lanza LogicaException si falla el formato
+            nroComp = Integer.parseInt(nroCompString.trim());
+        } catch (NumberFormatException e) {
+            throw new LogicaException("Error de formato de número: El número de competencia debe ser un número entero válido. No se permiten letras.");
+        }
         //Verificar duplicados
         for (Piloto p : datos.getPilotos()) {
-            //Control de DNI con equalsIgnoreCase
-            if (p.getDni().equalsIgnoreCase(dni)) {
+            //Control de DNI con equals
+            if (p.getDni().equals(dni)) {
                 throw new LogicaException("Ya existe un piloto con DNI " + dni);
             }
             
