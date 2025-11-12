@@ -106,6 +106,10 @@ public class LogicaGestion {
         if (posicion < 1) {
             throw new LogicaException("La posición debe ser mayor o igual a 1.");
         }
+        //Máximo de 20 posiciones en F1.
+        if (posicion > 20) {
+            throw new LogicaException("La posición máxima permitida en Fórmula 1 es 20. Ingrese una posición válida.");
+        }
         // ¿El piloto realmente participó en la carrera?
         boolean participo = false;
         for (AutoPiloto ap : carrera.getParticipantes()) {
