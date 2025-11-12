@@ -590,7 +590,7 @@ public class Gui extends JFrame {
         }
     }
 
-    /**
+/**
      * Manejador de GUI para registrar un nuevo Circuito.
      * Pide los datos y llama a {@link LogicaRegistro#registrarCircuito(SistemaGestion, String, int, Pais)}.
      */
@@ -599,10 +599,25 @@ public class Gui extends JFrame {
             Pais p = seleccionarPais();
             if (p == null) return;
             String nombre = getDesdeUsuario("Nombre del nuevo circuito:");
-            int longitud = Integer.parseInt(getDesdeUsuario("Longitud (en metros, ej: 5000):"));
+            if (nombre == null) return;
+            
+            //Captura la entrada como String e intenta parsear ---
+            String longitudInput = getDesdeUsuario("Longitud (en km, ej: 5):");
+            if (longitudInput == null) return;
+            int longitud;
+            try {
+                // Si el usuario introduce letras o decimales, NumberFormatException se lanza aquí.
+                longitud = Integer.parseInt(longitudInput.trim());
+            } catch (NumberFormatException e) {
+                // Captura específica: Muestra el mensaje de error de formato deseado.
+                mostrarError("La longitud debe ser un número entero.");
+                return; // Sale del método después de mostrar el error.
+            }
+            
             logicaRegistro.registrarCircuito(sistema, nombre, longitud, p);
             mostrarInfo("¡Circuito '" + nombre + "' registrado con éxito!");
-        } catch (LogicaException | NumberFormatException | NullPointerException ex) {
+        } catch (LogicaException | NullPointerException ex) {
+            // Este catch maneja errores de lógica (nombre vacío, país nulo, longitud <= 0, duplicados).
             mostrarError(ex.getMessage());
         }
     }
