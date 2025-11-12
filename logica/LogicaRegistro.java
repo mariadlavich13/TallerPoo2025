@@ -16,9 +16,10 @@ import clases.Carrera;
  */
 public class LogicaRegistro {
 
-    /**
+/**
      * Registra un nuevo piloto en el sistema.
-     * Verifica que el DNI no esté duplicado.
+     * Verifica que el DNI no esté duplicado (case-insensitive).
+     * Verifica que el Nombre y Apellido no estén duplicados (case-insensitive).
      *
      * @param datos El SistemaGestion donde se agregará el piloto.
      * @param dni DNI del piloto.
@@ -30,21 +31,27 @@ public class LogicaRegistro {
      * @param polePosition Conteo inicial de poles.
      * @param vueltasRapidas Conteo inicial de vueltas rápidas.
      * @param podios Conteo inicial de podios.
-     * @throws LogicaException Si el DNI ya existe.
+     * @throws LogicaException Si el DNI o el nombre completo ya existen.
      */
     public void registrarPiloto(SistemaGestion datos, String dni, String nombre, String apellido, Pais pais, int nroComp, int victorias, int polePosition, int vueltasRapidas, int podios)
             throws LogicaException {
 
-        // 1. Verificar duplicados
+        //Verificar duplicados
         for (Piloto p : datos.getPilotos()) {
-            if (p.getDni().equals(dni)) {
+            //Control de DNI con equalsIgnoreCase
+            if (p.getDni().equalsIgnoreCase(dni)) {
                 throw new LogicaException("Ya existe un piloto con DNI " + dni);
+            }
+            
+            // Control de Nombre y Apellido duplicado
+            if (p.getNombre().equalsIgnoreCase(nombre) && p.getApellido().equalsIgnoreCase(apellido)) {
+                throw new LogicaException("Ya existe un piloto con el nombre '" + nombre + " " + apellido + "'");
             }
         }
 
-        // 2. Si pasa el control, crea el objeto
+        //Si pasa el control, crea el objeto
         Piloto nuevoPiloto = new Piloto(dni, nombre, apellido, pais, nroComp, victorias, polePosition, vueltasRapidas, podios);
-        // 3. Llama a la persistencia
+        //Llama a la persistencia
         datos.agregarPiloto(nuevoPiloto);
     }
 

@@ -29,7 +29,7 @@ public class LogicaGestion {
      * @param auto El auto a asociar.
      * @param fechaAsignacion La fecha de la asignación.
      * @return El objeto AutoPiloto creado si la asignación es exitosa.
-     * @throws LogicaException Si el auto o el piloto ya están asignados en esa carrera.
+     * @throws LogicaException Si el auto o el piloto ya están asignados en esa carrera o si no pertenecen a la misma escudería.
      */
     public AutoPiloto asociarPilotoAutoACarrera(Carrera carrera, Piloto piloto, Auto auto, String fechaAsignacion) throws LogicaException {
         
@@ -45,6 +45,35 @@ public class LogicaGestion {
             if (participante.getPiloto().equals(piloto)) {
                 throw new LogicaException("El piloto " + piloto.getNombre() + " ya está participando con otro auto en esta carrera.");
             }
+        }
+        // Verifica que el piloto y el auto pertenezcan a la misma escudería
+        Escuderia escuderiaPiloto = null;
+        for (PilotoEscuderia pe : piloto.getPilotosEscuderias()) {
+            String hf = pe.getHastaFecha();
+            // Un contrato activo no tiene fecha de fin (es null o vacía)
+            if (hf == null || hf.trim().isEmpty()) {
+                escuderiaPiloto = pe.getEscuderia();
+                break;
+            }
+        }
+
+        //Obtener la escudería del auto
+        Escuderia escuderiaAuto = auto.getEscuderia();
+
+        //Validar que ambos existan
+        if (escuderiaPiloto == null) {
+            throw new LogicaException("El piloto " + piloto.getNombre() + " " + piloto.getApellido() + " no tiene un contrato activo con ninguna escudería.");
+        }
+        if (escuderiaAuto == null) {
+            throw new LogicaException("El auto " + auto.getModelo() + " no está asignado a ninguna escudería.");
+        }
+        
+        //Comparar que sean la misma escudería
+        if (!escuderiaPiloto.equals(escuderiaAuto)) {
+            throw new LogicaException("Error de consistencia: El piloto " + piloto.getNombre() 
+                    + " pertenece a " + escuderiaPiloto.getNombre()
+                    + ", pero el auto " + auto.getModelo()
+                    + " pertenece a " + escuderiaAuto.getNombre() + ".");
         }
 
         // Si pasa la verificación, crea la asociación

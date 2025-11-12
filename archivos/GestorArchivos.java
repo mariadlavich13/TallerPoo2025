@@ -22,94 +22,105 @@ public class GestorArchivos {
 
     // --- MÉTODOS HELPER (Buscadores) ---
 
-    /**
-     * Busca un Pais por su ID en una lista.
-     * @param paises Lista de Países.
-     * @param id ID a buscar.
-     * @return El Pais encontrado, o null.
+    /**Busca un País en la lista por su ID.
+     *
+     * @param paises Lista de países donde buscar.
+     * @param idPais ID a encontrar.
+     * @return El objeto Pais.
+     * @throws LogicaException Si el ID del país no se encuentra en la lista.
      */
-    private static Pais buscarPaisPorId(List<Pais> paises, int id) {
+    public static Pais buscarPaisPorId(List<Pais> paises, int idPais) throws LogicaException {
         for (Pais p : paises) {
-            if (p.getIdPais() == id) {
+            if (p.getIdPais() == idPais) {
                 return p;
             }
         }
-        return null;
+        //Lanza excepción si no se encuentra el país
+        throw new LogicaException("Error de integridad de datos: El ID de país '" + idPais + "' referenciado en un CSV no existe en DatosPais.csv");
     }
 
-    /**
-     * Busca un Circuito por su nombre en una lista.
-     * @param circuitos Lista de Circuitos.
-     * @param nombre Nombre a buscar (ignora mayúsculas/minúsculas).
-     * @return El Circuito encontrado, o null.
+    /** Busca un Circuito en la lista por su nombre (ignorando mayúsculas/minúsculas).
+     *
+     * @param circuitos Lista de circuitos donde buscar.
+     * @param nombre    Nombre a encontrar.
+     * @return El objeto Circuito.
+     * @throws LogicaException Si el nombre del circuito no se encuentra.
      */
-    private static Circuito buscarCircuitoPorNombre(List<Circuito> circuitos, String nombre) {
+    public static Circuito buscarCircuitoPorNombre(List<Circuito> circuitos, String nombre) throws LogicaException {
         for (Circuito c : circuitos) {
             if (c.getNombre().equalsIgnoreCase(nombre.trim())) {
                 return c;
             }
         }
-        return null;
+        //Lanza excepción si no se encuentra el circuito
+        throw new LogicaException("Error de integridad de datos: El circuito con nombre '" + nombre + "' referenciado en DatosCarrera.csv no existe en DatosCircuito.csv");
     }
 
-    /**
-     * Busca una Escuderia por su nombre en una lista.
-     * @param escuderias Lista de Escuderias.
-     * @param nombre Nombre a buscar (ignora mayúsculas/minúsculas).
-     * @return La Escuderia encontrada, o null.
+    /**Busca una Escudería en la lista por su nombre (ignorando mayúsculas/minúsculas).
+     *
+     * @param escuderias Lista de escuderías donde buscar.
+     * @param nombre     Nombre a encontrar.
+     * @return El objeto Escuderia.
+     * @throws LogicaException Si el nombre de la escudería no se encuentra.
      */
-    private static Escuderia buscarEscuderiaPorNombre(List<Escuderia> escuderias, String nombre) {
+    public static Escuderia buscarEscuderiaPorNombre(List<Escuderia> escuderias, String nombre) throws LogicaException {
         for (Escuderia e : escuderias) {
             if (e.getNombre().equalsIgnoreCase(nombre.trim())) {
                 return e;
             }
         }
-        return null;
+        //Lanza excepción si no se encuentra la escudería
+        throw new LogicaException("Error de integridad de datos: La escudería con nombre '" + nombre + "' referenciada en un CSV no existe en DatosEscuderia.csv");
     }
 
-    /**
-     * Busca un Mecánico por su DNI en una lista.
-     * @param mecanicos Lista de Mecanicos.
-     * @param dni DNI a buscar.
-     * @return El Mecanico encontrado, o null.
+    /**Busca un Mecánico en la lista por su DNI.
+     *
+     * @param mecanicos Lista de mecánicos donde buscar.
+     * @param dni       DNI a encontrar.
+     * @return El objeto Mecanico.
+     * @throws LogicaException Si el DNI del mecánico no se encuentra.
      */
-    private static Mecanico buscarMecanicoPorDni(List<Mecanico> mecanicos, String dni) {
+    public static Mecanico buscarMecanicoPorDNI(List<Mecanico> mecanicos, String dni) throws LogicaException {
         for (Mecanico m : mecanicos) {
             if (m.getDni().equals(dni.trim())) {
                 return m;
             }
         }
-        return null;
+        //Lanza excepción si no se encuentra el mecánico
+        throw new LogicaException("Error de integridad de datos: El mecánico con DNI '" + dni + "' referenciado en DatosMecanicoEscuderia.csv no existe en DatosMecanico.csv");
     }
 
-    /**
-     * Busca un Piloto por su DNI en una lista.
-     * @param pilotos Lista de Pilotos.
-     * @param dni DNI a buscar.
-     * @return El Piloto encontrado, o null.
+    /**Busca un Piloto en la lista por su DNI.
+     *
+     * @param pilotos Lista de pilotos donde buscar.
+     * @param dni    DNI a encontrar.
+     * @return El objeto Piloto.
+     * @throws LogicaException Si el DNI del piloto no se encuentra.
      */
-    private static Piloto buscarPilotoPorDni(List<Piloto> pilotos, String dni) {
+    public static Piloto buscarPilotoPorDNI(List<Piloto> pilotos, String dni) throws LogicaException {
         for (Piloto p : pilotos) {
             if (p.getDni().equals(dni.trim())) {
                 return p;
             }
         }
-        return null;
+        //Lanza excepción si no se encuentra el piloto
+        throw new LogicaException("Error de integridad de datos: El piloto con DNI '" + dni + "' referenciado en DatosResultadoCarrera.csv no existe en DatosPiloto.csv");
     }
 
-    /**
-     * Busca una Carrera por su fecha en una lista.
+    /**Busca una Carrera por su fecha en una lista.
      * @param carreras Lista de Carreras.
      * @param fecha Fecha a buscar.
-     * @return La Carrera encontrada, o null.
+     * @return La Carrera encontrada.
+     * @throws LogicaException Si no se encuentra una carrera con esa fecha.
      */
-    private static Carrera buscarCarreraPorFecha(List<Carrera> carreras, String fecha) {
+    private static Carrera buscarCarreraPorFecha(List<Carrera> carreras, String fecha) throws LogicaException {
         for (Carrera c : carreras) {
             if (c.getFechaRealizacion().equals(fecha.trim())) {
                 return c;
             }
         }
-        return null;
+        // MODIFICACIÓN: Lanza excepción en lugar de devolver null
+        throw new LogicaException("Error de integridad de datos: No se encontró la carrera con fecha '" + fecha + "' referenciada en el CSV.");
     }
 
     // --- MÉTODOS DE LECTURA (CSV a Objetos) ---
@@ -427,7 +438,7 @@ public class GestorArchivos {
                 String dniMecanico = valores[0].trim();
                 String nombreEscuderia = valores[1].trim();
 
-                Mecanico mecanico = buscarMecanicoPorDni(todosLosMecanicos, dniMecanico);
+                Mecanico mecanico = buscarMecanicoPorDNI(todosLosMecanicos, dniMecanico);
                 Escuderia escuderia = buscarEscuderiaPorNombre(todasLasEscuderias, nombreEscuderia);
 
                 if (mecanico == null) {
@@ -486,7 +497,7 @@ public class GestorArchivos {
                     throw new LogicaException("Error en " + path + " (Línea " + nroLinea + "): La posición '" + valores[2].trim() + "' no es un número.");
                 }
 
-                Piloto pilotoAsignado = buscarPilotoPorDni(pilotos, dniPiloto);
+                Piloto pilotoAsignado = buscarPilotoPorDNI(pilotos, dniPiloto);
                 Carrera carreraAsignada = buscarCarreraPorFecha(carreras, fechaCarrera);
 
                 if (pilotoAsignado == null) {
