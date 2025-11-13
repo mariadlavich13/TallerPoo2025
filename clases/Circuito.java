@@ -25,7 +25,7 @@ public class Circuito {
      * @param longitud La longitud de la pista en kilómetros (ej. 3.337).
      * @param pais El objeto Pais donde se ubica el circuito.
      */
-    public Circuito(String nombre, int longitud, Pais pais) {
+    public Circuito(String nombre, Integer longitud, Pais pais) {
         this.nombre = nombre;
         this.longitud = longitud;
         this.pais = pais;
