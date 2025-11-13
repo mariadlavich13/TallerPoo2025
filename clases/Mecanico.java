@@ -92,7 +92,7 @@ public class Mecanico extends Persona {
     }
 
     /**
-     * Agrega una escudería a la lista del mecánico.
+     * Asocia al mecánico con una escudería.
      * @param escuderia La Escuderia a agregar.
      */
     public void agregarEscuderia(Escuderia escuderia) {
