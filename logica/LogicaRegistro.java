@@ -297,6 +297,19 @@ public class LogicaRegistro {
         if (horaRealizacion == null || horaRealizacion.trim().isEmpty()) {
             throw new LogicaException("La hora de realización de la carrera es obligatoria.");
         }
+
+        // -------------------------------------------------------
+        // --- VALIDACIÓN DE FORMATO DE HORA ---
+        // -------------------------------------------------------
+        // Explicación del Regex "([01]?[0-9]|2[0-3]):[0-5][0-9]":
+        // 1. ([01]?[0-9]|2[0-3]): Acepta horas de 0 a 19 (con o sin cero delante) O de 20 a 23.
+        // 2. :                  : Debe haber dos puntos.
+        // 3. [0-5][0-9]         : Acepta minutos de 00 a 59.
+        if (!horaRealizacion.matches("([01]?[0-9]|2[0-3]):[0-5][0-9]")) {
+            throw new LogicaException("Formato de hora inválido. Debe ser HH:mm (ej: 14:30 o 9:00) y estar entre 00:00 y 23:59.");
+        }
+        // -------------------------------------------------------
+
         if (pais == null) {
             throw new LogicaException("El país de la carrera no puede ser nulo.");
         }
