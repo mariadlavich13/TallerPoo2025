@@ -100,6 +100,13 @@ public class LogicaGestion {
      */
     public void registrarResultado(SistemaGestion datos, Carrera carrera, Piloto piloto, int posicion, boolean tuvoVueltaRapida) throws LogicaException {
         
+        //Correcion para No registrar resultados a futuro(carrera que todavia no paso)
+        String fechaCarrera = carrera.getFechaRealizacion();
+        java.time.LocalDate fechaC = java.time.LocalDate.parse(Utilidades.formatearFecha(fechaCarrera));
+        if(fechaC.isAfter(java.time.LocalDate.now())){
+            throw new LogicaException("No se pueden registrar los resultados de una carrera futura.");
+        }
+
         // --- 1. Validaciones ---
         if (posicion < 1) {
             throw new LogicaException("La posición debe ser mayor o igual a 1.");
@@ -194,6 +201,12 @@ public class LogicaGestion {
      */
     public PilotoEscuderia asociarPilotoAEscuderia(Piloto piloto, Escuderia escuderia, String desdeFecha) throws LogicaException {
         
+        //Correcion para validar fecha
+        if(!Utilidades.esFechaValida(desdeFecha)){
+            throw new LogicaException("La fecha de inicio de contrato no es valida.");
+        }
+
+
         //Usamos la utilidad para formatear
         String nuevaFechaInicioF = Utilidades.formatearFecha(desdeFecha);
         String ultimaFechaFinF = "0000-00-00"; 

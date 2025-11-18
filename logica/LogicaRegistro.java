@@ -1,5 +1,7 @@
 package logica;
 
+import java.lang.classfile.constantpool.IntegerEntry;
+
 import archivos.SistemaGestion;
 import clases.Piloto;
 import clases.Mecanico;
@@ -56,6 +58,14 @@ public class LogicaRegistro {
             throw new LogicaException("Debe seleccionar un país de origen para el piloto.");
         }
 
+        //Correcion de formatos que hacian falta
+        if(!nombre.matches("[a-zA-ZáéíóúÁÉÍÓÚñÑ\\s+]")){
+            throw new LogicaException("El nombre no puede tener numeros ni simbolos.");
+        }
+        if(!apellido.matches("[a-zA-ZáéíóúÁÉÍÓÚñÑ\\s+]")){
+            throw new LogicaException("El apellido no puedo tener numeros ni simbolos.");
+        }
+
         // --- VALIDACIÓN DE FORMATO ---
         try {
             // Se intenta convertir el DNI a un número.
@@ -63,12 +73,35 @@ public class LogicaRegistro {
         } catch (NumberFormatException e) {
             throw new LogicaException("Formato de DNI inválido: El DNI debe contener solo números.");
         }
+
+        //Correcion de dni
+        if(dni.trim().length()<7 || dni.trim().length() > 8){
+            throw new LogicaException("El dni debe tener entre 7 y 8 digitos.");
+        }
+        try{
+            long dniNum= Long.parseLong(dni.trim());
+            if(dniNum <= 0) throw new LogicaException("El DNI debe ser un numero positivo.");
+        } catch(NumberFormatException e){
+            throw new LogicaException("El DNI solo debe contener numeros.");
+        }
+
         int nroComp;
         try {
             // Control de Número de Competencia: Convierte.
             nroComp = Integer.parseInt(nroCompString.trim());
         } catch (NumberFormatException e) {
             throw new LogicaException("Error de formato de número: El número de competencia debe ser un número entero válido.");
+        }
+
+        //Correcion Numero competencia
+        int numeroComp;
+        try{
+            numeroComp = Integer.parseInt(nroCompString.trim());
+            if(numeroComp < 0){
+                throw new LogicaException("EL numero de competencia no puede ser negativo.");
+            }
+        } catch(NumberFormatException e){
+            throw new LogicaException("El numero de competencia debe ser un numero valido.");
         }
 
         // --- VERIFICACIÓN DE DUPLICADOS ---
@@ -123,12 +156,36 @@ public class LogicaRegistro {
         if (especialidad == null) {
             throw new LogicaException("Debe seleccionar una especialidad para el mecánico.");
         }
+
+        //Correcion de formatos que hacian falta
+        if(!nombre.matches("[a-zA-ZáéíóúÁÉÍÓÚñÑ\\s+]")){
+            throw new LogicaException("El nombre no puede tener numeros ni simbolos.");
+        }
+        if(!apellido.matches("[a-zA-ZáéíóúÁÉÍÓÚñÑ\\s+]")){
+            throw new LogicaException("El apellido no puedo tener numeros ni simbolos.");
+        }
         
         // --- VALIDACIÓN DE FORMATO ---
         try {
             Long.parseLong(dni.trim());
         } catch (NumberFormatException e) {
             throw new LogicaException("Formato de DNI inválido: El DNI del mecánico debe contener solo números.");
+        }
+
+        //Correcion de dni
+        if(dni.trim().length()<7 || dni.trim().length() > 8){
+            throw new LogicaException("El dni debe tener entre 7 y 8 digitos.");
+        }
+        try{
+            long dniNum= Long.parseLong(dni.trim());
+            if(dniNum <= 0) throw new LogicaException("El DNI debe ser un numero positivo.");
+        } catch(NumberFormatException e){
+            throw new LogicaException("El DNI solo debe contener numeros.");
+        }
+
+        //Correcion de Años de experiencia
+        if(aniosExperiencia < 0){
+            throw new LogicaException("Los años de experiencia no deben ser negativos.");
         }
 
         // --- VERIFICACIÓN DE DUPLICADOS ---
@@ -159,6 +216,13 @@ public class LogicaRegistro {
         if (modelo == null || modelo.trim().isEmpty()) {
             throw new LogicaException("El modelo del auto es obligatorio.");
         }
+
+        //Correcion de Ingreso de auto(Si es muy corto no lo toma)
+        if(modelo.trim().length() < 2){
+            throw new LogicaException("El modelo del auto es muy corto, ingrese un modelo valido.");
+        }
+
+
         if (motor == null || motor.trim().isEmpty()) {
             throw new LogicaException("El motor del auto es obligatorio.");
         }
@@ -225,6 +289,12 @@ public class LogicaRegistro {
         if (pais == null) {
             throw new LogicaException("Debe seleccionar un país de ubicación para el circuito.");
         }
+
+        //Correcion para validacion de longitud
+        if(longitud <= 0){
+            throw new LogicaException("La longitud del circuito debe ser mayor a 0km.");
+        }
+
         // --- FIN VALIDACIÓN ---
 
         // --- VERIFICACIÓN DE DUPLICADOS ---
@@ -256,6 +326,17 @@ public class LogicaRegistro {
         if (descripcion == null || descripcion.trim().isEmpty()) {
             throw new LogicaException("El nombre del país es obligatorio.");
         }
+
+        //Correcion para validar la descripcion
+        if(!descripcion.matches("[a-zA-ZáéíóúÁÉÍÓÚñÑ\\s+]")){
+            throw new LogicaException("La descripcion solo puede contener letras.");
+        }
+
+        //Correcion para validar el id del pais (debe se mayor que 0)
+        if(idPais<=0){
+            throw new LogicaException("El ID del pais debe ser mayor a 0.");
+        }
+
         // --- FIN VALIDACIÓN ---
 
         // --- VERIFICACIÓN DE DUPLICADOS ---
@@ -294,8 +375,19 @@ public class LogicaRegistro {
         if (fechaRealizacion == null || fechaRealizacion.trim().isEmpty()) {
             throw new LogicaException("La fecha de realización de la carrera es obligatoria.");
         }
+
+        //Correccion de fecha
+        if(!Utilidades.esFechaValida(fechaRealizacion)){
+            throw new LogicaException("La fecha ingresada "+fechaRealizacion+" no es valida. Use formato dd-MM-yyyy (ej: 15-03-2025)");
+        }
+
         if (horaRealizacion == null || horaRealizacion.trim().isEmpty()) {
             throw new LogicaException("La hora de realización de la carrera es obligatoria.");
+        }
+
+        //Nueva Validacion para numeros de vueltas
+        if(nroVueltas <=0){
+            throw new LogicaException("La carrera debe tener al menos 1 vuelta.");
         }
 
         // -------------------------------------------------------
@@ -308,6 +400,7 @@ public class LogicaRegistro {
         if (!horaRealizacion.matches("([01]?[0-9]|2[0-3]):[0-5][0-9]")) {
             throw new LogicaException("Formato de hora inválido. Debe ser HH:mm (ej: 14:30 o 9:00) y estar entre 00:00 y 23:59.");
         }
+
         // -------------------------------------------------------
 
         if (pais == null) {

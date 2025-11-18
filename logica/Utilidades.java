@@ -1,5 +1,10 @@
 package logica;
 
+import java.time.format.DateTimeFormatter;
+import java.time.DateTimeException;
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
+
 /**
  * Clase de utilidad con métodos estáticos (static)
  * que pueden ser llamados desde cualquier parte del proyecto.
@@ -37,5 +42,18 @@ public class Utilidades {
         }
         // Devuelve la fecha original si no pudo procesarla
         return fechaDDMMAAAA;
+    }
+    public static boolean esFechaValida(String fecha){
+        if(fecha == null || fecha.isEmpty()){
+            return false;
+        }
+        try{
+            DateTimeFormatter fomatter = DateTimeFormatter.ofPattern("dd-mm-yyyy");
+            LocalDate.parse(fecha, fomatter);
+            return true;
+        } catch(DateTimeParseException e){
+            return false;
+        }
+        }
     }
 }
