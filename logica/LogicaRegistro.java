@@ -55,15 +55,7 @@ public class LogicaRegistro {
         if (pais == null) {
             throw new LogicaException("Debe seleccionar un país de origen para el piloto.");
         }
-//----------------------------------------
-        //Correcion de formatos que hacian falta
-        if(!nombre.matches("[a-zA-ZáéíóúÁÉÍÓÚñÑ\\s+]")){
-            throw new LogicaException("El nombre no puede tener numeros ni simbolos.");
-        }
-        if(!apellido.matches("[a-zA-ZáéíóúÁÉÍÓÚñÑ\\s+]")){
-            throw new LogicaException("El apellido no puedo tener numeros ni simbolos.");
-        }
-//----------------------------------------
+
         // --- VALIDACIÓN DE FORMATO ---
         try {
             // Se intenta convertir el DNI a un número.
