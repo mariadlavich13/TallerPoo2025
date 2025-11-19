@@ -154,15 +154,7 @@ public class LogicaRegistro {
         if (especialidad == null) {
             throw new LogicaException("Debe seleccionar una especialidad para el mecánico.");
         }
-//----------------------------------------
-        //Correcion de formatos que hacian falta
-        if(!nombre.matches("[a-zA-ZáéíóúÁÉÍÓÚñÑ\\s+]")){
-            throw new LogicaException("El nombre no puede tener numeros ni simbolos.");
-        }
-        if(!apellido.matches("[a-zA-ZáéíóúÁÉÍÓÚñÑ\\s+]")){
-            throw new LogicaException("El apellido no puedo tener numeros ni simbolos.");
-        }
-//----------------------------------------
+
         // --- VALIDACIÓN DE FORMATO ---
         try {
             Long.parseLong(dni.trim());
@@ -328,10 +320,6 @@ public class LogicaRegistro {
             throw new LogicaException("El nombre del país es obligatorio.");
         }
 //----------------------------------------
-        //Correcion para validar la descripcion
-        if(!descripcion.matches("[a-zA-ZáéíóúÁÉÍÓÚñÑ\\s+]")){
-            throw new LogicaException("La descripcion solo puede contener letras.");
-        }
 
         //Correcion para validar el id del pais (debe se mayor que 0)
         if(idPais<=0){
